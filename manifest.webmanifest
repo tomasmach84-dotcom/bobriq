@@ -1,0 +1,16 @@
+{
+  "name": "BOBRIQ: Tvůj chytrý průvodce financemi",
+  "short_name": "BOBRIQ",
+  "description": "Kolik let je tvým financím? BOBRIQ ti to řekne za 2 minuty, lidsky a bez kázání. Data zůstávají jen v tvém zařízení.",
+  "lang": "cs",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#16294a",
+  "theme_color": "#16294a",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
