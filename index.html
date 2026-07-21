@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- @@BOBRIQ_GATE@@ odemykací obrazovka, generuje make-pwa-lock.mjs, needitovat ručně -->
+<!-- @@BOBRIQ_GATE@@ přihlašovací obrazovka, generuje make-pwa-lock.mjs, needitovat ručně -->
 <html lang="cs">
 <head>
 <meta charset="utf-8">
@@ -30,18 +30,21 @@
   .panel img { width: 96px; height: 96px; border-radius: 22px; border: 3px solid #20180f; }
   h1 { font-size: 1.5rem; margin: 12px 0 4px; letter-spacing: .05em; }
   p { font-size: .95rem; line-height: 1.5; color: #4a5568; margin-bottom: 16px; }
-  input {
+  input[type=password], input[type=text] {
     width: 100%; min-height: 52px; font-size: 18px; text-align: center;
     border: 3px solid #20180f; border-radius: 14px; padding: 10px 14px;
     background: #fff; outline: none;
   }
   input:focus { border-color: #b8801f; }
-  button {
+  .remember { display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 12px; font-size: .9rem; font-weight: 600; color: #20180f; cursor: pointer; }
+  .remember input { width: 20px; height: 20px; min-height: 0; accent-color: #b8801f; }
+  button[type=submit] {
     width: 100%; min-height: 52px; margin-top: 12px; font-size: 17px; font-weight: 700;
     background: #f4c33d; color: #20180f; border: 3px solid #20180f; border-radius: 14px;
     box-shadow: 3px 3px 0 #20180f; cursor: pointer;
   }
-  button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #20180f; }
+  button[type=submit]:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #20180f; }
   .err { display: none; color: #c22e2e; font-weight: 700; font-size: .92rem; margin-top: 12px; }
   .busy { display: none; font-weight: 700; font-size: .95rem; margin-top: 12px; color: #16294a; }
 </style>
@@ -50,16 +53,17 @@
 <div class="panel">
   <img src="icons/icon-192.png" alt="BOBRIQ">
   <h1>BOBRIQ</h1>
-  <p>Appka je zamčená. Zadej heslo a pustím tě dál.</p>
+  <p>Přihlas se heslem a pustím tě dál.</p>
   <form id="f">
     <input id="pw" type="password" autocomplete="current-password" placeholder="Heslo" autofocus>
-    <button type="submit">Odemknout</button>
+    <label class="remember"><input type="checkbox" id="remember" checked> Zapamatovat heslo na tomto zařízení</label>
+    <button type="submit">Přihlásit se</button>
   </form>
   <div class="err" id="err">Špatné heslo, zkus to znovu.</div>
-  <div class="busy" id="busy">Odemykám&hellip;</div>
+  <div class="busy" id="busy">Přihlašuji&hellip;</div>
 </div>
 <script>
-var SALT = 'iv9/N9C11nCMmKeY1f3nYA==', IV = 'vNYvTFjr3ldeaMO4', ITERS = 310000;
+var SALT = 'SPY7UyJEovbBksslsGtO/Q==', IV = 'IxqsDY9+IuN8Ts9W', ITERS = 310000;
 function b64(s){ var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
 function toB64(buf){ var a = new Uint8Array(buf), s = ''; for (var i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s); }
 function show(id, on){ document.getElementById(id).style.display = on ? 'block' : 'none'; }
@@ -69,34 +73,38 @@ async function deriveKey(pw){
   return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(SALT), iterations: ITERS, hash: 'SHA-256' },
     km, { name: 'AES-GCM', length: 256 }, true, ['decrypt']);
 }
-async function unlockWith(key){
+async function unlockWith(key, remember){
   var data = await (await fetch('./app.enc.bin')).arrayBuffer();
   var plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(IV) }, key, data); // špatné heslo = výjimka
   var htmlText = new TextDecoder().decode(plain);
-  try { localStorage.setItem('bobriq_k', toB64(await crypto.subtle.exportKey('raw', key))); } catch (e) {}
+  try {
+    if (remember) localStorage.setItem('bobriq_k', toB64(await crypto.subtle.exportKey('raw', key)));
+    else localStorage.removeItem('bobriq_k');
+  } catch (e) {}
   document.open(); document.write(htmlText); document.close();
 }
-async function tryPassword(pw){
+async function tryPassword(pw, remember){
   show('err', false); show('busy', true);
-  try { await unlockWith(await deriveKey(pw)); }
+  try { await unlockWith(await deriveKey(pw), remember); }
   catch (e) { show('busy', false); show('err', true); var el = document.getElementById('pw'); el.value = ''; el.focus(); }
 }
 document.getElementById('f').addEventListener('submit', function (ev) {
-  ev.preventDefault(); tryPassword(document.getElementById('pw').value);
+  ev.preventDefault();
+  tryPassword(document.getElementById('pw').value, document.getElementById('remember').checked);
 });
-// zapamatované odemčení z minula (klíč, ne heslo) + testovací #h=heslo v adrese
+// zapamatované přihlášení z minula (klíč, ne heslo) + testovací #h=heslo v adrese
 (async function () {
   if (location.hash.indexOf('#h=') === 0) {
     var pw = decodeURIComponent(location.hash.slice(3));
     history.replaceState(null, '', location.pathname + location.search);
-    return tryPassword(pw);
+    return tryPassword(pw, true);
   }
   var saved = null; try { saved = localStorage.getItem('bobriq_k'); } catch (e) {}
   if (!saved) return;
   show('busy', true);
   try {
     var key = await crypto.subtle.importKey('raw', b64(saved), { name: 'AES-GCM' }, true, ['decrypt']);
-    await unlockWith(key);
+    await unlockWith(key, true);
   } catch (e) { try { localStorage.removeItem('bobriq_k'); } catch (e2) {} show('busy', false); }
 })();
 if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); }); }
