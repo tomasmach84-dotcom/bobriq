@@ -1,6 +1,6 @@
 ﻿// BOBRIQ, offline vrstva (service worker).
 // Strategie: zkus internet (at se novinky hned projevi), kdyz neni, podej z mezipameti.
-const CACHE = 'bobriq-v14';
+const CACHE = 'bobriq-v15';
 const ASSETS = ['./', './index.html', './app.enc.bin', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png'];
 
