@@ -28,7 +28,7 @@
     padding: 26px 22px; text-align: center;
   }
   .panel img { width: 96px; height: 96px; border-radius: 22px; border: 3px solid #20180f; }
-  h1 { font-size: 1.5rem; margin: 12px 0 4px; letter-spacing: .05em; }
+  h1 { font-size: 1.5rem; margin: 12px 0 4px; letter-spacing: .05em; color: #12294f; }
   p { font-size: .95rem; line-height: 1.5; color: #4a5568; margin-bottom: 16px; }
   input[type=password], input[type=text] {
     width: 100%; min-height: 52px; font-size: 18px; text-align: center;
@@ -52,7 +52,7 @@
 <body>
 <div class="panel">
   <img src="icons/icon-192.png" alt="BOBRIQ">
-  <h1>BOBRIQ</h1>
+  <h1>BOBR<span style="color:#e0a922">IQ</span></h1>
   <p>Přihlas se heslem a pustím tě dál.</p>
   <form id="f">
     <input id="pw" type="password" autocomplete="current-password" placeholder="Heslo" autofocus>
@@ -63,7 +63,7 @@
   <div class="busy" id="busy">Přihlašuji&hellip;</div>
 </div>
 <script>
-var SALT = 'uyQZ2VG68aTLXycw1OWK0A==', IV = 'IocMskDtwAuXiwpr', ITERS = 310000;
+var SALT = '5De+VRl0NROODdJXanhBTA==', IV = 'X1Ac5Y7lP452DSJJ', ITERS = 310000;
 function b64(s){ var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
 function toB64(buf){ var a = new Uint8Array(buf), s = ''; for (var i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s); }
 function show(id, on){ document.getElementById(id).style.display = on ? 'block' : 'none'; }
