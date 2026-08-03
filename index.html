@@ -63,7 +63,7 @@
   <div class="busy" id="busy">Přihlašuji&hellip;</div>
 </div>
 <script>
-var SALT = 'vshqNHdxyKRA4icvB4j9NQ==', IV = 'B9AMz1LkZrK9ZkjQ', ITERS = 310000;
+var SALT = 'qs7QhLh11l5aW8Ajy1JIOw==', IV = 'vnNA0q6RRkg0lKui', ITERS = 310000;
 function b64(s){ var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
 function toB64(buf){ var a = new Uint8Array(buf), s = ''; for (var i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s); }
 function show(id, on){ document.getElementById(id).style.display = on ? 'block' : 'none'; }
@@ -107,7 +107,33 @@ document.getElementById('f').addEventListener('submit', function (ev) {
     await unlockWith(key, true);
   } catch (e) { try { localStorage.removeItem('bobriq_k'); } catch (e2) {} show('busy', false); }
 })();
-if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); }); }
+// offline vrstva: nová verze počká, dokud jí neřekneme „teď" (otevřené záložky se nepřepnou pod rukama)
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+  function pustDal(reg) { if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' }); }
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./sw.js').then(function (reg) {
+      pustDal(reg);
+      reg.addEventListener('updatefound', function () {
+        var novy = reg.installing;
+        if (!novy) return;
+        novy.addEventListener('statechange', function () {
+          if (novy.state === 'installed' && navigator.serviceWorker.controller) {
+            window.BOBRIQ_UPDATE_READY = true;
+            pustDal(reg);
+          }
+        });
+      });
+      setInterval(function () { reg.update().catch(function () {}); }, 60 * 60 * 1000);
+    }).catch(function () {});
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState !== 'visible') return;
+      navigator.serviceWorker.getRegistration()
+        .then(function (reg) { if (reg) reg.update().catch(function () {}); })
+        .catch(function () {});
+    });
+  });
+})();
 </script>
 </body>
 </html>
