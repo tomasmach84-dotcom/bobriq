@@ -3,6 +3,7 @@
 <html lang="cs">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-jPX8lRDOv0syDYIvBy69VtGcD0Gri9iNmOkRlxDz/9E=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-bzjRpAmpWA3Gn4vabMrcJxwZSxATgejeZ3doHz/FB70=' 'sha256-qtl2Ilt9dvWHBDVudHCfcSOuNLLwGLLvI7vvuwrub7Q=' 'sha256-sCCgPoQ1hVdGmmJCYxNyWmzt5HuAtQTSsDiksyq+tUU=' 'sha256-37KUf6j6grub4c2mJsAR8FDZfSA4qM+D841wXwGkqdU='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>BOBRIQ</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -39,6 +40,7 @@
   .remember { display: flex; align-items: center; justify-content: center; gap: 8px;
     margin-top: 12px; font-size: .9rem; font-weight: 600; color: #20180f; cursor: pointer; }
   .remember input { width: 20px; height: 20px; min-height: 0; accent-color: #b8801f; }
+  .remember-pozn { font-size: .78rem; color: #6a5c3e; margin: 6px 0 0; line-height: 1.45; }
   button[type=submit] {
     width: 100%; min-height: 52px; margin-top: 12px; font-size: 17px; font-weight: 700;
     background: #f4c33d; color: #20180f; border: 3px solid #20180f; border-radius: 14px;
@@ -56,14 +58,15 @@
   <p>Přihlas se heslem a pustím tě dál.</p>
   <form id="f">
     <input id="pw" type="password" autocomplete="current-password" placeholder="Heslo" autofocus>
-    <label class="remember"><input type="checkbox" id="remember" checked> Zapamatovat heslo na tomto zařízení</label>
+    <label class="remember"><input type="checkbox" id="remember"> Zapamatovat odemknutí na tomhle zařízení</label>
+    <p class="remember-pozn">Uloží na zařízení klíč k appce, takže se příště neptám na heslo. Kdo se k telefonu dostane, appku otevře. Zrušíš to v Nastavení tlačítkem Odhlásit a zamknout.</p>
     <button type="submit">Přihlásit se</button>
   </form>
   <div class="err" id="err">Špatné heslo, zkus to znovu.</div>
   <div class="busy" id="busy">Přihlašuji&hellip;</div>
 </div>
 <script>
-var SALT = 'qs7QhLh11l5aW8Ajy1JIOw==', IV = 'vnNA0q6RRkg0lKui', ITERS = 310000;
+var SALT = 'LEXPRlfdewqPOWgJcPLOCg==', IV = 'O2EO+4Z0kPRt9SGR', ITERS = 310000;
 function b64(s){ var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
 function toB64(buf){ var a = new Uint8Array(buf), s = ''; for (var i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s); }
 function show(id, on){ document.getElementById(id).style.display = on ? 'block' : 'none'; }
@@ -92,13 +95,9 @@ document.getElementById('f').addEventListener('submit', function (ev) {
   ev.preventDefault();
   tryPassword(document.getElementById('pw').value, document.getElementById('remember').checked);
 });
-// zapamatované přihlášení z minula (klíč, ne heslo) + testovací #h=heslo v adrese
+// zapamatované odemknutí z minula (uložený klíč k BALÍČKU appky, ne heslo)
 (async function () {
-  if (location.hash.indexOf('#h=') === 0) {
-    var pw = decodeURIComponent(location.hash.slice(3));
-    history.replaceState(null, '', location.pathname + location.search);
-    return tryPassword(pw, true);
-  }
+  // Heslo v adrese ZRUŠENO: adresa se ukládá do historie prohlížeče i do logů, tam heslo nepatří.
   var saved = null; try { saved = localStorage.getItem('bobriq_k'); } catch (e) {}
   if (!saved) return;
   show('busy', true);

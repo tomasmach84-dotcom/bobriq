@@ -8,7 +8,7 @@
      ASSETS    soubory, které build SKUTEČNĚ vytvořil
      CRITICAL  ty, bez kterých nemá offline režim smysl
    ════════════════════════════════════════════════════════════════════ */
-const CACHE = 'bobriq-dbd3d80a1de5';
+const CACHE = 'bobriq-a4102adad6e5';
 const ASSETS = ["./","./index.html","./manifest.webmanifest","./app.enc.bin","./icons/icon-192.png","./icons/icon-512.png","./icons/icon-512-maskable.png","./icons/apple-touch-icon.png"];
 const CRITICAL = ["./","./index.html"];
 const INDEX = './index.html';
