@@ -3,16 +3,22 @@
    (make-pwa.mjs / make-pwa-lock.mjs) generuje ../BOBRIQ-PWA/sw.js.
    Ručně needitovat vygenerovaný sw.js, uprav tuhle šablonu a přebuilduj.
 
-   Build doplní tři hodnoty:
-     CACHE     název mezipaměti s otiskem obsahu (změna appky = nová verze)
-     ASSETS    soubory, které build SKUTEČNĚ vytvořil
-     CRITICAL  ty, bez kterých nemá offline režim smysl
+   Build doplní tyto hodnoty:
+     CACHE           název mezipaměti s otiskem obsahu (změna appky = nová verze)
+     ASSETS          soubory, které build SKUTEČNĚ vytvořil
+     CRITICAL        ty, bez kterých nemá offline režim smysl
+     AKTUALIZACE     odkud a z jakého kanálu se stahují nové verze
+     VEREJNE_KLICE   veřejné klíče (s kid) na ověření podpisů
    ════════════════════════════════════════════════════════════════════ */
-const CACHE = 'bobriq-a4102adad6e5';
+const CACHE = 'bobriq-4509241ed83f';
 const ASSETS = ["./","./index.html","./manifest.webmanifest","./app.enc.bin","./icons/icon-192.png","./icons/icon-512.png","./icons/icon-512-maskable.png","./icons/apple-touch-icon.png"];
 const CRITICAL = ["./","./index.html"];
+const AKTUALIZACE = {"puvod":"https://licence.bobriq.cz","kanal":"stabilni"};
+const VEREJNE_KLICE = [{"kid":"lic-2026-08-05-qs3s","ucel":"licence","klic":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEK62FDunGSWIWLd0Npaentm9mselCPs1Uyrkry5sKq7XUR5erd/Kre5RUgrjrsIQN+QlOaer3twkMSm/S6dCjXg=="},{"kid":"vyd-2026-08-05-a2uo","ucel":"vydani","klic":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZ4lSCCUqLTxsoxy0QxDzXCF4mUOZqxTdSAEpm6PSTwMKt1YSJ/w8Xo0iynf7Rk9/u6ArXkHpIfuYuwRcq2zZWw=="}];
 const INDEX = './index.html';
 const PREFIX = 'bobriq-';          // mažeme jen svoje mezipaměti, cizí necháme být
+const ODKLADISTE = CACHE + '-odkladiste';   // sem se stahuje nová verze, než se ověří
+const VERZE_MANIFESTU = 1;
 
 // Absolutní adresy precachovaných souborů (bez ?v=…), ať je jedno,
 // s jakým cache-busting parametrem si je stránka vyžádá.
@@ -80,9 +86,191 @@ self.addEventListener('activate', function (event) {
 // Stránka si řekne, kdy je bezpečné se přepnout na novou verzi.
 self.addEventListener('message', function (event) {
   const data = event.data || {};
+  const odpovez = function (telo) { if (event.ports && event.ports[0]) event.ports[0].postMessage(telo); };
   if (data.type === 'SKIP_WAITING') self.skipWaiting();
-  if (data.type === 'VERSION' && event.ports && event.ports[0]) event.ports[0].postMessage(CACHE);
+  if (data.type === 'VERSION') odpovez(CACHE);
+  if (data.type === 'ZKUS_AKTUALIZACI') {
+    event.waitUntil(zkusAktualizaci(data).then(odpovez, function (e) {
+      odpovez({ ok: false, duvod: 'necekana-chyba', text: String(e && e.message) });
+    }));
+  }
 });
+
+/* ════════════════════════════════════════════════════════════════════
+   AKTUALIZACE — POŘADÍ, KTERÉ SE NESMÍ ZMĚNIT
+
+     1. stáhnout manifest a balíček
+     2. ověřit PODPIS manifestu
+     3. ověřit OTISK každého staženého souboru
+     4. ověřit NÁROK licence podle PODEPSANÉHO data vydání
+     5. teprve pak uložit a nasadit
+
+   Když cokoli z toho selže — špatný podpis, špatný otisk, nedostažený
+   soubor, chyba při nasazení — nová verze se zahodí a běží dál ta stará.
+   Data se přitom nikdy nemažou; aktualizace se jich vůbec nedotýká.
+
+   Service worker si všechno ověřuje SÁM. Stránka mu jen podá licenční
+   doklad; kdyby někdo obelhal stránku, service worker mu na to neskočí.
+   ════════════════════════════════════════════════════════════════════ */
+
+function zB64(s) {
+  const b = atob(String(s)), u = new Uint8Array(b.length);
+  for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
+  return u;
+}
+function doB64(buf) {
+  const u = new Uint8Array(buf);
+  let s = '';
+  for (let i = 0; i < u.length; i++) s += String.fromCharCode(u[i]);
+  return btoa(s);
+}
+/* Kanonický tvar — musí sedět bajt po bajtu s licence-server/klice.mjs
+   i se src/licence.js: klíče podle abecedy, bez mezer, bez pole `podpis`. */
+function kanonicky(o) {
+  const serad = function (x) {
+    if (Array.isArray(x)) return x.map(serad);
+    if (x && typeof x === 'object') {
+      const out = {};
+      Object.keys(x).sort().forEach(function (k) { if (k !== 'podpis') out[k] = serad(x[k]); });
+      return out;
+    }
+    return x;
+  };
+  return JSON.stringify(serad(o));
+}
+async function overPodpis(objekt, podpis, ucel) {
+  try {
+    if (!objekt || !podpis || !objekt.kid) return false;
+    const zaznam = VEREJNE_KLICE.find(function (k) { return k.kid === objekt.kid && k.ucel === ucel; });
+    if (!zaznam) return false;                    // neznámý nebo zneplatněný kid
+    const klic = await crypto.subtle.importKey('spki', zB64(zaznam.klic),
+      { name: 'ECDSA', namedCurve: 'P-256' }, false, ['verify']);
+    const data = new TextEncoder().encode(kanonicky(objekt));
+    return await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, klic, zB64(podpis), data);
+  } catch (e) { return false; }
+}
+async function otisk(buf) {
+  return 'sha256-' + doB64(await crypto.subtle.digest('SHA-256', buf));
+}
+
+function formatManifestu(m) {
+  if (!m || typeof m !== 'object') return 'manifest-chybi';
+  if (Number(m.v) !== VERZE_MANIFESTU) return 'nezname-verze-manifestu';
+  if (m.kanal !== AKTUALIZACE.kanal) return 'jiny-kanal';
+  if (!m.kid) return 'manifest-bez-kid';
+  if (!Array.isArray(m.soubory) || !m.soubory.length) return 'manifest-bez-souboru';
+  if (!Date.parse(String(m.vydano))) return 'manifest-bez-data-vydani';
+  for (const s of m.soubory) {
+    if (!/^[a-zA-Z0-9._-]+$/.test(String(s.cesta || ''))) return 'podezrela-cesta-v-manifestu';
+    if (!/^sha256-[A-Za-z0-9+/=]+$/.test(String(s.otisk || ''))) return 'soubor-bez-otisku';
+  }
+  if (!m.soubory.some(function (s) { return s.cesta === 'index.html'; })) return 'manifest-bez-appky';
+  return null;
+}
+
+/* Nárok se počítá z PODEPSANÉHO data vydání, ne z hodin v zařízení.
+   Přetočením hodin dopředu si tedy nikdo novější verzi neodemkne. */
+function narokNaVydani(m, doklad, schemaDat) {
+  if (Number(m.minSchema || 1) > Number(schemaDat || 1)) return 'novejsi-datovy-format';
+  if (doklad.stav && doklad.stav !== 'aktivni') return 'licence-neni-aktivni';
+  if (Number(m.hlavniVerze) <= Number(doklad.hlavniVerze)) return null;   // zakoupená verze
+  const konec = Date.parse(String(doklad.aktualizaceDo) + 'T23:59:59Z');
+  const vydano = Date.parse(String(m.vydano));
+  if (!isFinite(konec) || !isFinite(vydano)) return 'nesrozumitelna-data';
+  return vydano <= konec ? null : 'vydano-po-konci-obdobi';
+}
+
+function adresaSouboru(cesta) {
+  return AKTUALIZACE.puvod + '/vydani/' + AKTUALIZACE.kanal + '/' + cesta;
+}
+function vCache(rel) { return stripQuery(new URL(rel, self.location).href); }
+
+async function zkusAktualizaci(zprava) {
+  if (!AKTUALIZACE || !AKTUALIZACE.puvod) return { ok: false, duvod: 'aktualizace-nejsou-nastavene' };
+
+  /* ── 1. licence: bez platného podpisu se nic nestahuje ───────────── */
+  const lic = zprava && zprava.licence;
+  if (!lic || !lic.doklad || !lic.podpis) return { ok: false, duvod: 'bez-licence' };
+  if (!(await overPodpis(lic.doklad, lic.podpis, 'licence'))) return { ok: false, duvod: 'licence-neplatna' };
+
+  /* ── 2. manifest ─────────────────────────────────────────────────── */
+  let obalka;
+  try {
+    const r = await fetch(AKTUALIZACE.puvod + '/api/vydani', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ licence: lic.doklad.licence, zarizeni: lic.doklad.zarizeni, kanal: AKTUALIZACE.kanal }),
+      cache: 'no-store', credentials: 'omit', referrerPolicy: 'no-referrer'
+    });
+    if (r.status === 403) return { ok: false, duvod: 'zarizeni-odpojeno' };
+    if (r.status === 404) return { ok: false, duvod: 'zatim-neni-co-stahovat' };
+    if (!r.ok) return { ok: false, duvod: 'server-odpovedel-chybou', kod: r.status };
+    obalka = JSON.parse(await r.text());
+  } catch (e) {
+    return { ok: false, duvod: 'server-nedostupny', offline: true };
+  }
+
+  const m = obalka && obalka.manifest;
+  const chybaFormatu = formatManifestu(m);
+  if (chybaFormatu) return { ok: false, duvod: chybaFormatu };
+
+  /* ── 3. podpis manifestu ─────────────────────────────────────────── */
+  if (!(await overPodpis(m, obalka.podpis, 'vydani'))) return { ok: false, duvod: 'podpis-manifestu-nesedi' };
+
+  /* ── 4. nárok podle podepsaného data vydání ──────────────────────── */
+  const bezNaroku = narokNaVydani(m, lic.doklad, zprava.schema);
+  if (bezNaroku) return { ok: false, duvod: bezNaroku, verze: m.verze };
+
+  /* ── 5. stažení do odkladiště a kontrola otisků ──────────────────── */
+  await caches.delete(ODKLADISTE);                 // po dřívějším nezdaru tu nic zůstat nesmí
+  const odkladiste = await caches.open(ODKLADISTE);
+  try {
+    for (const s of m.soubory) {
+      const res = await fetch(new Request(adresaSouboru(s.cesta), { cache: 'no-store' }));
+      if (!res || !res.ok) throw new Error('stazeni-selhalo:' + s.cesta);
+      const buf = await res.arrayBuffer();
+      if (s.velikost != null && buf.byteLength !== Number(s.velikost)) throw new Error('neuplne-stazeni:' + s.cesta);
+      if (await otisk(buf) !== s.otisk) throw new Error('otisk-nesedi:' + s.cesta);
+      await odkladiste.put(vCache('./' + s.cesta), new Response(buf, { status: 200 }));
+    }
+  } catch (e) {
+    await caches.delete(ODKLADISTE);
+    const [duvod, soubor] = String(e && e.message).split(':');
+    return { ok: false, duvod: duvod || 'stazeni-selhalo', soubor: soubor };
+  }
+
+  /* ── 6. nasazení ─────────────────────────────────────────────────── */
+  return nasad(m, odkladiste);
+}
+
+/* Přepis ověřených souborů do ostré mezipaměti. Před zápisem se pořídí
+   záloha původních; kdyby zápis v půlce selhal, vrátí se zpátky a v
+   telefonu zůstane celá stará verze, ne půlka od každé. */
+async function nasad(m, odkladiste) {
+  const cache = await caches.open(CACHE);
+  const cile = [];
+  for (const s of m.soubory) {
+    cile.push([vCache('./' + s.cesta), s.cesta]);
+    if (s.cesta === 'index.html') cile.push([vCache('./'), s.cesta]);   // start_url je index.html
+  }
+  const zaloha = new Map();
+  try {
+    for (const [url] of cile) {
+      const stara = await cache.match(url);
+      if (stara) zaloha.set(url, stara);
+    }
+    for (const [url, cesta] of cile) {
+      const nova = await odkladiste.match(vCache('./' + cesta));
+      if (!nova) throw new Error('chybi-v-odkladisti');
+      await cache.put(url, nova);
+    }
+  } catch (e) {
+    for (const [url, res] of zaloha) { try { await cache.put(url, res); } catch (x) { /* víc udělat nejde */ } }
+    await caches.delete(ODKLADISTE);
+    return { ok: false, duvod: 'nasazeni-selhalo' };
+  }
+  await caches.delete(ODKLADISTE);
+  return { ok: true, verze: m.verze, vydano: m.vydano, souboru: m.soubory.length };
+}
 
 /* ── SÍŤ ──────────────────────────────────────────────────────────────
    Appka (index.html a soubory ze seznamu precache) se podává z mezipaměti
