@@ -3,7 +3,7 @@
 <html lang="cs">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-wPJT9tcLCila0WfRkubcxFuYwYBBn/Ie1K7m8ncRzXc=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-bzjRpAmpWA3Gn4vabMrcJxwZSxATgejeZ3doHz/FB70=' 'sha256-agaEaEfqe02WgJgqin3rJwgIFb65HYR5Mim5r4uWEmg=' 'sha256-sCCgPoQ1hVdGmmJCYxNyWmzt5HuAtQTSsDiksyq+tUU=' 'sha256-JC0StFzs6/5h7h0CIuECVKUqI3iBl/FX9QKjc5g2t/o='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-zeY1iyO+DwgdlCGkhoa4W48tncBce6721xXmptaAMko=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-bzjRpAmpWA3Gn4vabMrcJxwZSxATgejeZ3doHz/FB70=' 'sha256-mJo9nZk/cCHPkDhEPqfTirW15A1r3PRLUXSjRlXZKr4=' 'sha256-sCCgPoQ1hVdGmmJCYxNyWmzt5HuAtQTSsDiksyq+tUU=' 'sha256-jhJAHVP+Puum8bijeDHgolaNeL4AWxohmva0fbDC4lE='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>BOBRIQ</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -66,7 +66,7 @@
   <div class="busy" id="busy">Přihlašuji&hellip;</div>
 </div>
 <script>
-var SALT = 'duvqU9szWq2/U4Fc4fLW8w==', IV = 'cg3eysHTbKDg3dCp', ITERS = 310000;
+var SALT = 'KSk5Vpmlyrxcjkc6tx7zJg==', IV = 'G6jywaAh6BmjQ5yv', ITERS = 310000;
 function b64(s){ var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
 function toB64(buf){ var a = new Uint8Array(buf), s = ''; for (var i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s); }
 function show(id, on){ document.getElementById(id).style.display = on ? 'block' : 'none'; }
