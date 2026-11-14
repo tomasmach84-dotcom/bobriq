@@ -10,8 +10,8 @@
      AKTUALIZACE     odkud a z jakého kanálu se stahují nové verze
      VEREJNE_KLICE   veřejné klíče (s kid) na ověření podpisů
    ════════════════════════════════════════════════════════════════════ */
-const CACHE = 'bobriq-989e3ce7bdd0';
-const ASSETS = ["./","./index.html","./manifest.webmanifest","./app.enc.bin","./icons/icon-192.png","./icons/icon-512.png","./icons/icon-512-maskable.png","./icons/apple-touch-icon.png"];
+const CACHE = 'bobriq-fe4e2c62e470';
+const ASSETS = ["./","./index.html","./manifest.webmanifest","./icons/icon-192.png","./icons/icon-512.png","./icons/icon-512-maskable.png","./icons/apple-touch-icon.png"];
 const CRITICAL = ["./","./index.html"];
 const AKTUALIZACE = {"puvod":"https://licence.bobriq.cz","kanal":"stabilni"};
 const VEREJNE_KLICE = [{"kid":"lic-2026-08-05-qs3s","ucel":"licence","klic":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEK62FDunGSWIWLd0Npaentm9mselCPs1Uyrkry5sKq7XUR5erd/Kre5RUgrjrsIQN+QlOaer3twkMSm/S6dCjXg=="},{"kid":"vyd-2026-08-05-a2uo","ucel":"vydani","klic":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZ4lSCCUqLTxsoxy0QxDzXCF4mUOZqxTdSAEpm6PSTwMKt1YSJ/w8Xo0iynf7Rk9/u6ArXkHpIfuYuwRcq2zZWw=="}];
