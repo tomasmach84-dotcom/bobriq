@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <!-- @@CSP_BEGIN@@ -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-lVTebF0nEZcPT+3SvMYyZJ6ypfhcTxUwVP4sXMrLlBM=' 'sha256-sCCgPoQ1hVdGmmJCYxNyWmzt5HuAtQTSsDiksyq+tUU='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-lVTebF0nEZcPT+3SvMYyZJ6ypfhcTxUwVP4sXMrLlBM=' 'sha256-nslacdlohACSKFx+XXf5dBk9ljTtlVgDwTFRXkVU1uY='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <!-- @@CSP_END@@ -->
 <!-- @@VZHLED_BEGIN@@ -->
 <script>(function(){try{var t=localStorage.getItem('bq_tema');var d=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
@@ -31807,6 +31807,44 @@ window.AppNav = (function(){
 <script>
 (function(){
   if (!('serviceWorker' in navigator)) return;
+  /* NABÍDKA NOVÉ VERZE (14. 11. 2026): nová verze se stáhne na pozadí a bez zásahu by naskočila
+     až při dalším otevření, takže zařízení mohlo dlouho ukazovat starou. Jakmile nová verze
+     převezme řízení, appka to řekne a nabídne načtení. Sama se nepřenačítá, ať se neztratí
+     rozepsané údaje. */
+  var mamRidici = !!navigator.serviceWorker.controller;   // už nějaká verze tuhle stránku řídí?
+  function nabidniNovou(){
+    if (document.getElementById('bq-nova-verze')) return;
+    var b = document.createElement('div');
+    b.id = 'bq-nova-verze'; b.setAttribute('role', 'status');
+    b.style.cssText = 'position:fixed;left:50%;bottom:78px;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:12px;'
+      + 'max-width:94vw;background:#fffdf6;color:#20180f;border:3px solid #20180f;border-radius:100px;box-shadow:3px 4px 0 rgba(10,16,34,.4);'
+      + 'padding:6px 6px 6px 16px;font:700 .9rem/1.2 system-ui,sans-serif';
+    b.innerHTML = '<span>Je tu nová verze BOBRIQ.</span>'
+      + '<button type="button" style="font:inherit;font-weight:800;cursor:pointer;background:#f4c33d;color:#20180f;border:2.5px solid #20180f;border-radius:100px;padding:8px 16px">Načíst</button>';
+    b.querySelector('button').addEventListener('click', function(){ location.reload(); });
+    document.body.appendChild(b);
+  }
+  navigator.serviceWorker.addEventListener('controllerchange', function(){ if (mamRidici) nabidniNovou(); mamRidici = true; });   // první převzetí po instalaci nic nenabízí
+  // Nastavení: ruční načtení nové verze (zahodí uloženou appku a stáhne ji znovu; data zůstanou)
+  window.bqUpdate = function(){
+    var hotovo = function(){ location.reload(); };
+    try {
+      var p = navigator.serviceWorker.getRegistrations ? navigator.serviceWorker.getRegistrations() : Promise.resolve([]);
+      p.then(function(rs){ return Promise.all(rs.map(function(r){ return r.unregister(); })); })
+        .then(function(){ return window.caches && caches.keys ? caches.keys().then(function(k){ return Promise.all(k.map(function(x){ return caches.delete(x); })); }) : 0; })
+        .then(hotovo, hotovo);
+    } catch (e) { hotovo(); }
+  };
+  window.bqNastaveniDoplnek = function(ov){
+    try {
+      var box = (ov || document).querySelector('#zn-pwa-extra');
+      if (!box || box.dataset.hotovo) return;
+      box.dataset.hotovo = '1';
+      box.innerHTML = '<button type="button" id="zn-pwa-aktualizovat" style="display:block;width:100%;cursor:pointer;font-family:inherit;background:#fffdf6;color:#20180f;border:2px solid #20180f;border-radius:100px;padding:10px 18px;font-weight:800;font-size:.92rem;box-shadow:2px 2px 0 rgba(32,24,15,.3)">Načíst nejnovější verzi</button>'
+        + '<div style="font-size:.78rem;color:#6a5c3e;margin-top:8px;font-weight:700">Když ti appka ukazuje starou verzi, klepni sem. Tvoje data zůstanou.</div>';
+      box.querySelector('#zn-pwa-aktualizovat').addEventListener('click', function(){ window.bqUpdate(); });
+    } catch (e) {}
+  };
   function pustDal(reg){ if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' }); }
   window.addEventListener('load', function(){
     navigator.serviceWorker.register('./sw.js').then(function(reg){
