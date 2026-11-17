@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <!-- @@CSP_BEGIN@@ -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-5U8RZIuTEoEaQI5HcMlG3B6n3xYyZmH7vch99TG7+iI=' 'sha256-nslacdlohACSKFx+XXf5dBk9ljTtlVgDwTFRXkVU1uY='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-fnRjWnBr/PW6+gQ2ZIN5qqn983skw9i8iX7gwGTkYNg=' 'sha256-nslacdlohACSKFx+XXf5dBk9ljTtlVgDwTFRXkVU1uY='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <!-- @@CSP_END@@ -->
 <!-- @@VZHLED_BEGIN@@ -->
 <script>(function(){try{var t=localStorage.getItem('bq_tema');var d=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
@@ -9555,7 +9555,7 @@ const PROJ_STRATEGIES = [
     riskTxt:'Hodnota kolísá málo, ale výnos může být jen na úrovni inflace. Peníze se spíš zachovají, než zhodnotí.' },
   { name:'Vyvážená',  pess:-0.010, avg:0.050, opt:0.085, rateLabel:'5',   risk:'Střední riziko', riskCls:'mid',  lvl:2,
     riskTxt:'Hodnota kolísá a v horších letech může klesnout pod to, co jsi vložil. Výsledek je hodně nejistý.' },
-  { name:'Dynamická', pess:-0.030, avg:0.080, opt:0.130, rateLabel:'8',   risk:'Vysoké riziko ztráty', riskCls:'high', lvl:3,
+  { name:'Dynamická', pess:-0.030, avg:0.080, opt:0.100, rateLabel:'8',   risk:'Vysoké riziko ztráty', riskCls:'high', lvl:3,
     riskTxt:'Největší potenciál, ale i největší možná ztráta. Hodnota může výrazně klesnout na dlouhé roky a můžeš skončit pod vloženou částkou. Hodí se jen na dlouhý horizont a pro toho, kdo ztrátu unese.' },
 ];
 const PROJ_HORIZONS = [
@@ -9776,7 +9776,7 @@ function coachReactions(m){
 
   // ── VAROVÁNÍ / POKÁRÁNÍ ──
   if(m.execution>0) warn.push({p:10, t:'<strong>Exekuce nebo nedoplatky.</strong> Tohle má absolutní přednost, ozvi se bezplatné dluhové poradně, neodkládej to.'});
-  if(idx>=1 && m.cashflow<0) warn.push({p:9, t:'<strong>Jsi v mínusu '+kc(Math.abs(Math.round(m.cashflow)))+'/měs.</strong> Utrácíš víc, než vyděláš, to je první věc, co je potřeba srovnat.'});
+  if(idx>=1 && m.cashflow<0 && !m.cerpa) warn.push({p:9, t:'<strong>Jsi v mínusu '+kc(Math.abs(Math.round(m.cashflow)))+'/měs.</strong> Utrácíš víc, než vyděláš, to je první věc, co je potřeba srovnat.'});
   if(idx>=3 && resAvail(m) && m.resMon<1) warn.push({p:8, t:'<strong>Skoro žádná rezerva.</strong> Jeden nečekaný výdaj a jsi v problému. První cíl: jeden měsíc výdajů stranou.'});
   if(idx>=2 && (m.consumerDebtP!=null?m.consumerDebtP:m.debtP)>35) warn.push({p:7, t:'<strong>Splátky spotřebních dluhů berou '+(m.consumerDebtP!=null?m.consumerDebtP:m.debtP)+' % příjmu (bez hypotéky).</strong> To je hodně, při výpadku příjmu jsi zranitelný.'});
   if(idx>=2 && m.income>0 && m.savP<5 && m.cashflow>=0) warn.push({p:6, t:'<strong>Skoro nespoříš.</strong> Bez pravidelného odkládání se majetek nepostaví, zkus aspoň pár procent.'});
@@ -10037,7 +10037,10 @@ function evaluate() {
   // ── SPOLEHLIVÝ PŘÍJEM pro hodnocení ──
   // Prémie, brigády, dividendy a podobné příjmy nejsou nárokové: hodnotí se jen zčásti, aby nikomu nezlepšily skóre víc,
   // než si zaslouží. Zobrazované částky (přebytek, podíly) zůstávají skutečné, krátí se jen vstup do skóre a finančního věku.
-  const incomeS = INCOME_VAHY.reduce((sum, [id, vaha]) => sum + v(id) * vaha, 0) + sumCustom('income') * 0.85;
+  const incomeS0 = INCOME_VAHY.reduce((sum, [id, vaha]) => sum + v(id) * vaha, 0) + sumCustom('income') * 0.85;
+  // krácení nesmí z reálného přebytku udělat falešný deficit (student jen z brigády, kterému měsíčně zbývá 1 000 Kč, není ve vážném problému):
+  // nejistý příjem se odečte nejvýš do výše skutečného přebytku
+  const incomeS = income - Math.min(Math.max(0, income - incomeS0), Math.max(0, cashflowEff));
   const kS = incomeS > 0 ? Math.max(1, income / incomeS) : 1;          // ≥ 1: kolikrát je skutečný příjem větší než spolehlivý
   const cashflowS = cashflowEff - (income - incomeS);                   // přebytek bez nenárokové části příjmu
   const savPEff     = savP + retW * Math.max(0, pct(Math.max(0, cashflow + saving + allowance), income) - savP);
@@ -10262,7 +10265,9 @@ function evaluate() {
   // uživatele (tlačítko „Uložit měsíční check-in"). Tady jen ČTEME oficiální historii.
   const personality = (typeof finPersonality==='function') ? finPersonality({ income, netWorth, expP: expPEff, savP: savPEff, debtP, consumerDebtP, resMon, cashflow: cashflowEff, age, execution: v('d_execution') }) : null;
   // Kompletní podklad pro pozdější uložení oficiálního snapshotu (schema v3):
-  window.LAST_RESULT = { age, fin, score, expP, savP, debtP, consumerDebtP, resMon, resBase, resOk, resTgt3, resTgt6, cashflow,
+  // důchodce, jehož měsíční mínus udržitelně kryje čerpání majetku (do 90 let): není to tíseň, texty o „zastav mínus" se nehlásí
+  const cerpa = retW>=0.5 && cashflow<0 && cashflowEff>=0 && !(v('d_execution')>0) && (v('d_cc_bal')+v('d_overdraft_bal')+v('d_installment_bal')+v('d_bnpl_bal'))<=0;
+  window.LAST_RESULT = { age, fin, score, cerpa, expP, savP, debtP, consumerDebtP, resMon, resBase, resOk, resTgt3, resTgt6, cashflow,
     expenses, income, saving, debtPay, debtBal, assets, reserve, netWorth, subsTotal,
     mortgagePay: v('d_mortgage_pay'),   // splátka hypotéky zvlášť (doporučení refinancování se řídí jen spotřebitelskými dluhy)
     execution: v('d_execution'), ccBal: v('d_cc_bal'), odBal: v('d_overdraft_bal'), loanBal: v('d_loan_bal'),
@@ -10271,9 +10276,9 @@ function evaluate() {
     scoreLabel, personality, retired, neuplne, allowance: Math.round(allowance), cashflowEff: Math.round(cashflowEff), runway: isFinite(runwayYears) ? Math.round(runwayYears*10)/10 : null,
     expenseCategories: expenseCategoriesForSnapshot(),   // null = rozpad neznáme (rychlá cesta bez rozpisu)
     investM: v('s_etf')+v('s_dip')+v('s_pension')+v('s_p2p')+v('s_crypto'),
-    strengths: (typeof faStrength==='function')?[faStrength({savP,debtP,consumerDebtP,resMon,cashflow,expP,netWorth,income,execution:v('d_execution')})]:[],
-    weaknesses: (typeof faWeakness==='function')?[faWeakness({savP,debtP,consumerDebtP,resMon,cashflow,expP,netWorth,income,expenses,execution:v('d_execution')})]:[],
-    recommendations: (typeof faSteps==='function')?faSteps({age,savP,debtP,consumerDebtP,resMon,cashflow,expP,subsTotal,income,expenses,saving,debtPay,mortgagePay:v('d_mortgage_pay'),reserve,execution:v('d_execution'),investM:v('s_etf')+v('s_dip')+v('s_pension')+v('s_p2p')+v('s_crypto'),expensiveDebt:v('d_cc_bal')+v('d_overdraft_bal')+v('d_execution')+v('d_installment_bal')+v('d_bnpl_bal')}).map(s=>s.title):[]
+    strengths: (typeof faStrength==='function')?[faStrength({cerpa,age,savP,debtP,consumerDebtP,resMon,cashflow,expP,netWorth,income,execution:v('d_execution')})]:[],
+    weaknesses: (typeof faWeakness==='function')?[faWeakness({cerpa,age,savP,debtP,consumerDebtP,resMon,cashflow,expP,netWorth,income,expenses,execution:v('d_execution')})]:[],
+    recommendations: (typeof faSteps==='function')?faSteps({cerpa,age,savP,debtP,consumerDebtP,resMon,cashflow,expP,subsTotal,income,expenses,saving,debtPay,mortgagePay:v('d_mortgage_pay'),reserve,execution:v('d_execution'),investM:v('s_etf')+v('s_dip')+v('s_pension')+v('s_p2p')+v('s_crypto'),expensiveDebt:v('d_cc_bal')+v('d_overdraft_bal')+v('d_execution')+v('d_installment_bal')+v('d_bnpl_bal')}).map(s=>s.title):[]
   };
   // dokončená diagnostika → zobrazit stálou navigaci a označit obrazovku Přehled jako aktivní
   try { if (window.AppNav) AppNav.refresh('prehled'); } catch(e){}
@@ -10285,14 +10290,14 @@ function evaluate() {
   renderHistory(_h.arr);
 
   // ulož metriky pro „Pro tebe" filtr ve finančním rádci
-  window.LAST_M = { savP, debtP, consumerDebtP, resMon, resBase, resOk, resTgt3, resTgt6, cashflow, expP, subsTotal, execution:v('d_execution'), netWorth, income, age,
+  window.LAST_M = { cerpa, savP, debtP, consumerDebtP, resMon, resBase, resOk, resTgt3, resTgt6, cashflow, expP, subsTotal, execution:v('d_execution'), netWorth, income, age,
     expenses, saving, reserve, debtBal, debtPay, mortgagePay:v('d_mortgage_pay'), financialAge: fin.financialAge,
     mortBal: v('d_mortgage_bal'), expensiveDebt: v('d_cc_bal')+v('d_overdraft_bal')+v('d_installment_bal')+v('d_bnpl_bal') };
   if (typeof renderGoals === 'function') renderGoals();
 
   // ── PRODUKČNÍ FLOW (5 obrazovek), hlavní výstup ──
   buildResultFlow({
-    age, fin, score, expP, savP, debtP, consumerDebtP, resMon, resBase, resOk, resTgt3, resTgt6, cashflow,
+    cerpa, age, fin, score, expP, savP, debtP, consumerDebtP, resMon, resBase, resOk, resTgt3, resTgt6, cashflow,
     expenses, income, saving, debtPay, debtBal, reserve, netWorth, subsTotal,
     mortgagePay: v('d_mortgage_pay'),
     execution: v('d_execution'),
@@ -10349,7 +10354,7 @@ function evaluate() {
 function verdictIssue(m){
   const issues=[];
   if(m.execution>0) issues.push({k:'exekuce',sev:100});
-  if(m.cashflow<0)  issues.push({k:'cashflow',sev:90});
+  if(m.cashflow<0 && !m.cerpa)  issues.push({k:'cashflow',sev:90});
   if(resAvail(m) && m.resMon<3)    issues.push({k:'rezerva',sev:70+(3-m.resMon)*8});
   if((m.consumerDebtP!=null?m.consumerDebtP:m.debtP)>35)    issues.push({k:'dluhy',sev:(m.consumerDebtP!=null?m.consumerDebtP:m.debtP)});
   if(m.expP>70)     issues.push({k:'vydaje',sev:m.expP-5});
@@ -10360,7 +10365,7 @@ function verdictIssue(m){
 
 function buildVerdict(m){
   let light = m.score>=75 ? 'green' : m.score>=50 ? 'orange' : 'red';
-  if (m.cashflow < 0 && light==='green') light='orange';
+  if (m.cashflow < 0 && !m.cerpa && light==='green') light='orange';
   if (m.execution > 0) light='red';
 
   // 22. 7. 2026: bobří jazyk, stav financí = stav hráze
@@ -10629,20 +10634,20 @@ function faStrength(m){
   if(m.cashflow>=0 && !s.length) s.push({sev:1, t:'Hospodaříš bez měsíčního mínusu'});
   s.sort((a,b)=>b.sev-a.sev);
   if (s[0]) return s[0].t;
-  if (m.cashflow < 0 || m.execution > 0) return 'Zatím žádná výrazná silná stránka, nejdřív srovnej základy';
+  if ((m.cashflow < 0 && !m.cerpa) || m.execution > 0) return 'Zatím žádná výrazná silná stránka, nejdřív srovnej základy';
   return 'Základy máš pohromadě, hospodaříš stabilně';
 }
 // Největší slabina (jedna věta)
 function faWeakness(m){
   const w=[];
   if(m.execution>0) w.push({sev:10, t:'Exekuce nebo nedoplatky, řeš okamžitě'});
-  if(m.cashflow<0)  w.push({sev:9,  t:'Záporný cashflow, '+kc(Math.abs(m.cashflow))+' v mínusu/měs.'});
+  if(m.cashflow<0 && !m.cerpa)  w.push({sev:9,  t:'Záporný cashflow, '+kc(Math.abs(m.cashflow))+' v mínusu/měs.'});
   if(resAvail(m) && m.resMon<1)    w.push({sev:8,  t:'Kriticky nízká rezerva, '+m.resMon.toFixed(1).replace(".", ",")+' měsíce'});
   else if(resAvail(m) && m.resMon<3) w.push({sev:6.5, t:'Nízká rezerva, '+m.resMon.toFixed(1).replace(".", ",")+' měsíce (cíl aspoň 3)'});
   if((m.consumerDebtP!=null?m.consumerDebtP:m.debtP)>35)    w.push({sev:7,  t:'Vysoké splátky spotřebních dluhů, '+(m.consumerDebtP!=null?m.consumerDebtP:m.debtP)+' % příjmu (bez hypotéky)'});
   // senior (65+) své peníze spíš čerpá, nízké spoření mu za slabinu nepočítáme
   if(m.savP<10 && !(v('p_age')>=65)) w.push({sev:6,  t:'Nízké spoření, '+m.savP+' % příjmu'});
-  if(m.expP>70 && !(v('p_age')>=65 && m.cashflow>0 && m.resMon>=3)) w.push({sev:5,  t:'Vysoké výdaje, '+m.expP+' % příjmu'});
+  if(m.expP>70 && !m.cerpa && !(v('p_age')>=65 && m.cashflow>0 && m.resMon>=3)) w.push({sev:5,  t:'Vysoké výdaje, '+m.expP+' % příjmu'});
   w.sort((a,b)=>b.sev-a.sev);
   return w[0] ? w[0].t : 'Žádná kritická slabina, tvé finance jsou vybalancované';
 }
@@ -10655,14 +10660,14 @@ function faCost(m){
     explain:'Exekuce a nedoplatky rostou o poplatky a úroky, samy nezmizí. Ozvi se bezplatné dluhové poradně, řešení se skoro vždycky najde. Dokud tohle není v řešení, s ostatními čísly se nemá smysl trápit.' };
   // Měsíční mínus se počítá poctivě: 10 let × mínus, BEZ vymyšleného zhodnocení (nikdo neví, z čeho by se mínus platilo
   // ani jaký úrok by nesl). Ostatní položky jsou nevyužité peníze, tam se 5 % zhodnocení říká otevřeně.
-  if(m.cashflow<0) c.push({ v:Math.round(-m.cashflow), label:'Měsíční mínus', nominal:true,
+  if(m.cashflow<0 && !m.cerpa) c.push({ v:Math.round(-m.cashflow), label:'Měsíční mínus', nominal:true,
     explain:'Každý měsíc utratíš víc, než vyděláš. To dlouho nevydrží, buď ujídáš rezervu, nebo si půjčuješ od budoucího sebe. A ten z toho nadšený nebude. ' });
   const expDebt = m.ccBal + m.odBal;   // jen DRAHÝ dluh (kreditky + kontokorent), ne hypotéka/běžné úvěry
   if(expDebt>0) c.push({ v:Math.round(expDebt*0.20/12), label:'Úroky z drahých dluhů',
     explain:'Odhad úroků z kreditek a kontokorentu (≈ 20 % ročně). To je nejdražší druh dluhu, platíš navíc jen za to, že ho máš.' });
   // „málo spoříš" má smysl jen když ti vůbec něco zbývá; v mínusu je hlavní problém ten mínus.
   // Strop = volný cashflow: nepočítáme jako „ztrátu" peníze, které člověk reálně nemá.
-  const savGap=(m.cashflow>=0) ? Math.max(0, Math.min(Math.round(m.income*0.15 - m.saving), Math.round(m.cashflow))) : 0;
+  const savGap=(m.cashflow>=0 && !(m.age>=65)) ? Math.max(0, Math.min(Math.round(m.income*0.15 - m.saving), Math.round(m.cashflow))) : 0;
   if(savGap>0) c.push({ v:savGap, label:'Nevyužitý potenciál spoření',
     explain:'Peníze, které ti po výdajích zbývají a mohly by za tebe pracovat (až do zdravých 15 % příjmu), ale zatím leží ladem. Spočítáno jen z toho, co reálně máš.' });
   if(m.subsTotal>m.income*0.05) c.push({ v:Math.round(m.subsTotal), label:'Předplatná nad míru',
@@ -10780,7 +10785,7 @@ function faSteps(m){
     monthlyDebtPayments: m.debtPay,
     monthlyMortgagePayment: m.mortgagePay || 0,
     expensiveDebt: (m.expensiveDebt != null) ? m.expensiveDebt : ((m.ccBal||0) + (m.odBal||0) + (m.execution||0)),
-    execution: m.execution, subsTotal: m.subsTotal
+    execution: m.execution, subsTotal: m.subsTotal, cerpa: !!m.cerpa
   }, { fmt: { kc: kc }, minMonthly: curSmall(), age: m.age });
   window.LAST_RECS = recs;
   // Odmítnutá doporučení („Teď ne" / „U mě to nejde") nevystavovat, na jejich
@@ -12300,6 +12305,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MASCOT; 
       debtPay: pick(m.monthlyDebtPayments, m.debtPay),
       mortgagePay: pick(m.monthlyMortgagePayment, m.mortgagePay),
       expDebt: pick(m.expensiveDebt, 0),
+      cerpa: !!m.cerpa,
       execution: pick(m.execution, 0),
       subs: pick(m.subsTotal, 0)
     };
@@ -12346,10 +12352,10 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MASCOT; 
 
     // Senior s velkou zásobou, který ji záměrně čerpá: schodek není tíseň, jen hlídat tempo.
     const _roky = M.cashflow < 0 ? M.reserve / (-M.cashflow * 12) : 0;
-    const cerpani = senior && M.cashflow < 0 && M.execution <= 0 && M.expDebt <= 0 && _roky >= 15;
+    const cerpani = M.cashflow < 0 && M.execution <= 0 && M.expDebt <= 0 && ((senior && _roky >= 15) || M.cerpa);
     if (cerpani) recs.push({
       key: 'drawdown', sev: 3, kind: 'advice',
-      title: 'Čerpáš z úspor ' + kc(Math.abs(Math.round(M.cashflow))) + '/měs., zásoba vydrží asi ' + Math.floor(_roky) + ' let',
+      title: M.cerpa ? 'Čerpáš z majetku ' + kc(Math.abs(Math.round(M.cashflow))) + '/měs., při tomhle tempu ti majetek vystačí do vysokého věku' : 'Čerpáš z úspor ' + kc(Math.abs(Math.round(M.cashflow))) + '/měs., zásoba vydrží asi ' + Math.floor(_roky) + ' let',
       impact: 'V tomhle věku je čerpání úspor normální. Jen občas zkontroluj, že tempo odpovídá tomu, co ještě chceš prožít.'
     });
     if (M.cashflow < 0 && !cerpani) recs.push({
@@ -21969,6 +21975,11 @@ BQ.registerModule('track-shared', BQTrackShared);
     d.cashflow = d.cashflow + (z.dCashflow || 0);
     d.savingsPercent = Math.max(0, d.savingsPercent + (z.dSavingsKc || 0) / inc * 100);
     d.debtPercent = Math.max(0, d.debtPercent + (z.dDebtKc || 0) / inc * 100);
+    // splátka NOVÉ hypotéky je náklad na bydlení, ne spotřební dluh (stejné pravidlo jako v hlavním výpočtu finančního věku)
+    if (z.dMortgageKc) {
+      d.mortgagePercent = Math.max(0, (d.mortgagePercent || 0) + z.dMortgageKc / inc * 100);
+      d.mortgageStresPercent = Math.max(0, (d.mortgageStresPercent != null ? d.mortgageStresPercent : (d.mortgagePercent || 0)) + z.dMortgageKc / inc * 100);
+    }
     d.netWorth = d.netWorth + (z.dNetWorth || 0);
     if (z.dInterestKc) d.debtInterestPercent = Math.max(0, (d.debtInterestPercent || 0) + z.dInterestKc / inc * 100);
     if (z.reserveTo != null) d.reserveMonths = z.reserveTo;
@@ -21979,6 +21990,12 @@ BQ.registerModule('track-shared', BQTrackShared);
     }
     return window.calculateFinancialAge(d);
   }
+  /* Základna pro „měsíce rezervy“ je v celé appce stejná: běžné výdaje + POVINNÉ splátky dluhů (i hypotéky).
+     Bez splátek by rezerva po nákupu na úvěr „rostla“ a pauza v příjmu by vypadala bezpečněji, než je. */
+  function zaklad(b) { return (b.d.expenses || 0) + (b.M.debtPay || 0); }
+  /* Spoření se kvůli nové platbě zkracuje jen o tolik, kolik chybí, aby měsíc vyšel (nová splátka sama spoření nesnižuje,
+     dokud se vejde do přebytku). Vrací záporné číslo (nebo 0). */
+  function usporaKrat(b, prebytekPo) { return prebytekPo >= 0 ? 0 : -Math.min(b.M.saving || 0, -prebytekPo); }
   function sluc(a, z) {
     var o = {};
     [a, z].forEach(function (x) { Object.keys(x).forEach(function (k) { o[k] = (k === 'reserveTo') ? x[k] : (o[k] || 0) + x[k]; }); });
@@ -22069,7 +22086,8 @@ BQ.registerModule('track-shared', BQTrackShared);
   /* jednorázový nákup: z úspor / na splátky / na úvěr */
   function nakupSpotreba(b, p) {
     var P = mez(ST.cena, p.min, p.max), d = b.d;
-    var rezKc = b.M.reserve || 0, vyd = d.expenses || 0, prov = ST.provoz ? p.provoz : 0;
+    var rezKc = b.M.reserve || 0, vyd = d.expenses || 0, prov = ST.provoz ? p.provoz : 0, zakl = zaklad(b);
+    var prebytek = b.M.cashflow;
     var z = { dNetWorth: -P * p.ztrata }, splatka = 0, urokCelkem = 0, nedostatek = false;
     if (ST.jak === 'hot') {
       if (P > rezKc) nedostatek = true;
@@ -22078,14 +22096,18 @@ BQ.registerModule('track-shared', BQTrackShared);
       var sz = ST.jak === 'uver' ? ST.sazba : 0, r = sz / 100 / 12;
       splatka = annuita(P, sz, ST.mes);
       urokCelkem = splatka * ST.mes - P;
-      z.dCashflow = -splatka; z.dSavingsKc = -splatka; z.dDebtKc = splatka;
+      z.dDebtKc = splatka;
       if (r) z.dInterestKc = P * r;
     }
-    if (prov) { z.dExpenses = prov; z.dCashflow = (z.dCashflow || 0) - prov; z.dSavingsKc = (z.dSavingsKc || 0) - prov; }
-    var v = varianta(b, z);
+    var volne = prebytek - splatka - prov;
+    var kratSp = usporaKrat(b, volne);
+    z.dCashflow = -splatka - prov - kratSp; z.dSavingsKc = kratSp;
+    if (prov) z.dExpenses = prov;
     var rezPo = ST.jak === 'hot' ? Math.max(0, rezKc - P) : rezKc;
-    var mPo = (vyd + prov) > 0 ? rezPo / (vyd + prov) : b.d.reserveMonths, mPred = d.reserveMonths;
-    var prebytek = b.M.cashflow, volne = prebytek - splatka - prov;
+    var zaklPo = zakl + splatka + prov;
+    var mPo = zaklPo > 0 ? rezPo / zaklPo : b.d.reserveMonths, mPred = d.reserveMonths;
+    z.reserveTo = mPo;
+    var v = varianta(b, z);
     var kat = 'ok', titul = 'Zvládneš to';
     if (nedostatek || mPo < 1.5 || volne < 0 || (splatka > 0 && prebytek <= 0)) { kat = 'bad'; titul = 'Radši teď ne'; }
     else if (mPo < 3 || ((splatka > 0 || prov > 0) && volne < prebytek * 0.4)) { kat = 'mid'; titul = 'Zvládneš, ale opatrně'; }
@@ -22100,7 +22122,7 @@ BQ.registerModule('track-shared', BQTrackShared);
       + (splatka ? ', splátka sní ' + Math.round(splatka / Math.max(prebytek, 1) * 100) + ' % tvého přebytku' : '') + '.' + provTxt;
     else text = 'Po nákupu ti zůstane rezerva na ' + dec(mPo) + ' ' + mesWord(mPo) + ' výdajů a přebytek ' + money(Math.max(volne, 0)) + ' měsíčně. Hráz drží.' + (prov > 0 ? provTxt : '');
     if (kat !== 'ok') {
-      var chybi = Math.max(0, 3 * vyd - (rezKc - (ST.jak === 'hot' ? P : 0)));
+      var chybi = Math.max(0, 3 * zaklPo - (rezKc - (ST.jak === 'hot' ? P : 0)));
       if (ST.jak === 'hot' && prebytek > 0) {
         var m = Math.ceil(chybi / prebytek);
         rada = m > 36
@@ -22122,7 +22144,7 @@ BQ.registerModule('track-shared', BQTrackShared);
     if (ST.jak === 'uver') boxes.push({ l: 'Celkem zaplatíš', v: money(splatka * ST.mes), s: 'z toho úroky ' + money(urokCelkem), c: 'up' });
     else if (prov) boxes.push({ l: prov > 0 ? 'Provoz měsíčně' : 'Úspora měsíčně', v: money(Math.abs(prov)), s: prov > 0 ? 'k dnešním výdajům' : 'na energiích', c: prov > 0 ? 'up' : 'dn' });
     else if (!splatka) boxes.push({ l: 'Měsíční splátka', v: money(0), s: 'bez splátek', c: '' });
-    var serie = serieRezervy(rezPo, volne, vyd + prov, 36);
+    var serie = serieRezervy(rezPo, volne, zaklPo, 36);
     return { kat: kat, titul: titul, text: text, rada: rada, boxes: boxes, serie: serie, hraz: hrazText(serie, volne), dVek: dVek, extra: ST.jak === 'uver' ? sazbyHtml(P) : '' };
   }
 
@@ -22143,18 +22165,20 @@ BQ.registerModule('track-shared', BQTrackShared);
   /* hypotéka na byt nebo dům */
   function nakupHypo(b, p) {
     var P = mez(ST.cena, p.min, p.max), d = b.d, inc = d.monthlyIncome;
-    var rezKc = b.M.reserve || 0, vyd = d.expenses || 0, prov = p.provoz, najem = ST.najem;
+    var rezKc = b.M.reserve || 0, vyd = d.expenses || 0, prov = p.provoz, najem = ST.najem, zakl = zaklad(b);
     var vkladKc = P * ST.vklad / 100, L = P - vkladKc, n = ST.let * 12, r = ST.urok / 100 / 12;
     var spl = annuita(L, ST.urok, n), celkemUroky = spl * n - L;
     var stavajici = (d.debtPercent || 0) / 100 * inc;
     var dsti = (spl + stavajici) / inc, dti = L / (inc * 12);
     var vkladChybi = Math.max(0, vkladKc - rezKc);
-    var z = { dNetWorth: -P * p.ztrata, dReserveKc: -Math.min(vkladKc, rezKc), dCashflow: najem - spl - prov, dSavingsKc: najem - spl - prov,
-      dDebtKc: spl, dInterestKc: L * r, dExpenses: prov - najem };
-    var v = varianta(b, z);
     var prebytek = b.M.cashflow, volne = prebytek + najem - spl - prov;
+    var kratSp = usporaKrat(b, volne);
     var rezPo = Math.max(0, rezKc - vkladKc);
-    var mPo = rezPo / Math.max(1, vyd - najem + spl + prov), mPred = d.reserveMonths;
+    var mPo = rezPo / Math.max(1, zakl - najem + spl + prov), mPred = d.reserveMonths;
+    // hypotéka je bydlení, ne spotřební dluh: jde do splátek hypotéky a její úrok se do „ceny dluhů“ nepočítá (jako v hlavním výpočtu)
+    var z = { dNetWorth: -P * p.ztrata, dReserveKc: -Math.min(vkladKc, rezKc), dCashflow: najem - spl - prov - kratSp, dSavingsKc: kratSp,
+      dDebtKc: spl, dMortgageKc: spl, dExpenses: prov - najem, reserveTo: mPo };
+    var v = varianta(b, z);
     var dVek = v.presne - b.fin.presne;
     var pct = Math.round(dsti * 100);
     // kolik by banka asi půjčila (obvyklé hranice: splátky do 45 % příjmu, dluh do 8,5násobku ročního příjmu)
@@ -22170,47 +22194,47 @@ BQ.registerModule('track-shared', BQTrackShared);
     var titul = bad ? 'Radši ještě ne' : (mid ? 'Půjde to, ale na hraně' : 'Hypotéku zvládneš');
     var text, rada;
     if (vkladChybi > 0) text = 'Na vlastní vklad ' + money(vkladKc) + ' ti chybí ' + money(vkladChybi) + '. Na účtu rezervy máš ' + money(rezKc) + '.';
-    else if (dsti > 0.45) text = 'Splátky by ti vzaly ' + pct + ' % příjmu. Banky obvykle povolí nejvýš 45 %.';
-    else if (dti > 8.5) text = 'Hypotéka by byla ' + dec(dti) + 'násobek tvého ročního příjmu. Banky obvykle chtějí nejvýš 8,5násobek.';
+    else if (dsti > 0.45) text = 'Splátky by ti vzaly ' + pct + ' % příjmu. Většina bank by to nejspíš nedala, jako opatrnou hranici beru 45 % příjmu (každá banka posuzuje po svém).';
+    else if (dti > 8.5) text = 'Hypotéka by byla ' + dec(dti) + 'násobek tvého ročního příjmu. Většina bank by to nejspíš nedala, jako opatrnou hranici beru 8,5násobek (každá banka posuzuje po svém).';
     else if (volne < 0) text = 'Splátka ' + money(spl) + ' a provoz by byly víc, než ti měsíčně zbývá (' + money(Math.max(prebytek + najem, 0)) + ').';
     else if (mPo < 1.5) text = 'Po zaplacení vkladu ti rezerva klesne na ' + dec(mPo) + ' ' + mesWord(mPo) + ' výdajů. To je málo, kdyby přišel nečekaný výdaj.';
     else if (mid) text = 'Splátka ' + money(spl) + ' je ' + pct + ' % příjmu' + (mPo < 3 ? ', po vkladu ti rezerva klesne na ' + dec(mPo) + ' ' + mesWord(mPo) + ' výdajů' : '')
       + (ST.vklad < 20 ? '. S vkladem pod 20 % bývá úrok vyšší' : '') + '. Dá se to, ale s malou rezervou na zakolísání.';
-    else text = 'Splátka ' + money(spl) + ' je ' + pct + ' % tvého příjmu (hranice bank bývá 45 %). Po vkladu ti zůstane rezerva na ' + dec(mPo) + ' ' + mesWord(mPo) + ' výdajů.';
+    else text = 'Splátka ' + money(spl) + ' je ' + pct + ' % tvého příjmu (opatrná hranice je kolem 45 %). Po vkladu ti zůstane rezerva na ' + dec(mPo) + ' ' + mesWord(mPo) + ' výdajů.';
     if (kat !== 'ok') {
       if (vkladChybi > 0) {
         var mm = prebytek > 0 ? Math.ceil(vkladChybi / prebytek) : 0;
         rada = '<b>Co poradím:</b> ' + (prebytek > 0 ? (mm <= 60 ? 'při přebytku ' + money(prebytek) + ' měsíčně nastřádáš chybějící vklad za ' + dobaTxt(mm) + '. ' : 'chybějící vklad by sis při dnešním přebytku šetřil přes 5 let. ') : 'nejdřív zlepši měsíční přebytek. ')
           + 'Nebo hledej nemovitost do ' + money(Math.max(0, Math.floor(maxCenaVklad / 50000) * 50000)) + ', na tu už vklad máš.';
       } else if (dsti > 0.45 || dti > 8.5) {
-        rada = '<b>Co poradím:</b> banka by ti dala splátku nejvýš ' + money(maxSpl) + ' měsíčně, tedy hypotéku asi ' + money(maxL) + '. Zkus levnější nemovitost, vyšší vklad nebo delší splatnost.';
+        rada = '<b>Co poradím:</b> při opatrných hranicích by to byla splátka nejvýš ' + money(maxSpl) + ' měsíčně, tedy hypotéka asi ' + money(maxL) + '. Zkus levnější nemovitost, vyšší vklad nebo delší splatnost.';
       } else rada = '<b>Co poradím:</b> nejdřív posil rezervu aspoň na 3 měsíce výdajů, a pak hypotéku podávej. Banka se na rezervu ptá a ty ji budeš potřebovat.';
     } else {
       var spl1 = annuita(L, ST.urok + 1, n);
       rada = '<b>Poznámka:</b> za ' + ST.let + ' let zaplatíš na úrocích asi ' + money(celkemUroky) + '. Kdyby úrok vyskočil o 1 %, splátka by byla o ' + money(spl1 - spl) + ' měsíčně vyšší, počítej s tou rezervou.';
     }
     var boxes = [
-      { l: 'Měsíční splátka', v: money(spl), s: pct + ' % příjmu (hranice 45 %)', c: dsti > 0.45 ? 'up' : (dsti > 0.35 ? 'up' : 'dn') },
+      { l: 'Měsíční splátka', v: money(spl), s: pct + ' % příjmu (opatrná hranice 45 %)', c: dsti > 0.45 ? 'up' : (dsti > 0.35 ? 'up' : 'dn') },
       { l: 'Vlastní vklad', v: money(vkladKc), s: vkladChybi > 0 ? 'chybí ' + money(vkladChybi) : 'máš naspořeno', c: vkladChybi > 0 ? 'up' : 'dn' },
       { l: 'Rezerva po vkladu', v: dec(mPred) + ' → ' + dec(mPo) + ' měs.', s: mPo < 3 ? 'pod bezpečnou hranicí' : 'v pořádku', c: mPo < 3 ? 'up' : 'dn' },
       vekBox(b, dVek)
     ];
-    var serie = serieRezervy(rezPo, volne, vyd - najem + spl + prov, 60);
-    var extra = '<div class="pl-card pd-extra"><div><h3>Kolik by ti banka asi půjčila</h3>'
+    var serie = serieRezervy(rezPo, volne, zakl - najem + spl + prov, 60);
+    var extra = '<div class="pl-card pd-extra"><div><h3>Kolik by ti asi půjčili při opatrných hranicích</h3>'
       + '<div class="pd-ex-g"><div><span>Hypotéka až</span><b>' + money(Math.floor(maxL / 10000) * 10000) + '</b></div>'
       + '<div><span>Nejdražší nemovitost</span><b>' + money(Math.max(0, maxCena)) + '</b></div></div></div>'
-      + '<p class="pl-note">Omezuje tě ' + brzda + '. Počítám s obvyklými hranicemi bank (splátky do 45 % příjmu, dluh do 8,5násobku ročního příjmu) a s vkladem ' + ST.vklad + ' %. Banka posuzuje i věk, typ příjmu a zástavu, takže je to jen orientace.</p></div>';
+      + '<p class="pl-note">Omezuje tě ' + brzda + '. Počítám s opatrnými hranicemi, které banky dříve používaly (splátky do 45 % příjmu, dluh do 8,5násobku ročního příjmu); závazné limity ČNB dnes neplatí, takže skutečná banka může povolit víc i míň a s vkladem ' + ST.vklad + ' %. Banka posuzuje i věk, typ příjmu a zástavu, takže je to jen orientace.</p></div>';
     return { kat: kat, titul: titul, text: text, rada: rada, boxes: boxes, serie: serie, hraz: hrazText(serie, volne), dVek: dVek, extra: extra };
   }
 
   /* výpadek příjmu: rodičovská, ztráta práce */
   function nakupPauza(b, p) {
-    var d = b.d, inc = d.monthlyIncome, rezKc = b.M.reserve || 0, vyd = d.expenses || 0;
+    var d = b.d, inc = d.monthlyIncome, rezKc = b.M.reserve || 0, vyd = zaklad(b);   // výdaje + povinné splátky (spoření se při pauze zastaví)
     var novy = inc * (1 - ST.pokles / 100), minus = Math.max(0, vyd - novy), mes = ST.pmes;
     var spotreba = minus * mes, rezPo = Math.max(0, rezKc - spotreba), chybi = Math.max(0, spotreba - rezKc);
     var vydrzi = minus > 0 ? rezKc / minus : Infinity;
     var mPo = vyd > 0 ? rezPo / vyd : d.reserveMonths, mPred = d.reserveMonths, prebytek = b.M.cashflow;
-    var v = varianta(b, spotreba > 0 ? { dReserveKc: -(rezKc - rezPo), dNetWorth: -spotreba } : {});
+    var v = varianta(b, spotreba > 0 ? { dReserveKc: -(rezKc - rezPo), dNetWorth: -spotreba, reserveTo: mPo } : {});
     var dVek = v.presne - b.fin.presne;
     var kat = (chybi > 0 || mPo < 1) ? 'bad' : (mPo < 3 ? 'mid' : 'ok');
     var titul = kat === 'bad' ? 'Rezerva by nestačila' : (kat === 'mid' ? 'Vydržíš, ale těsně' : 'Rezerva to unese');
@@ -22387,7 +22411,7 @@ BQ.registerModule('track-shared', BQTrackShared);
       a.push({ id: 'drahyUver', t: 'Splatil bych drahý spotřebitelský úvěr', s: 'splátka asi ' + money(spl) + ' měsíčně zmizí', z: { dDebtKc: -spl, dCashflow: spl, dSavingsKc: spl, dInterestKc: -((d.debtInterestPercent || 0) * inc / 100) } });
     }
     if (d.expenses > 0 && d.reserveMonths < 6) {
-      var chybi = Math.max(0, 6 * d.expenses - (M.reserve || 0));
+      var chybi = Math.max(0, 6 * zaklad(b) - (M.reserve || 0));
       a.push({ id: 'rezerva6', t: 'Vybudoval bych rezervu na 6 měsíců', s: 'dnes ' + dec(d.reserveMonths) + ' ' + mesWord(d.reserveMonths) + ', chybí ' + money(chybi), z: { reserveTo: 6 } });
     }
     a.push({ id: 'zbytne', t: 'Omezil bych zbytné výdaje o 1 500 Kč', s: 'kavárny, rychlé občerstvení, nákupy z nudy', z: { dExpenses: -1500, dCashflow: 1500, dSavingsKc: 1500 } });
@@ -23270,7 +23294,7 @@ BQ.fakta = FinFakta;
     { cat:'Pojištění', title:'Které pojištění opravdu potřebuješ', sum:'Pojišťuj velké průšvihy, ne rozbitý mobil.',
       body:'<ul><li><strong>Životní/úrazové</strong>, hlavně když na tvém příjmu závisí rodina nebo splácíš hypotéku.</li><li><strong>Pojištění majetku a domácnosti</strong> + <strong>odpovědnosti</strong> (škoda způsobená druhým), levné a zachrání před velkou ztrátou.</li><li>Zbytné: pojištění na malé částky, které v pohodě zaplatíš z rezervy.</li></ul>' },
     { cat:'Příjmy', title:'Jak zvýšit příjem', sum:'Úspory mají dno, příjem strop nemá. Vyplatí se koukat i nahoru.',
-      when:m=>m.cashflow<0||m.expP>75,
+      when:m=>(m.cashflow<0&&!m.cerpa)||m.expP>75,
       body:'<ul><li><strong>Vyjednej si plat</strong>, připrav si argumenty a čísla, požádej. Nejlevnější „zvýšení příjmu", jaké existuje.</li><li>Vedlejší příjem / brigáda / vlastní dovednost na volné noze.</li><li>Rekvalifikace do lépe placeného oboru, investice, která se vrací roky.</li></ul>' },
     { cat:'Návyky', title:'Měsíční finanční rituál', sum:'15 minut měsíčně tě posune dál než velkolepá novoroční předsevzetí.',
       body:'<p>Jednou za měsíc si na <strong>15 minut</strong> sedni a projdi čtyři čísla: kolik přišlo, kolik odešlo, kolik šlo stranou a jak rostou cíle. Víc netřeba.</p><ul><li> Dej si to na <strong>pevný den</strong> (třeba hned po výplatě), ať to nezapadne.</li><li> Zapiš v téhle appce měsíční zápis (obchůzku hráze) a sleduj, jak se hýbe <strong>skóre i finanční věk</strong>.</li><li> Stačí jeden malý krok měsíčně, pravidelnost dlouhodobě porazí velkolepá novoroční předsevzetí.</li><li> Nečekej „až bude čas", 15 minut máš i u kafe.</li></ul>' },
@@ -23282,7 +23306,7 @@ BQ.fakta = FinFakta;
     { cat:'Návyky', title:'Stanov si finanční cíle (SMART)', sum:'„Chci mít víc" se neplní samo. Konkrétní cíl ano.',
       body:'<p>„Chci mít víc" se neplní samo. Cíl musí být <strong>konkrétní, měřitelný a s termínem</strong>, pak přesně víš, co dělat.</p><ul><li> Místo „chci spořit" → „<strong>do prosince 2027 mít rezervu 120 000 Kč</strong>".</li><li> Rozpočítej na měsíce: 120 000 / 24 = <strong>5 000 Kč měsíčně</strong>, a máš plán, ne přání.</li><li> Velký cíl rozsekej na malé milníky, každý odškrtnutý tě nakopne dál.</li><li> Zapiš si ho (klidně do záložky Cíle v téhle appce), nezapsaný cíl je jen nápad.</li></ul>' },
     { cat:'Rozpočet', title:'Zastav měsíční mínus', sum:'Když utrácíš víc, než vyděláš, tohle nepočká ani vteřinu.',
-      when:m=>m.cashflow<0,
+      when:m=>m.cashflow<0&&!m.cerpa,
       body:'<p>Záporný cashflow znamená, že žiješ z rezerv nebo dluhů, to je neudržitelné. Priorita číslo jedna:</p><ul><li>Sepiš všechny výdaje a najdi, co jde hned zmenšit nebo zrušit.</li><li>Zaměř se na velké položky (bydlení, doprava, splátky), ne jen na kávu.</li><li>Souběžně hledej, jak zvednout příjem.</li></ul>' },
     { cat:'Investice', title:'Daří se ti, co dál?', fakta:['PENZIJKO-PODPORA'], sum:'Máš rezervu i spoření? Sundej ruční brzdu a přidej plyn.',
       when:m=>m.savP>=15 && m.resMon>=3 && m.cashflow>0 && m.execution===0,
@@ -23297,7 +23321,7 @@ BQ.fakta = FinFakta;
     { cat:'Dluhy', title:'RPSN: jediné číslo, které půjčky srovná', fakta:['UVER-RPSN'], sum:'Úrok umí klamat. RPSN srovná půjčky na férovku.',
       body:'<p>Úrok umí klamat, dvě půjčky se stejným úrokem můžou stát úplně jinak. <strong>RPSN</strong> je jediné číslo, které je srovná na férovku.</p><ul><li> RPSN zahrnuje <strong>úrok + všechny poplatky a povinné pojištění</strong>, čili reálnou cenu peněz.</li><li> Při porovnávání koukej <strong>jen na RPSN</strong>, ne na lákavě nízký „úrok" z reklamy.</li><li> Vyšší RPSN = dražší peníze, tečka. U „rychlých půjček" bývá v desítkách až stovkách %.</li><li> Nízká měsíční splátka neznamená levně, většinou jen to, že splácíš dlouho a draho.</li></ul>' },
     { cat:'Dluhy', title:'Hypotéka: fixace a refinancování', sum:'Před koncem fixace obvolej trh. Banka ti slevu sama nenabídne.',
-      when:m=>m.debtBal>0,
+      when:m=>m.mortgagePay>0,
       body:'<ul><li>Pár měsíců <strong>před koncem fixace</strong> si nech udělat nabídky od víc bank, máš nejsilnější vyjednávací pozici.</li><li>Refinancování dává smysl, jen když nová sazba a poplatky reálně sníží náklady.</li><li>Mimořádná splátka na konci fixace bývá zdarma, využij ji, pokud máš přebytek nad rezervu.</li></ul>' },
     { cat:'Dluhy', title:'Nepůjčuj si na to, co rychle ztrácí hodnotu', sum:'Dovolená ani mobil na úvěr? To je platit úroky za vzpomínky.',
       when:m=>(m.consumerDebtP!=null?m.consumerDebtP:m.debtP)>10,
@@ -23991,12 +24015,13 @@ BQ.fakta = FinFakta;
     else if(v('a_crypto_val')>0) add(5,'tip','V kryptu máš <strong>'+kc(v('a_crypto_val'))+'</strong>. Nebudu ti do toho kecat, jen hlídej, ať to nikdy nejsou peníze, které budeš brzo potřebovat. Tohle je divoká voda, umí spadnout o půlku a nezeptá se tě.');
     pridejZbytneAUver(m, add);
     pridejSituaci(m, add);
-    if(m.cashflow<0 && m.execution===0 && maSpotrebniDluh())
+    if(m.cashflow<0 && !m.cerpa && m.execution===0 && maSpotrebniDluh())
       add(10.5,'warn','Když se měsíční mínus s dluhy nedaří zastavit, nečekej, až naroste. Bezplatná dluhová poradna ti pomůže sestavit plán a vyjednat s věřiteli, a čím dřív se ozveš, tím víc možností zbývá.');
     if(v('e_ins_life')===0 && m.income>0 && m.netWorth<m.income*24 && zavisiNaMemPrijmuNekdo() && !(v('p_age')>=65)) add(4,'tip','Nemáš životko ani úrazovku a velké doupě zatím taky ne. Vypadá to, že na tvém příjmu někdo závisí (děti, výživné nebo hypotéka). Pojistka je přeliv hráze, když přijde velká voda, má kudy upustit. Zvaž to, a jestli na tobě nikdo nezávisí, klidně tuhle radu přeskoč.');
 
     // ── POMĚRY s konkrétními čísly ──
-    if(m.cashflow<0) add(10,'warn','Každý měsíc ti odteče <strong>'+kc(Math.abs(Math.round(m.cashflow)))+' navíc</strong>, odtéká víc, než přitéká. Tohle je první věc, do které bych se opřel, buď ti to ujídá rezervu, nebo to nabaluje dluh.');
+    if(m.cashflow<0 && m.cerpa) add(3,'tip','Měsíčně čerpáš z majetku asi <strong>'+kc(Math.abs(Math.round(m.cashflow)))+'</strong>. V tvém věku je to normální, majetek je právě na to. Jen občas zkontroluj, že tempo odpovídá tomu, co ještě chceš prožít.');
+    else if(m.cashflow<0) add(10,'warn','Každý měsíc ti odteče <strong>'+kc(Math.abs(Math.round(m.cashflow)))+' navíc</strong>, odtéká víc, než přitéká. Tohle je první věc, do které bych se opřel, buď ti to ujídá rezervu, nebo to nabaluje dluh.');
     else if(m.cashflow>m.income*0.15) add(4,'good','Na konci měsíce ti v řece zbývá <strong>'+kc(Math.round(m.cashflow))+'</strong>. Pošli aspoň část trvalým příkazem rovnou na hráz hned po výplatě, co ti zůstane na účtu, to se ti nějak rozkoulí.');
     if(resAvail(m) && m.resMon<3) add(7,'warn','Zásoba na zimu ti vydrží <strong>'+m.resMon.toFixed(1).replace(".", ",")+' měsíce</strong>. My bobři si děláme zásoby na zimu a tobě jich pár chybí. '+(m.resMon<1?'První meta je rezerva na jeden měsíc výdajů, tři měsíce přijdou potom.':'První meta jsou tři měsíce, pak se ti bude spát líp.'));
     else if(m.resMon>=6) add(3,'good','Zásoba na <strong>'+m.resMon.toFixed(1).replace(".", ",")+' měsíce</strong>, máš pevnou hráz. '+(v('p_age')>=60?'Co je nad šest měsíců, promysli, k čemu to bude: peníze, které budeš potřebovat brzy, patří na jistotu.':'Co je nad šest měsíců, můžeš zvažovat, k čemu to použít, ať to jen neleží. Do investic patří jen peníze, které nebudeš několik let potřebovat a jejichž pokles bys unesl.'));
@@ -25017,7 +25042,7 @@ BQ.fakta = FinFakta;
     if(p>0) items.push({gain:p, action:'Odlehči splátkám dluhů', target:'Cíl: splátky pod 20 % příjmu, refinancování nebo mimořádná splátka'});
     p = m.resMon<1?20:m.resMon<3?10:0;
     if(p>0) items.push({gain:p, action:'Vybuduj finanční rezervu', target: resAvail(m) ? 'Cíl: '+kc(Math.round(resTargetOf(m.expenses, m.debtPay, 3)))+' (3 měsíce výdajů a splátek)' : 'Cíl spočítám, až doplníš výdaje a splátky'});
-    p = m.cashflow<0?20:(m.cashflow<m.income*0.05?5:0);
+    p = (m.cashflow<0 && !m.cerpa)?20:((m.cashflow>=0 && m.cashflow<m.income*0.05)?5:0);
     if(p>0) items.push({gain:p, action: m.cashflow<0?'Dostaň se z měsíčního mínusu':'Zvyš měsíční přebytek',
                         target: m.cashflow<0?('Chybí '+kc(Math.abs(Math.round(m.cashflow)))+'/měs. do nuly'):'Cíl: přebytek aspoň 5 % příjmu'});
     if(m.execution>0) items.push({gain:15, action:'Vyřeš exekuce a nedoplatky', target:'Ozvi se bezplatné dluhové poradně, tohle má absolutní přednost'});
