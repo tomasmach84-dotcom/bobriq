@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <!-- @@CSP_BEGIN@@ -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-5D9FhfcdN0nBzhiPvXN4ddbpYbM5LvtdCQykAs5wK6w=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-HoB8+5RuB0QYHyk7WrYZ3xRA9AiaRkFkfcPiLN4zi9M=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <!-- @@CSP_END@@ -->
 <!-- @@VZHLED_BEGIN@@ -->
 <script>(function(){try{var t=localStorage.getItem('bq_tema');var d=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
@@ -6286,10 +6286,12 @@ html:root body:not(#bqt):not(#bqt) .stress-item:has(.s-val) .s-label{ color:var(
 html:root body:not(#bqt):not(#bqt) .pj-tile{ position:relative; overflow:hidden; padding-bottom:84px !important; color:var(--t-ink) !important;
   border:1px solid color-mix(in srgb,var(--pc) 45%,transparent) !important; border-top:5px solid var(--pc) !important; border-radius:16px !important;
   background:linear-gradient(170deg,color-mix(in srgb,var(--pc) 18%,var(--t-card,#fff)),color-mix(in srgb,var(--pc) 5%,var(--t-card,#fff))) !important; box-shadow:none !important; }
-html:root body:not(#bqt):not(#bqt) .pj-tile.low { --pc:#1f9d63; }
-html:root body:not(#bqt):not(#bqt) .pj-tile.mid { --pc:#2d62c8; }
-html:root body:not(#bqt):not(#bqt) .pj-tile.high{ --pc:#e0701f; }
-html:root body:not(#bqt):not(#bqt) .pj-tile .pj-name{ color:var(--pc) !important; font-size:1.1rem; }
+/* 18. 11. 2026: investiční semafor. Opatrná = zelená, vyvážená = žlutá, dynamická = červená (--pt je tmavší odstín pro čitelný text) */
+html:root body:not(#bqt):not(#bqt) .pj-tile.low { --pc:#1f9d63; --pt:#16764a; }
+html:root body:not(#bqt):not(#bqt) .pj-tile.mid { --pc:#f0b400; --pt:#8a5a00; }
+html:root body:not(#bqt):not(#bqt) .pj-tile.high{ --pc:#d6334c; --pt:#b3261e; }
+html:root body:not(#bqt):not(#bqt) .pj-tile .pj-name{ color:var(--pt, var(--pc)) !important; font-size:1.1rem; }
+.pj-spark .pj-zig{ stroke-linejoin:miter; stroke-miterlimit:3; }
 html:root[data-theme="dark"] body:not(#bqt):not(#bqt) .pj-tile .pj-name{ filter:brightness(1.35); }
 html:root body:not(#bqt):not(#bqt) .pj-tile .pj-rate, html:root body:not(#bqt):not(#bqt) .pj-tile .pj-range{ color:var(--t-mut,#5b6577) !important; }
 html:root body:not(#bqt):not(#bqt) .pj-tile .pj-big{ color:var(--t-ink) !important; }
@@ -6481,26 +6483,30 @@ html:root body:not(#bqt) .appnav{
   background:linear-gradient(180deg,var(--t-hero1),var(--t-hero2)) !important;
   border-color:var(--t-hero-line) !important;
 }
-html:root body:not(#bqt) .appnav-btn{ font-family:var(--ff-body); font-weight:800; color:rgba(255,255,255,.8); }
+html:root body:not(#bqt) .appnav-btn{ font-family:var(--ff-body); font-weight:800; color:#fff; }
 html:root body:not(#bqt) .appnav-btn:hover{ color:#fff; background:rgba(255,255,255,.09); }
-html:root body:not(#bqt) .appnav-btn.active{ color:var(--t-gold); background:rgba(255,255,255,.14); }
+html:root body:not(#bqt) .appnav-btn.active{ color:var(--t-gold); background:rgba(8,24,70,.32); }
 @media (max-width:899px){
   html:root body:not(#bqt) .appnav{ border-top:1px solid var(--t-hero-line) !important; box-shadow:0 -4px 16px rgba(24,35,58,.18) !important; }
 }
 @media (min-width:900px){
   html:root body:not(#bqt) .appnav{ border-right:0 !important; box-shadow:2px 0 18px rgba(24,35,58,.14) !important; }
   html:root body:not(#bqt) .appnav-btn{ font-weight:800; border-radius:var(--t-rs); }
-  html:root body:not(#bqt) .appnav-btn.active{ background:rgba(255,255,255,.16); }
+  html:root body:not(#bqt) .appnav-btn.active{ background:rgba(8,24,70,.32); }
 }
-/* tlačítko Zapsat měsíc / Začít analýzu = stejné zlaté měkké tlačítko jako na úvodní kartě */
-html:root body:not(#bqt) .appnav-zapsat{
-  background:var(--t-gold) !important; color:var(--t-gold-ink) !important; border:0 !important;
-  box-shadow:0 4px 12px rgba(0,0,0,.18) !important; font-family:var(--ff-head); font-weight:900;
-  border-radius:var(--t-pill) !important;
+/* tlačítko Zapsat měsíc / Začít analýzu = stejné zlaté měkké tlačítko jako na úvodní kartě (jen od 720 px,
+   na mobilu je to kulaté plus uprostřed spodní lišty) */
+@media (min-width:720px){
+  html:root body:not(#bqt) .appnav-zapsat{
+    background:var(--t-gold) !important; color:var(--t-gold-ink) !important; border:0 !important;
+    box-shadow:0 4px 12px rgba(0,0,0,.18) !important; font-family:var(--ff-head); font-weight:900;
+    border-radius:var(--t-pill) !important;
+  }
+  html:root body:not(#bqt) .appnav-zapsat:hover{ filter:brightness(1.05); color:var(--t-gold-ink) !important; }
+  html:root body:not(#bqt) .appnav-zapsat.active{ background:#fff !important; color:var(--t-hero2) !important; }
 }
-html:root body:not(#bqt) .appnav-zapsat:hover{ filter:brightness(1.05); color:var(--t-gold-ink) !important; }
-html:root body:not(#bqt) .appnav-zapsat.active{ background:#fff !important; color:var(--t-hero2) !important; }
 @media (max-width:719px){
+  html:root body:not(#bqt) .appnav-zapsat.active .appnav-plus{ background:#fff !important; }
   html:root body:not(#bqt) .appnav-zapsat .appnav-plus{ background:var(--t-gold) !important; border:0 !important; box-shadow:0 4px 12px rgba(0,0,0,.25) !important; color:var(--t-gold-ink) !important; }
   html:root body:not(#bqt) .appnav-zapsat .appnav-lbl{ color:var(--t-gold) !important; }
 }
@@ -6536,6 +6542,87 @@ html:root body:not(#bqt) .rsb-more-body > *{ margin:0; }
    rozbalení se šířka textu i karet změnila. Teď je všude jeden sloupec 820 px, vystředěný, a rolují se jen výšky. */
 html:root body:not(#bqt) #results-detail{ max-width:820px; margin-left:auto; margin-right:auto; }
 html:root body:not(#bqt) #results-detail .btn-row{ max-width:820px; margin-left:auto; margin-right:auto; }
+
+/* ═══ 18. 11. 2026 HRNÍČKY NA PRAVIDELNÉ PLATBY (karta v krocích Výdaje) ═══ */
+html:root body:not(#bqt) .jar-card{ margin-top:16px; }
+html:root body:not(#bqt) .jar-intro{ font-size:.92rem; color:var(--t-mut); margin:0 0 12px; line-height:1.5; }
+html:root body:not(#bqt) .jar-row{ border:1px solid var(--t-line); border-radius:var(--t-rs); background:var(--t-card2); padding:12px 14px; margin-bottom:12px; }
+html:root body:not(#bqt) .jar-top{ display:flex; gap:8px; align-items:center; margin-bottom:10px; }
+html:root body:not(#bqt) .jar-name{ flex:1; font:inherit; font-weight:800; padding:9px 12px; border:1px solid var(--t-field-line); border-radius:var(--t-rs); background:var(--t-card); color:var(--t-ink); }
+html:root body:not(#bqt) .jar-fields{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+html:root body:not(#bqt) .jar-fields label{ display:flex; flex-direction:column; gap:4px; font-size:.78rem; font-weight:800; color:var(--t-mut); }
+html:root body:not(#bqt) .jar-fields label > span{ display:flex; align-items:center; gap:6px; font-weight:700; color:var(--t-ink); }
+html:root body:not(#bqt) .jar-fields input, html:root body:not(#bqt) .jar-fields select{ font:inherit; font-weight:800; width:100%; min-width:0; padding:8px 10px; border:1px solid var(--t-field-line); border-radius:var(--t-rs); background:var(--t-card); color:var(--t-ink); }
+html:root body:not(#bqt) .jar-stav{ margin-top:10px; font-size:.88rem; color:var(--t-ink); line-height:1.45; }
+html:root body:not(#bqt) .jar-total{ margin-top:12px; font-size:.92rem; color:var(--t-ink); background:var(--t-hint); border:1px solid var(--t-hint-line); border-radius:var(--t-rs); padding:10px 14px; }
+@media (max-width:640px){ html:root body:not(#bqt) .jar-fields{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+/* ═══ 18. 11. 2026 Hrníčky na výsledku (karta jen ke čtení) ═══ */
+html:root body:not(#bqt) .rs-jars{ padding:20px 22px; }
+html:root body:not(#bqt) .rjar-row{ padding:12px 0; border-bottom:1px dashed var(--t-line); }
+html:root body:not(#bqt) .rjar-row:last-of-type{ border-bottom:0; }
+html:root body:not(#bqt) .rjar-head{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:baseline; }
+html:root body:not(#bqt) .rjar-name{ font-weight:900; color:var(--t-ink); }
+html:root body:not(#bqt) .rjar-meta{ font-size:.8rem; font-weight:700; color:var(--t-mut); }
+html:root body:not(#bqt) .rjar-bar{ height:10px; border-radius:99px; background:var(--t-card2); border:1px solid var(--t-line); margin:8px 0 6px; overflow:hidden; }
+html:root body:not(#bqt) .rjar-bar i{ display:block; height:100%; border-radius:99px; }
+html:root body:not(#bqt) .rjar-bar i.ok{ background:var(--t-good); }
+html:root body:not(#bqt) .rjar-bar i.low{ background:var(--t-warn); }
+html:root body:not(#bqt) .rjar-stav{ display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-size:.84rem; color:var(--t-mut); }
+html:root body:not(#bqt) .rjar-stav b{ color:var(--t-ink); }
+html:root body:not(#bqt) .rjar-sum{ margin-top:10px; font-size:.88rem; color:var(--t-ink); background:var(--t-hint); border:1px solid var(--t-hint-line); border-radius:var(--t-rs); padding:9px 12px; }
+
+/* ═══ 18. 11. 2026 Hrníčky: hravá grafika (hrníček s hladinou a mincemi, bobr nosí klacíky) ═══ */
+html:root body:not(#bqt) .jar-svg{ width:44px; height:52px; flex:none; display:block; filter:drop-shadow(0 2px 2px rgba(24,35,58,.18)); }
+html:root body:not(#bqt) .jar-top .jar-svg{ margin-right:2px; }
+html:root body:not(#bqt) .rjar-row{ display:flex; gap:14px; align-items:center; }
+html:root body:not(#bqt) .rjar-svgwrap{ flex:none; }
+html:root body:not(#bqt) .rjar-main{ flex:1; min-width:0; }
+html:root body:not(#bqt) .jar-coin{ animation:jarCoin 2.6s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+html:root body:not(#bqt) .jar-coin.c2{ animation-delay:1.3s; }
+@keyframes jarCoin{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-2.5px); } }
+html:root body:not(#bqt) .jar-stav .mini-btn{ margin-left:8px; }
+@media (prefers-reduced-motion:reduce){ html:root body:not(#bqt) .jar-coin{ animation:none; } }
+html:root body:not(#bqt) .rjar-add{ margin-top:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:.84rem; font-weight:700; color:var(--t-mut); }
+html:root body:not(#bqt) .rjar-add input{ width:96px; font:inherit; font-weight:800; padding:6px 10px; border:1px solid var(--t-field-line); border-radius:var(--t-rs); background:var(--t-card); color:var(--t-ink); }
+html:root body:not(#bqt) .rjar-full .rjar-name::after{ content:" ✓"; color:var(--t-good); }
+
+/* ═══ 18. 11. 2026 Měsíční zápis: „Co jsi tento měsíc dal bokem?" (cíle a hrníčky) ═══ */
+html:root body:not(#bqt) .ft-q-bokem{ margin:18px 0 6px; padding:16px 18px; border:1px solid var(--t-line); border-radius:var(--t-r); background:var(--t-card); box-shadow:var(--t-sh-sm); }
+html:root body:not(#bqt) .ft-q-bk-h{ font-family:var(--ff-head); font-weight:900; font-size:1.05rem; color:var(--t-ink); }
+html:root body:not(#bqt) .ft-q-bk-p{ margin:4px 0 10px; font-size:.86rem; color:var(--t-mut); }
+html:root body:not(#bqt) .ft-q-bk{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px dashed var(--t-line); }
+html:root body:not(#bqt) .ft-q-bk-n{ min-width:0; display:flex; flex-direction:column; }
+html:root body:not(#bqt) .ft-q-bk-n b{ font-weight:900; color:var(--t-ink); }
+html:root body:not(#bqt) .ft-q-bk-n small{ color:var(--t-mut); font-weight:700; font-size:.78rem; }
+html:root body:not(#bqt) .rjar-bar i.mid{ background:#f2c230; }
+html:root body:not(#bqt) .rjar-bar i.low{ background:var(--t-bad); }
+
+/* ═══ 18. 11. 2026 Sekce „Cíle a pokrok“ v kompletním rozboru zrušena (stejné údaje už jsou na výsledku a v Plánu) ═══ */
+html:root body:not(#bqt) .dsec[data-ds="3"], html:root body:not(#bqt) .dtab-pane[data-dp="3"]{ display:none !important; }
+html:root body:not(#bqt) .rsbg-actions{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:12px; }
+
+/* ═══ 18. 11. 2026 ZJEDNODUŠENÍ ROZBORU (krok 2) ═══════════════════════════════════════
+   Zrušené duplicity v kompletním rozboru:
+     • dlaždice semaforu v Ochraně (stejná čísla jsou nahoře v řádcích Řeka, Hráz, Doupě; zůstává stres test),
+     • karta „Co zlepšit“ v Majetku a budoucnosti (totéž nabízí krok plánu),
+     • tlačítko „Můj finanční vývoj“ (stejná obrazovka je v menu jako Vývoj).
+   VRÁTIT ZPĚT = smazat celý tento blok (od téhle poznámky po konec souboru) a spustit build.
+   Původní soubor je uložený jako src/theme.css.bak_2026-11-18-pred-zjednodusenim-rozboru. Obsah v DOM zůstává,
+   skripty, report ani testy tím nejsou dotčené. */
+html:root body:not(#bqt) #indicators_grid,
+html:root body:not(#bqt) .dtab-pane[data-dp="1"] .dtab-intro,
+html:root body:not(#bqt) .card:has(> #tips_content),
+html:root body:not(#bqt) .dsec-vyvoj{ display:none !important; }
+
+/* kontrast: šipka „Proč právě X let?“ na modré kartě */
+html:root body:not(#bqt) .rsb-why-chev{ color:#fff !important; }
+/* kontrast: zelený text „Splněno" a pokles výdajů na bílé (dřív #159257, 3,98 : 1; teď barva stavu z motivu) */
+html:root body:not(#bqt) .ft-goal-done, html:root body:not(#bqt) .ft-exp-d.good{ color:var(--t-good) !important; }
+
+/* větší graf v kartách strategií, ať je vidět rozdíl: klidná čára / vlnka / ostré výkyvy */
+html:root body:not(#bqt) .pj-tile{ padding-bottom:124px !important; }
+html:root body:not(#bqt) .pj-spark{ height:112px; }
 
 </style>
 <!-- @@BRAND_END@@ --></head>
@@ -7017,6 +7104,7 @@ try{
     <div id="exp-est-note"></div>
     <div class="exp-live-total no-print">Zatím celkem: <strong id="exp-live-total-num">0 Kč/měs.</strong></div>
     <div class="grid-2" id="exp-cats-grid"></div>
+    <div id="jars-slot"></div>
   </div>
 
   <!-- Celkové výdaje summary -->
@@ -8304,7 +8392,8 @@ function fiSubsTotal(){
 }
 
 // Hodnota kategorie, VŽDY jeden zdroj pravdy podle režimu
-function catValue(catId){
+function catValue(catId){ return catValueBase(catId) + fiJarsMonthlyOf(catId); }
+function catValueBase(catId){
   if (typeof expenseMode !== 'undefined' && expenseMode === 'quick') return v('q_' + catId);
   const m = catMode(catId);
   if (m === 'simple') return v('ec_' + catId);
@@ -8347,6 +8436,161 @@ function fiSeedCat(catId){
     .forEach(it => { if (!fiItem(it.id)) itemsState.items.push({ id: it.id, name: it.name, cat: catId, tpl: it.id }); });
 }
 
+
+// ══════════════════════════════════════════════════════════════════════
+//  HRNÍČKY NA PRAVIDELNÉ PLATBY (18. 11. 2026)
+//  Platby, které chodí jednou za čtvrt roku, půl roku nebo rok (pojištění, daně, poplatky),
+//  se nepíšou do měsíčních výdajů. Každá je „hrníček“: částka, jak často, kdy je příští platba
+//  a kolik už je odloženo. Appka spočítá, kolik měsíčně odkládat; tahle měsíční částka (částka / počet
+//  měsíců) se jednou přičte k výdajům své kategorie (jako odložené peníze), ne jako jednorázový šok.
+//  Ukládá se do itemsState.jars (zálohy, šifrování i smazání dat tak fungují stejně jako u položek).
+// ══════════════════════════════════════════════════════════════════════
+const JAR_PER = { q: { n: 'čtvrtletně', m: 3 }, h: { n: 'půlročně', m: 6 }, y: { n: 'ročně', m: 12 } };
+const JAR_MESICE = ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'];
+function fiJars(){
+  if (window.IS_DEMO && Array.isArray(window._demoJars)) return window._demoJars;   // ukázka drží hrníčky mimo uložený stav (ten se při startu načítá znovu)
+  if (!Array.isArray(itemsState.jars)) itemsState.jars = [];
+  return itemsState.jars;
+}
+function fiJarNum(x){ const n = Number(String(x == null ? '' : x).replace(/[\s\u00a0]/g, '').replace(',', '.')); return isFinite(n) && n > 0 ? Math.round(n) : 0; }
+function fiJarAmount(j){ return fiJarNum(j && j.amount); }
+// Kolik je potřeba odložit měsíčně, aby platba v termínu vyšla. Když se neodkládalo, částka roste (12 000 Kč za 6 měsíců = 2 000 Kč,
+// za další 3 měsíce bez odkládání už 4 000 Kč). Když je hrníček před plánem, částka klesá.
+function fiJarMonthly(j){ return j ? fiJarState(j).catchUp : 0; }
+function fiJarsMonthlyOf(catId){ return fiJars().filter(j => j.cat === catId).reduce((s, j) => s + fiJarMonthly(j), 0); }
+function fiJarsMonthlyTotal(){ return fiJars().reduce((s, j) => s + fiJarMonthly(j), 0); }
+// Stav jednoho hrníčku k dnešku: kolik už má být odloženo a kolik chybí
+function fiJarState(j, now){
+  now = now || new Date();
+  const P = (JAR_PER[j.per] || JAR_PER.y).m, amt = fiJarAmount(j), saved = fiJarNum(j.saved);
+  const due = Math.min(12, Math.max(1, parseInt(j.due, 10) || 1));
+  const left = ((due - 1) - now.getMonth() + 12) % 12;          // měsíců do platby (0 = platí se tento měsíc)
+  const should = Math.round(amt * (1 - left / P));
+  const shortfall = Math.max(0, should - saved);
+  const need = Math.max(0, amt - saved);
+  return { amt: amt, saved: saved, left: left, due: due, should: should, shortfall: shortfall, need: need,
+           monthly: Math.round(amt / P), catchUp: left > 0 ? Math.ceil(need / left) : need, full: saved >= amt };
+}
+// Nejbližší hrníček, který není naplněný (pro upozornění na výsledku)
+function fiJarNext(){
+  const now = new Date();
+  const list = fiJars().map(j => ({ j: j, s: fiJarState(j, now) })).filter(x => x.s.amt > 0 && x.s.shortfall > 0);
+  list.sort((a, b) => a.s.left - b.s.left);
+  return list[0] || null;
+}
+function fiJarGuessCat(name){
+  const n = fiNorm(name || '');
+  if (/pojist/.test(n)) return 'pojisteni';
+  if (/auto|stk|dalnic|silnic|pneu|ridic/.test(n)) return 'doprava';
+  if (/dan|nemovit|svj|bydl|najem|komin|odpad|popla/.test(n)) return 'bydleni';
+  if (/zub|lekar|zdrav|brejl|fitko|sport/.test(n)) return 'zdravi';
+  if (/skol|krouz|rodin|dite|deti|tabor/.test(n)) return 'rodina';
+  return 'nakupy';
+}
+function fiJarSet(i, key, val){
+  const j = fiJars()[i]; if (!j) return;
+  if (key === 'name'){ j.name = String(val || '').trim().slice(0, 40); j.cat = fiJarGuessCat(j.name); }
+  else if (key === 'amount' || key === 'saved') j[key] = fiJarNum(val);
+  else if (key === 'per') j.per = JAR_PER[val] ? val : 'y';
+  else if (key === 'due') j.due = Math.min(12, Math.max(1, parseInt(val, 10) || 1));
+  itemsSaveState();
+  try { autoCalc(); } catch (e) {}
+  renderJarsCard();
+}
+function fiJarAdd(){
+  fiJars().push({ id: 'jar_' + Date.now().toString(36), name: '', cat: 'nakupy', per: 'y', amount: 0, due: new Date().getMonth() + 1, saved: 0 });
+  itemsSaveState(); renderJarsCard();
+}
+function fiJarPaid(i){
+  const j = fiJars()[i]; if (!j) return;
+  const P = (JAR_PER[j.per] || JAR_PER.y).m;
+  j.saved = Math.max(0, fiJarNum(j.saved) - fiJarAmount(j));
+  j.due = (((parseInt(j.due, 10) || 1) - 1 + P) % 12) + 1;
+  itemsSaveState();
+  try { autoCalc(); } catch (e) {}
+  renderJarsCard();
+}
+// Rychlé přidání: kolik jsem tento měsíc dal do hrníčku. Přepočítá výdaje i výsledek (bez znovuotevření okna s věkem).
+function fiJarQuickAdd(i){
+  const inp = document.getElementById('rjar-add-' + i);
+  const add = fiJarNum(inp && inp.value);
+  const j = fiJars()[i];
+  if (!j || !add) { if (inp) inp.focus(); return; }
+  j.saved = fiJarNum(j.saved) + add;
+  const _d = new Date(), _pk = _d.getFullYear() + '-' + String(_d.getMonth() + 1).padStart(2, '0');
+  j.mc = { pk: _pk, amount: ((j.mc && j.mc.pk === _pk) ? (+j.mc.amount || 0) : 0) + add };
+  itemsSaveState();
+  window.__rsbMoreOpen = true;                   // Podrobnosti zůstanou rozbalené i po přepočtu
+  try { autoCalc(); } catch (e) {}
+  try { window.__navEval = true; if (typeof evaluate === 'function') evaluate(); } catch (e) {} finally { window.__navEval = false; }
+  try { renderJarsCard(); } catch (e) {}
+}
+function fiJarDel(i){
+  fiJars().splice(i, 1); itemsSaveState();
+  try { autoCalc(); } catch (e) {}
+  renderJarsCard();
+}
+// Obrázek hrníčku: hladina podle toho, kolik je naplněno; nad hladinou se hýbou mince
+function fiJarLevel(s){
+  const r = s.should > 0 ? s.saved / s.should : 1;                 // kolik z toho, co už mělo být odloženo, tam opravdu je
+  return (s.full || r >= 1) ? 'ok' : (r >= 0.6 ? 'mid' : 'low');
+}
+function fiJarSvg(p, lvl){
+  if (lvl === true) lvl = 'ok'; else if (lvl === false) lvl = 'mid';
+  p = Math.max(0, Math.min(100, p || 0));
+  const h = Math.round(30 * p / 100), y = 46 - h;
+  const col = lvl === 'ok' ? '#2fa86c' : lvl === 'mid' ? '#f2c230' : '#e5484d';
+  const ok = lvl;
+  return '<svg class="jar-svg" viewBox="0 0 48 58" aria-hidden="true">'
+    + '<defs><clipPath id="jc' + Math.round(p) + ok + '"><path d="M9 20 Q9 18 11 18 H37 Q39 18 39 20 V46 Q39 52 33 52 H15 Q9 52 9 46 Z"/></clipPath></defs>'
+    + '<rect x="8" y="8" width="32" height="8" rx="3.5" fill="#b9833f"/><rect x="11" y="15" width="26" height="3.5" rx="1.5" fill="#8a5d27"/>'
+    + '<g clip-path="url(#jc' + Math.round(p) + ok + ')"><rect x="9" y="18" width="30" height="34" fill="#eaf1fb"/>'
+    + '<rect class="jar-lvl" x="9" y="' + y + '" width="30" height="' + (52 - y) + '" fill="' + col + '"/>'
+    + (p > 6 ? '<circle class="jar-coin" cx="19" cy="' + (y + 5) + '" r="3" fill="#ffd45e" stroke="#c18a00" stroke-width="1"/><circle class="jar-coin c2" cx="29" cy="' + (y + 9) + '" r="3" fill="#ffd45e" stroke="#c18a00" stroke-width="1"/>' : '')
+    + '</g><path d="M9 20 Q9 18 11 18 H37 Q39 18 39 20 V46 Q39 52 33 52 H15 Q9 52 9 46 Z" fill="none" stroke="#7a5a2c" stroke-width="2"/>'
+    + '</svg>';
+}
+function fiJarMoney(n){ return (typeof kc === 'function') ? kc(Math.round(n)) : Math.round(n) + ' Kč'; }
+function renderJarsCard(){
+  const slot = $('jars-slot'); if (!slot) return;
+  const jars = fiJars(), now = new Date();
+  const opt = (arr, cur) => arr.map(o => '<option value="' + o[0] + '"' + (String(o[0]) === String(cur) ? ' selected' : '') + '>' + o[1] + '</option>').join('');
+  const perOpts = Object.keys(JAR_PER).map(k => [k, JAR_PER[k].n]);
+  const monOpts = JAR_MESICE.map((m, i) => [i + 1, m]);
+  const rows = jars.map((j, i) => {
+    const s = fiJarState(j, now);
+    let stav = '';
+    const pr = s.amt > 0 ? Math.round(s.saved / s.amt * 100) : 0;
+    if (s.amt > 0){
+      if (s.full) stav = 'Splněno! Hrníček je plný, platba je připravená a z měsíčních výdajů zmizela. Až zaplatíš, klepni na Zaplaceno.';
+      else if (s.left === 0) stav = 'Platí se tento měsíc, v hrníčku chybí <b>' + fiJarMoney(s.need) + '</b>. Bobr už nosí poslední klacky.';
+      else if (s.shortfall > 0) stav = 'Bobr by tu měl mít aspoň <b>' + fiJarMoney(s.should) + '</b>, v hrníčku je <b>' + fiJarMoney(s.saved) + '</b>. Aby platba vyšla, nos do hrníčku <b>' + fiJarMoney(s.catchUp) + '</b> měsíčně.';
+      else stav = 'Skvělé, hrníček je v pořádku (<b>' + fiJarMoney(s.saved) + '</b>). Dál stačí <b>' + fiJarMoney(s.catchUp) + '</b> měsíčně.';
+    }
+    return '<div class="jar-row">'
+      + '<div class="jar-top">' + fiJarSvg(pr, fiJarLevel(s))
+      + '<input type="text" class="jar-name" maxlength="40" value="' + fiEsc(j.name || '') + '" placeholder="Co to je (třeba Pojištění auta)" aria-label="Název platby" onchange="fiJarSet(' + i + ',\'name\',this.value)">'
+      + '<button type="button" class="item-del" onclick="fiJarDel(' + i + ')" title="Odebrat hrníček">×</button></div>'
+      + '<div class="jar-fields">'
+      +   '<label>Částka jedné platby<span><input type="text" inputmode="numeric" class="jar-in" value="' + (s.amt ? s.amt : '') + '" placeholder="0" onchange="fiJarSet(' + i + ',\'amount\',this.value)"> Kč</span></label>'
+      +   '<label>Jak často<select onchange="fiJarSet(' + i + ',\'per\',this.value)">' + opt(perOpts, j.per) + '</select></label>'
+      +   '<label>Příští platba<select onchange="fiJarSet(' + i + ',\'due\',this.value)">' + opt(monOpts, s.due) + '</select></label>'
+      +   '<label>Už odloženo<span><input type="text" inputmode="numeric" class="jar-in" value="' + (s.saved ? s.saved : '') + '" placeholder="0" onchange="fiJarSet(' + i + ',\'saved\',this.value)"> Kč</span></label>'
+      + '</div>'
+      + (stav ? '<div class="jar-stav">' + stav + (s.amt > 0 && s.saved >= s.amt ? ' <button type="button" class="mini-btn" onclick="fiJarPaid(' + i + ')">Zaplaceno</button>' : '') + '</div>' : '')
+      + '</div>';
+  }).join('');
+  const total = fiJarsMonthlyTotal();
+  slot.innerHTML = '<div class="card jar-card">'
+    + '<div class="card-head" style="cursor:default"><div class="card-icon"><svg class="ic"><use href="#i-banknote"></use></svg></div>'
+    + '<div><div class="card-title">Hrníčky na pravidelné platby</div><div class="card-subtitle">Pojištění, daně a poplatky, které platíš jednou za čtvrt roku, půl roku nebo rok</div></div></div>'
+    + '<div class="card-body"><div class="jar-intro">Tyhle platby <b>nepiš do výdajů výš</b>. Každá dostane svůj hrníček: napiš částku, jak často se platí a kdy je příští platba. Bobr spočítá, kolik měsíčně nosit do hrníčku, ať tě velká platba nezaskočí. Když se pár měsíců neodkládá, částka sama naroste.</div>'
+    + rows
+    + '<button type="button" class="cust-add" onclick="fiJarAdd()"><span class="plus">+</span> Přidat platbu, která není měsíční</button>'
+    + (total > 0 ? '<div class="jar-total">Dohromady teď nosíš do hrníčků <b>' + fiJarMoney(total) + '</b> měsíčně. Počítá se to do výdajů jako odložené peníze, ne jako jednorázový šok.</div>' : '')
+    + '</div></div>';
+}
+
 function renderExpenseCats(){
   const grid = $('exp-cats-grid'); if (!grid) return;
   fiSeedDefaults();                // tři nejběžnější položky do nerozhodnutých kategorií
@@ -8368,6 +8612,7 @@ function renderExpenseCats(){
   EXP_CATS.forEach(c => renderCatBody(c.id));
   [grid, insSlot].forEach(g => { if (g) g.querySelectorAll('input.numfield').forEach(i => { if (keepVals[i.id] != null) i.value = keepVals[i.id]; }); });
   renderDomainCards();   // Spoření/Dluhy/Majetek, stejný princip
+  try { renderJarsCard(); } catch (e) {}
   updateAllHints();
 }
 
@@ -8713,7 +8958,9 @@ function fiRestoreCustom(e){
 // tak, aby pole pro všechny hodnoty existovala. Instance nad rámec katalogu
 // (vlastní, duplicity, přejmenované) doplní následně loadCustom z __custom.
 function fiPrepareForInputs(inputs, customArr){
+  const _zachovatHrnicky = Array.isArray(itemsState.jars) ? itemsState.jars : null;   // hrníčky jsou živý stav, ne součást záznamu měsíce
   itemsState = deriveItemsState(inputs || {}, customArr || (inputs && inputs.__custom) || []);
+  if (_zachovatHrnicky) itemsState.jars = _zachovatHrnicky;
   itemsState.domains = deriveDomains(inputs || {});
   itemsState.domainsSeeded = false;   // prázdné karty dostanou znovu výchozí položky
   domPickerOpen = {};
@@ -8778,7 +9025,7 @@ function initExpenseItems(){
   let st = null;
   try { st = JSON.parse(BQ.ulozne.cti(ITEMS_KEY) || 'null'); } catch(err){}
   if (st && st.modes){
-    itemsState = { modes: st.modes || {}, items: Array.isArray(st.items) ? st.items : [], domains: st.domains || null, domainsSeeded: !!st.domainsSeeded, expMerged: !!st.expMerged };
+    itemsState = { modes: st.modes || {}, items: Array.isArray(st.items) ? st.items : [], domains: st.domains || null, domainsSeeded: !!st.domainsSeeded, expMerged: !!st.expMerged, jars: Array.isArray(st.jars) ? st.jars : [] };
   } else {
     let v1 = null;
     try { v1 = JSON.parse(BQ.ulozne.cti(ITEMS_KEY_V1) || 'null'); } catch(err){}
@@ -9616,11 +9863,11 @@ function renderCatBreakdown(income) {
 // Méně příznivý scénář (pess) u vyšších strategií záměrně ukazuje i ZTRÁTU (záporný výnos), ať je vidět,
 // že hodnota může klesnout pod vložené peníze. Čísla jsou ilustrativní předpoklady, ne předpověď.
 const PROJ_STRATEGIES = [
-  { name:'Opatrná',   pess:0.005,  avg:0.025, opt:0.035, rateLabel:'2,5', risk:'Nízké riziko',   riskCls:'low',  lvl:1,
+  { name:'Opatrná',   pess:0.005,  avg:0.025, opt:0.035, rateLabel:'2,5', risk:'Nízké riziko',   riskCls:'low',  lvl:1, shape:'line',
     riskTxt:'Hodnota kolísá málo, ale výnos může být jen na úrovni inflace. Peníze se spíš zachovají, než zhodnotí.' },
-  { name:'Vyvážená',  pess:-0.010, avg:0.050, opt:0.085, rateLabel:'5',   risk:'Střední riziko', riskCls:'mid',  lvl:2,
+  { name:'Vyvážená',  pess:-0.010, avg:0.050, opt:0.085, rateLabel:'5',   risk:'Střední riziko', riskCls:'mid',  lvl:2, shape:'wave',
     riskTxt:'Hodnota kolísá a v horších letech může klesnout pod to, co jsi vložil. Výsledek je hodně nejistý.' },
-  { name:'Dynamická', pess:-0.030, avg:0.080, opt:0.100, rateLabel:'8',   risk:'Vysoké riziko ztráty', riskCls:'high', lvl:3,
+  { name:'Dynamická', pess:-0.030, avg:0.080, opt:0.100, rateLabel:'8',   risk:'Vysoké riziko ztráty', riskCls:'high', lvl:3, shape:'zig',
     riskTxt:'Největší potenciál, ale i největší možná ztráta. Hodnota může výrazně klesnout na dlouhé roky a můžeš skončit pod vloženou částkou. Hodí se jen na dlouhý horizont a pro toho, kdo ztrátu unese.' },
 ];
 const PROJ_HORIZONS = [
@@ -9671,13 +9918,31 @@ function _projSpark(saving, s, m, maxV){
   const Y = v => Math.round((H - 4 - (H-10) * Math.max(0, Math.min(1, v / maxV)))*10)/10;
   const mm = i => Math.round(m*i/N);
   const line = r => { const a = []; for(let i=0;i<=N;i++) a.push([X(i), Y(_projFv(saving, r, mm(i)))]); return a; };
-  const lo = line(s.pess), hi = line(s.opt), av = line(s.avg);
+  const lo = line(s.pess), hi = line(s.opt);
+  let av = line(s.avg);
+  // Průměrná čára se jen "rozkmitá" okolo skutečného průměrného scénáře, ten zůstává tentýž (počátek i konec se nemění).
+  // Opatrná: rovná pomalu stoupající čára. Vyvážená: mírná vlnka. Dynamická: ostré výkyvy nahoru a dolů.
+  const ZIG = [0, .08, -.12, .16, -.2, .12, -.18, .22, -.14, .18, -.24, .12, -.16, .2, -.12, .14, -.18, .12, -.1, .1, -.08, .05, -.03, .01, 0];
+  // Výkyvy se počítají od průměrného scénáře ve výši části grafu (ne jen z procenta hodnoty), proto se čára u vyšších strategií
+  // opravdu dostane i POD čárkovanou čáru „sám vložíš“. Na začátku a na konci je výkyv nulový, takže počátek i konec zůstávají.
+  const env = u => Math.min(1, 5 * u) * Math.min(1, 6 * (1 - u));
+  const klamp = (v, vklad) => Math.max(0.55 * vklad, Math.min(maxV, v));      // pád pod vklady nechceme hlubší než o ~45 %
+  if (s.shape === 'wave') {
+    const pts = []; const K = 72;
+    for (let i = 0; i <= K; i++) {
+      const u = i / K, mi = Math.round(m * u), base = _projFv(saving, s.avg, mi);
+      pts.push([Math.round(u * W * 10) / 10, Y(klamp(base + 0.15 * maxV * env(u) * Math.sin(2 * Math.PI * 3 * u), saving * mi))]);
+    }
+    av = pts;
+  } else if (s.shape === 'zig') {
+    av = av.map((p, i) => { const u = i / N, mi = mm(i), base = _projFv(saving, s.avg, mi); return [p[0], Y(klamp(base + 0.8 * maxV * env(u) * ZIG[i % ZIG.length], saving * mi))]; });
+  }
   const dep = []; for(let i=0;i<=N;i++) dep.push([X(i), Y(saving*mm(i))]);
   const band = hi.map(p=>p.join(',')).join(' ') + ' ' + lo.slice().reverse().map(p=>p.join(',')).join(' ');
   return '<svg class="pj-spark" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" aria-hidden="true">'
     + '<polygon class="pj-band" points="'+band+'"/>'
     + '<polyline class="pj-dep" points="'+dep.map(p=>p.join(',')).join(' ')+'"/>'
-    + '<polyline class="pj-avg" points="'+av.map(p=>p.join(',')).join(' ')+'"/>'
+    + '<polyline class="pj-avg'+(s.shape === 'zig' ? ' pj-zig' : '')+'" points="'+av.map(p=>p.join(',')).join(' ')+'"/>'
     + '</svg>';
 }
 // jen přepočítat nadpis + dlaždice (volá se při psaní částky i přepnutí horizontu)
@@ -11031,6 +11296,11 @@ function openDetail(){
 // Klik na řádek výsledku (Peníze/Ochrana/Majetek) otevře rozbor rovnou na dané sekci (22. 7. 2026)
 // 27. 7. 2026: řádek Řeka (peníze) na Přehledu vede na kartu „Kam ti odcházejí peníze" tamtéž
 // (sekce Peníze v rozboru zrušena). Ostatní řádky (Hráz/Doupě) dál otevírají svou sekci rozboru.
+// Správa cílů je na obrazovce Plán (sekce Cíle v rozboru zrušena)
+function goalsGoPlan(){
+  try { AppNav.go('plan'); } catch (e) { return; }
+  setTimeout(function(){ var e = document.getElementById('pl-cile'); if (e) { try { e.scrollIntoView({ behavior:'smooth', block:'start' }); } catch (x) {} } }, 350);
+}
 function rsbRowGo(sec){
   if (sec === 0){ var el = document.getElementById('rsb-money'); if (el){ var mr = document.getElementById('rsb-more'); if (mr) mr.open = true; try{ el.scrollIntoView({ behavior:'smooth', block:'start' }); }catch(e){} return; } }
   if (typeof openDetailSec === 'function') openDetailSec(sec);
@@ -18704,6 +18974,7 @@ BQ.registerModule('track-shared', BQTrackShared);
     checkinSaveDoIt();
   }
   function checkinSaveDoIt() {
+    aplikujBokem();   // co jsi dal bokem na cíle a do hrníčků (řádky se čtou ještě před zavřením obrazovky)
     closeScreens();
     // evaluate() je druhá síť: projde VŠECHNA pole formuláře stejným parserem
     // a při chybě nespočítá nic (vrací false a zahodí předchozí výsledek, takže
@@ -19345,6 +19616,7 @@ BQ.registerModule('track-shared', BQTrackShared);
       + '<div class="ft-scene-row">' + bobr('checkin', 'ft-scene-bobr')
       + '<p class="ft-lead" style="margin:0">Tohle si o tobě pamatuju z minula (' + esc(C.periodLabel(last.periodKey, true)) + '). Rozklikni oblast a přepiš jen čísla, která se změnila, zbytek nech být.</p></div>'
       + '<div class="ft-areas">' + rows + '</div>'
+      + bokemHtml(bokemData())
       + '<div class="ft-ci-sumbar no-print" id="ft-ci-sumbar" role="status" aria-live="polite"></div>'
       + '<div class="ft-checkin-actions">'
       + '<button class="btn btn-primary" onclick="FinTrack.checkinSaveNow()">' + checkinSaveLabel() + '</button>'
@@ -19530,6 +19802,56 @@ BQ.registerModule('track-shared', BQTrackShared);
     return Math.abs(qTotal(k) - cil) < 0.5;
   }
 
+  /* ── BOKEM: kolik jsi tento měsíc dal bokem na cíle (spořicí cíle) a do hrníčků na pravidelné platby ──
+     Každý cíl a každý hrníček má v měsíčním zápisu vlastní řádek. Prázdné pole = tenhle měsíc nic.
+     Při uložení se částky promítnou do týchž míst jako jinde: u cílů do pole gsave_<id> (zapíše je evaluate),
+     u hrníčků do uložené částky (j.saved) s pamětí měsíce, ať se úprava téhož měsíce nepřičte podruhé. */
+  function bokemData() {
+    var pk = C.periodKeyFromDate(new Date()), out = { goals: [], jars: [] };
+    try { if (typeof renderGoalSaveRows === 'function') renderGoalSaveRows(); } catch (e) { }   // doplní id cílů a pole gsave_
+    try {
+      (FinStore.getGoals() || []).forEach(function (g) {
+        if (!g || g.type !== 'savings' || g.done || !(g.status === 'active' || g.status == null) || !g.id) return;
+        var c = (Array.isArray(g.contributions) ? g.contributions : []).filter(function (x) { return String(x && x.date || '').slice(0, 7) === pk; })[0];
+        out.goals.push({ id: g.id, name: g.title || g.name || 'Cíl', cur: c ? (+c.amount || 0) : 0,
+          saved: Math.round(+(g.currentValue != null ? g.currentValue : g.current) || 0), target: Math.round(+(g.targetValue != null ? g.targetValue : g.target) || 0) });
+      });
+    } catch (e) { }
+    try {
+      if (typeof fiJars === 'function') fiJars().forEach(function (j, i) {
+        var s = fiJarState(j); if (s.amt <= 0) return;
+        out.jars.push({ i: i, name: j.name || 'Platba', cur: (j.mc && j.mc.pk === pk) ? (+j.mc.amount || 0) : 0, saved: s.saved, amt: s.amt, full: s.full });
+      });
+    } catch (e) { }
+    return out;
+  }
+  function bokemRow(typ, klic, nazev, podnadpis, cur) {
+    return '<div class="ft-q-bk" data-t="' + typ + '" data-k="' + esc(String(klic)) + '"><div class="ft-q-bk-n"><b>' + esc(nazev) + '</b><small>' + esc(podnadpis) + '</small></div>'
+      + '<div class="ft-q-fld"><input class="ft-q-bin" inputmode="numeric" autocomplete="off" value="' + (cur ? esc(String(Math.round(cur))) : '') + '" placeholder="0" aria-label="Kolik jsi tento měsíc dal bokem: ' + esc(nazev) + '"><span class="ft-q-u">Kč</span></div></div>';
+  }
+  function bokemHtml(b) {
+    if (!b.goals.length && !b.jars.length) return '';
+    var rows = b.goals.map(function (g) { return bokemRow('g', g.id, g.name, 'cíl · naspořeno ' + money(g.saved) + (g.target ? ' z ' + money(g.target) : ''), g.cur); }).join('')
+      + b.jars.map(function (j) { return bokemRow('j', j.i, j.name, 'hrníček na platbu · ' + (j.full ? 'plný' : money(j.saved) + ' z ' + money(j.amt)), j.cur); }).join('');
+    return '<div class="ft-q-bokem"><div class="ft-q-bk-h">Co jsi tento měsíc dal bokem?</div>'
+      + '<p class="ft-q-bk-p">Každý cíl a každý hrníček má svůj řádek. Napiš, kolik jsi na něj poslal. Nic? Nech prázdné a bobr si to zapamatuje.</p>' + rows + '</div>';
+  }
+  function aplikujBokem() {
+    var pk = C.periodKeyFromDate(new Date());
+    document.querySelectorAll('.ft-q-bk').forEach(function (row) {
+      var inp = row.querySelector('.ft-q-bin'); if (!inp) return;
+      var cte = BQ.num.ctiText(inp.value, 'castka'), val = cte.stav === 'invalid' ? 0 : Math.round(BQ.num.proVypocet(cte) || 0);
+      if (row.getAttribute('data-t') === 'g') {
+        var f = document.getElementById('gsave_' + row.getAttribute('data-k')); if (f) f.value = val ? String(val) : '';
+      } else if (typeof fiJars === 'function') {
+        var j = fiJars()[+row.getAttribute('data-k')]; if (!j) return;
+        var prev = (j.mc && j.mc.pk === pk) ? (+j.mc.amount || 0) : 0;
+        j.saved = Math.max(0, (+j.saved || 0) + val - prev); j.mc = { pk: pk, amount: val };
+      }
+    });
+    try { if (typeof itemsSaveState === 'function') itemsSaveState(); } catch (e) { }
+  }
+
   function renderQuick(last) {
     prefillForm(last.inputs);
     hideAll();
@@ -19545,6 +19867,7 @@ BQ.registerModule('track-shared', BQTrackShared);
         + '<div class="ft-q-fld"><input id="q-' + r.k + '" class="ft-q-in" inputmode="numeric" autocomplete="off" data-orig="' + v + '" value="'
         + esc((typeof formatNum === 'function') ? formatNum(String(v)) : String(v)) + '" aria-label="' + esc(r.q) + '"><span class="ft-q-u">Kč</span></div></div>';
     }).join('');
+    var bokem = bokemData();
     var nesu = [];
     if (m.totalLiabilities != null) nesu.push('dluhy ' + money(m.totalLiabilities));
     if (m.totalAssets != null) nesu.push('majetek ' + money(m.totalAssets));
@@ -19556,6 +19879,7 @@ BQ.registerModule('track-shared', BQTrackShared);
       + '<p class="ft-q-lead">' + (novy ? 'Stačí tři čísla. Zbytek si pamatuju z minula (' + esc(C.periodLabel(last.periodKey, true)) + '), takže to zabere minutku.'
         : 'Tohle máš uložené za tenhle měsíc. Přepiš, co se změnilo, a ulož. Starý záznam se nahradí, jde to vrátit.') + '</p></div>'
       + '<div class="ft-q-rows">' + rows + '</div>'
+      + bokemHtml(bokem)
       + '<div class="ft-q-carry">Z minula beru beze změny: ' + (nesu.length ? esc(nesu.join(', ')) : 'ostatní položky')
       + '. Změnilo se u nich něco? <button type="button" class="ft-q-link" id="q-podrobne">Upravit podrobně ›</button></div>'
       + '<div class="ft-q-actions"><button type="button" class="btn btn-primary ft-q-save" id="q-uloz">' + (novy ? 'Uložit ' : 'Uložit změny, ') + esc(mesic) + '</button></div>'
@@ -19608,6 +19932,7 @@ BQ.registerModule('track-shared', BQTrackShared);
       renderCheckinScreen(false);
       return;
     }
+    aplikujBokem();
     closeScreens();
     var spocitano = false;
     try { window.__navEval = true; spocitano = (typeof evaluate === 'function') ? evaluate() : false; } finally { window.__navEval = false; }
@@ -24832,7 +25157,7 @@ BQ.fakta = FinFakta;
     const m = window.LAST_M; if (!m) return '';
     const goals = loadGoals();
     if (!goals.length){
-      return '<div class="rscard rsb-goals rsb-goals-cta no-print" onclick="openDetailSec(3)">'
+      return '<div class="rscard rsb-goals rsb-goals-cta no-print" onclick="FinTrack.addGoal()">'
         + '<span class="rsbg-ic"><svg class="ic"><use href="#i-target"></use></svg></span>'
         + '<span class="rsbg-cta-tx"><b>Spoříš na něco? Přidej si stavbu.</b>'
         + '<small>Dovolená, auto, zásoba na zimu… uvidíš tady pokaždé, jak roste.</small></span>'
@@ -24840,7 +25165,7 @@ BQ.fakta = FinFakta;
     }
     const rows = goals.slice(0, 3).map(function(g){
       const c = computeGoal(g, m), d = GOAL_DEF[g.type] || { icon:'i-target', label:'Cíl' };
-      return '<div class="rsbg-row'+(c.done ? ' done' : '')+(c.wait ? ' wait' : '')+'" onclick="openDetailSec(3)" title="Klikni pro detail a úpravy cílů">'
+      return '<div class="rsbg-row'+(c.done ? ' done' : '')+(c.wait ? ' wait' : '')+'" onclick="goalsGoPlan()" title="Klikni pro detail a úpravy cílů">'
         + '<span class="rsbg-ic"><svg class="ic"><use href="#'+d.icon+'"></use></svg></span>'
         + '<span class="rsbg-tx"><b>'+fiEsc(gName(g) || d.label)+(c.wait ? ' <span class="rsbg-wait">nejdřív priority</span>' : '')+'</b>'
         +   '<span class="rsbg-bar"><i style="width:'+c.pct+'%"></i></span>'
@@ -24848,8 +25173,10 @@ BQ.fakta = FinFakta;
         + '<span class="rsbg-pct'+(c.done ? ' done' : '')+'">'+c.pct+' %</span>'
         + '</div>';
     }).join('');
-    const more = goals.length > 3
-      ? '<a class="rsp-more no-print" onclick="openDetailSec(3)">Všechny cíle ('+goals.length+') ›</a>' : '';
+    // 18. 11. 2026: sekce „Cíle a pokrok“ v rozboru zanikla (byla to třetí kopie téhož). Správa cílů je v Plánu,
+    // nový cíl se zakládá rovnou odsud.
+    const more = '<div class="rsbg-actions no-print"><button type="button" class="btn btn-ghost btn-sm" onclick="FinTrack.addGoal()">+ Nový cíl</button>'
+      + (goals.length > 3 ? '<a class="rsp-more" onclick="goalsGoPlan()">Všechny cíle ('+goals.length+') ›</a>' : '') + '</div>';
     return '<div class="rscard rsb-goals">'
       + '<div class="rs-tag"><svg class="ic"><use href="#i-target"></use></svg>Tvoje stavby <span class="cap-tr">(cíle)</span></div>'
       + rows + more + '</div>';
@@ -25426,10 +25753,10 @@ BQ.fakta = FinFakta;
   // Smyšlená DEMO data, předvyplní a ukáže výsledek, ale NEJDE uložit (jen pro představu)
   // 22. 7. 2026: 6 kategorií (digital→zábava, zdraví→rodina, ostatní→nákupy), součty zachovány
   const DEMO_FIELDS = { p_age:35, i_salary:42000, i_partner:31000,
-    q_bydleni:8000, q_jidlo:11000, q_doprava:4000, q_pojisteni:2500, q_zabava:4700, q_rodina:4700, q_nakupy:5100,
-    s_savings:4000, s_etf:3000, s_pension:1500,
-    a_cash:60000, a_savings_bal:60000, a_portfolio:220000, a_property_home:4500000, a_car:280000, a_pension_val:180000,
-    d_mortgage_pay:16000, d_mortgage_bal:2600000, d_cc_pay:2000, d_cc_bal:40000 };
+    q_bydleni:7700, q_jidlo:11000, q_doprava:4000, q_pojisteni:1300, q_zabava:4700, q_rodina:4700, q_nakupy:4739,
+    s_savings:5000, s_etf:5000, s_pension:2000,
+    a_cash:100000, a_savings_bal:260000, a_portfolio:220000, a_property_home:4500000, a_car:280000, a_pension_val:180000,
+    d_mortgage_pay:16000, d_mortgage_bal:2600000 };   // ukázka je POZITIVNÍ příběh: rezerva přes 6 měsíců, spoření nad 15 %, žádný drahý dluh
   // ── UKÁZKOVÁ HISTORIE (22. 7. 2026) ────────────────────────────────────────────
   // V ukázce nemá smysl vidět jen jeden měsíc. Nasimulujeme 24 měsíců smyšleného
   // vývoje (rezerva roste, dluh klesá, cíle se plní), aby bylo vidět dlouhodobé
@@ -25458,12 +25785,12 @@ BQ.fakta = FinFakta;
       var d = new Date(now.getFullYear(), now.getMonth()-(N-1-i), 15);
       var income   = last ? 73000  : lerp(64000,73000,t) + noise(900);
       var expenses = last ? 40000  : lerp(41500,40000,t) + noise(700) + (dip ? 18000 : 0);
-      var savings  = last ? 8500   : Math.max(0, lerp(2000,8500,t) + noise(400) - (dip ? 4000 : 0));
-      var invest   = last ? 4500   : Math.max(0, lerp(500,4500,t) + noise(250));
-      var debtPay  = last ? 18000  : lerp(21000,18000,t) + noise(250);
-      var reserve  = last ? 120000 : Math.max(0, lerp(25000,120000,t) + noise(3500) - (dip ? 35000 : 0));
-      var assets   = last ? 5300000: lerp(5050000,5300000,t) + noise(12000);
-      var liab     = last ? 2640000: lerp(2980000,2640000,t) + noise(5000);
+      var savings  = last ? 12000  : Math.max(0, lerp(3000,12000,t) + noise(400) - (dip ? 4000 : 0));
+      var invest   = last ? 7000   : Math.max(0, lerp(1500,7000,t) + noise(250));
+      var debtPay  = last ? 16000  : lerp(17500,16000,t) + noise(250);
+      var reserve  = last ? 360000 : Math.max(0, lerp(90000,360000,t) + noise(3500) - (dip ? 35000 : 0));
+      var assets   = last ? 5540000: lerp(5050000,5540000,t) + noise(12000);
+      var liab     = last ? 2600000: lerp(2960000,2600000,t) + noise(5000);
       var netWorth = assets - liab;
       var expP = Math.round(expenses/income*1000)/10;
       var savP = Math.round(savings/income*1000)/10;
@@ -25471,8 +25798,8 @@ BQ.fakta = FinFakta;
       var resMon = C.reserveMonths(reserve, expenses, debtPay) || 0;   // jednotná základna (výdaje + splátky)
       var cashflow = income - expenses - savings - debtPay;
       var chrono = d.getFullYear() - birthYear;
-      var mortgageP = Math.round(debtPay*0.85/income*1000)/10;   // demo je pár s hypotékou → většina splátek je hypotéka
-      var consumerDebtP = Math.round(debtPay*0.15/income*1000)/10;
+      var mortgageP = Math.round(debtPay/income*1000)/10;   // demo je pár s hypotékou → většina splátek je hypotéka
+      var consumerDebtP = 0;
       var score = (typeof computeScore === 'function')
         ? computeScore({ expP:expP, savP:savP, debtP:debtP, consumerDebtP:consumerDebtP, resMon:resMon, cashflow:cashflow, income:income, subsTotal:0, execution:0, gambling:0 })
         : Math.round(45 + 35*t);
@@ -25513,7 +25840,8 @@ BQ.fakta = FinFakta;
     try {
       ftGoals = [
         Object.assign(C.newGoal({ type:'savings',     title:'Dovolená v Itálii',   targetValue:60000, currentValue:38000, targetDate: dl.toISOString().slice(0,10) }), { startValue:0 }),
-        Object.assign(C.newGoal({ type:'reserve',     title:'Zásoba na zimu: 6 měsíců výdajů', targetValue:6 }), { startValue:0.6 }),
+        Object.assign(C.newGoal({ type:'savings',     title:'Nové auto',           targetValue:150000, currentValue:45000, targetDate: new Date(dl.getFullYear(), dl.getMonth()+13, 15).toISOString().slice(0,10) }), { startValue:0 }),
+        Object.assign(C.newGoal({ type:'reserve',     title:'Zásoba na zimu: 9 měsíců výdajů', targetValue:9 }), { startValue:0.6 }),
         Object.assign(C.newGoal({ type:'debt',        title:'Splatit všechny dluhy',    targetValue:0 }), { startValue:3200000 }),
         Object.assign(C.newGoal({ type:'savingsRate', title:'Posílat na hráz 15 % příjmu', targetValue:15 }), { startValue:3 })
       ];
@@ -25567,8 +25895,30 @@ BQ.fakta = FinFakta;
     // demo potřebuje pole spoření/dluhů/majetku, aktivuj je, ale zapamatuj si stav
     // uživatele, ať mu demo nezanese prázdné položky (obnova v startDemoExit)
     try { window._preDemoItems = JSON.stringify(itemsState); } catch(e){ window._preDemoItems = null; }
+    // 18. 11. 2026: ukázka musí začít z ČISTÝCH polí. Dřív zůstaly ve formuláři údaje, které člověk psal sám
+    // (uložené v prohlížeči), a smíchaly se se smyšlenými: ukázka pak ukazovala třeba dluhy na kreditce a "starší" finance.
+    // Vlastní hodnoty se schovají a po odchodu z ukázky se vrátí.
+    try {
+      window._preDemoFields = {};
+      document.querySelectorAll('.numfield').forEach(function(i){
+        if (!i.id || i.id.indexOf('cust_') === 0) return;
+        window._preDemoFields[i.id] = i.value; i.value = '';
+      });
+      if (typeof clearCustom === 'function') clearCustom();    // vlastní řádky příjmů a výdajů
+    } catch(e){}
     fiDomEnsure(Object.keys(DEMO_FIELDS));
     Object.keys(DEMO_FIELDS).forEach(function(k){ var el=document.getElementById(k); if(el) el.value=String(DEMO_FIELDS[k]); });
+    // hrníčky na pravidelné platby (18. 11. 2026). Jejich měsíční odkládání 1 500 Kč je z výdajů v DEMO_FIELDS
+    // odečteno, ať se součet výdajů ukázky nemění. Drží se mimo uložený stav (ten se při startu načítá znovu).
+    try {
+      var dnes = new Date().getMonth();
+      window._demoJars = [
+        { id:'jar_demo1', name:'Pojištění auta',       cat:'pojisteni', per:'y', amount:9600, due:((dnes+3)%12)+1, saved:7600 },
+        { id:'jar_demo2', name:'Servis a STK auta',    cat:'doprava',   per:'y', amount:6000, due:((dnes+6)%12)+1, saved:2200 },
+        { id:'jar_demo3', name:'Pojištění domácnosti', cat:'pojisteni', per:'h', amount:2400, due:((dnes+1)%12)+1, saved:2100 },
+        { id:'jar_demo4', name:'Daň z nemovitosti',    cat:'bydleni',   per:'y', amount:3600, due:((dnes+5)%12)+1, saved:2300 }
+      ];
+    } catch(e){}
     $('landing').style.display='none';
     var ch=$('chooser'); if(ch) ch.style.display='none';
     var qf=$('quickflow'); if(qf) qf.style.display='none';
@@ -25582,6 +25932,12 @@ BQ.fakta = FinFakta;
     window.IS_DEMO = false;
     demoRestoreStore();
     Object.keys(DEMO_FIELDS).forEach(function(k){ var el=document.getElementById(k); if(el) el.value=''; });
+    // vrať vlastní hodnoty polí, které se na dobu ukázky schovaly
+    try {
+      Object.keys(window._preDemoFields || {}).forEach(function(id){ var el=document.getElementById(id); if (el) el.value = window._preDemoFields[id]; });
+      window._preDemoFields = null;
+      if (typeof loadCustom === 'function' && typeof loadCustomArr === 'function') loadCustom(loadCustomArr());
+    } catch(e){}
     // vrať osobní seznam do stavu před demem
     // návrat skutečných položek po ukázkovém režimu: kdyby selhal, člověk by
     // po ukázce našel cizí čísla ve svém seznamu
@@ -27343,7 +27699,9 @@ BQ.fakta = FinFakta;
     // když karta mluví o nevyužitém spoření, žebřík se schová; jinak žebřík zůstane a procenta u řádku Spoření odpadnou
     let _ladder = savingsLadderHtml(m);
     try { const _fc = faCost(m); if (_fc && _fc.label === 'Nevyužitý potenciál spoření') _ladder = ''; } catch(e){}
-    const subExp  = (m.subsTotal   || 0) > 0 ? 'z toho předplatná ' + kc(m.subsTotal)
+    const _jarM = (typeof fiJarsMonthlyTotal === 'function') ? Math.round(fiJarsMonthlyTotal()) : 0;
+    const subExp  = _jarM > 0 ? 'z toho hrníčky na platby ' + kc(_jarM) + ((m.subsTotal || 0) > 0 ? ' · předplatná ' + kc(m.subsTotal) : '')
+                  : (m.subsTotal   || 0) > 0 ? 'z toho předplatná ' + kc(m.subsTotal)
                   : (expCatRows ? 'klikni pro rozdělení podle kategorií' : (expItems.length ? 'klikni pro položky' : ''));
     const subDebt = (m.mortgagePay || 0) > 0 ? 'z toho hypotéka ' + kc(m.mortgagePay) : (debtItems.length ? 'klikni pro položky' : '');
     const subSav  = (m.investM     || 0) > 0 ? 'z toho investice ' + kc(m.investM) : (savItems.length ? 'klikni pro položky' : '');
@@ -27361,6 +27719,40 @@ BQ.fakta = FinFakta;
       + (cf >= 0
           ? row('#1b3a6b', 'i-wallet', 'Zbývá volných', 'tvůj měsíční polštář', cf, '+', pctOf(cf), 'r-free')
           : row('#c92a2a', 'i-alert', 'Chybí, jsi v mínusu', 'utrácíš víc, než ti přijde', Math.abs(cf), '−', pctOf(Math.abs(cf)), 'r-neg'))
+      + '</div>';
+  }
+  // Karta „Hrníčky na pravidelné platby“ na výsledku (jen čtení; zadává se v kroku Výdaje)
+  function jarsResultCardHtml(){
+    if (typeof fiJars !== 'function') return '';
+    const jars = fiJars().map((j, ix) => ({ j: j, ix: ix })).filter(x => fiJarAmount(x.j) > 0);
+    if (!jars.length) return '';
+    const now = new Date();
+    const rows = jars.map(x => {
+      const j = x.j, ix = x.ix;
+      const s = fiJarState(j, now);
+      const p = s.amt > 0 ? Math.max(0, Math.min(100, Math.round(s.saved / s.amt * 100))) : 0;
+      const ok = s.shortfall <= 0;
+      const lvl = fiJarLevel(s);
+      const per = (JAR_PER[j.per] || JAR_PER.y).n;
+      const stav = s.left === 0
+        ? (s.full ? 'Platí se tento měsíc, hrníček je naplněný.' : 'Platí se tento měsíc, chybí <b>' + kc(s.need) + '</b>.')
+        : (ok ? 'Bobr je spokojený. Dál nos <b>' + kc(s.catchUp) + '</b> měsíčně.'
+              : 'Má být teď aspoň <b>' + kc(s.should) + '</b>. Nos do hrníčku <b>' + kc(s.catchUp) + '</b> měsíčně.');
+      return '<div class="rjar-row' + (s.full ? ' rjar-full' : '') + '">'
+        + '<div class="rjar-svgwrap">' + fiJarSvg(p, lvl) + '</div>'
+        + '<div class="rjar-main">'
+        + '<div class="rjar-head"><span class="rjar-name">' + fiEsc(j.name || 'Platba') + '</span>'
+        + '<span class="rjar-meta">' + per + ' · ' + kc(s.amt) + ' · příští ' + JAR_MESICE[s.due - 1] + '</span></div>'
+        + '<div class="rjar-bar"><i class="' + lvl + '" style="width:' + p + '%"></i></div>'
+        + '<div class="rjar-stav"><span>V hrníčku <b>' + kc(s.saved) + '</b> z ' + kc(s.amt) + '</span><span>' + (s.full ? 'Splněno! Hrníček je plný a z měsíčních výdajů zmizel.' : stav) + '</span></div>'
+        + ((!window.IS_DEMO && !s.full) ? '<div class="rjar-add no-print">Tento měsíc jsem odložil <input type="text" inputmode="numeric" id="rjar-add-' + ix + '" placeholder="0" aria-label="Kolik jsi tento měsíc odložil do hrníčku ' + fiEsc(j.name || '') + '"> Kč <button type="button" class="mini-btn" onclick="fiJarQuickAdd(' + ix + ')">Přidat</button></div>' : '')
+        + '</div></div>';
+    }).join('');
+    const total = Math.round(fiJarsMonthlyTotal());
+    return '<div class="rscard rs-jars">'
+      + '<div class="rs-tag"><svg class="ic"><use href="#i-banknote"></use></svg>Povinné platby, které se opakují <span class="cap-tr">(hrníčky)</span></div>'
+      + rows
+      + '<div class="rjar-sum">Bobr nosí do hrníčků <b>' + kc(total) + '</b> měsíčně. Je to součást tvých výdajů, ne jednorázový šok.</div>'
       + '</div>';
   }
   // Žebřík spoření 10/15/20 %, „kde jsem a co je další meta" (pod řádkem Spoření v toku peněz)
@@ -27855,9 +28247,13 @@ BQ.fakta = FinFakta;
     const _shOk = _shields.filter(s => s.cls==='ok').length;
     const _shWeak = _shields.filter(s => s.cls!=='ok').map(s => s.n);
     const _guardCls = _shOk===3 ? 'ok' : _shields.some(s => s.cls==='bad') ? 'bad' : 'warn';
-    const _guardTxt = _shOk===3
+    let _guardTxt = _shOk===3
       ? 'Drží <b>na všech 3 oporách</b>, ani dlouhá zima tě nezaskočí.'
       : 'Drží <b>'+_shOk+' ze 3 opor</b>. Slabé místo: '+_shWeak.join(' a ')+'.';
+    try {
+      const _jn = (typeof fiJarNext === 'function') ? fiJarNext() : null;
+      if (_jn) _guardTxt += ' Blíží se platba <b>' + fiEsc(_jn.j.name || 'bez názvu') + '</b> (' + JAR_MESICE[_jn.s.due - 1] + '), v hrníčku chybí <b>' + kc(_jn.s.shortfall) + '</b>.';
+    } catch(e){}
     // řádek Majetek: bobří hrad
     const _nwB = m.netWorth || 0;
     const _homeCls = _nwB>0 ? 'ok' : _nwB<0 ? 'bad' : 'warn';
@@ -27893,13 +28289,15 @@ BQ.fakta = FinFakta;
       // 18. 11. 2026: ZJEDNODUŠENÍ. Nahoře zůstává jen to hlavní: věk financí, tři řádky a jeden krok plánu.
       // Tok peněz, „Co ti tiše protéká“ a stavby (cíle) jsou pod rozbalovacími Podrobnostmi, aby výsledek
       // nebyl na první pohled dlouhý. Stavby tak nesoutěží s plánem o pozornost.
+      // 18. 11. 2026: to, co má člověk bokem, je vidět hned: nejdřív povinné platby (hrníčky), pak přání (stavby/cíle)
+      + '<div id="rsb-jars">' + (typeof jarsResultCardHtml === 'function' ? jarsResultCardHtml() : '') + '</div>'
+      + '<div id="rsb-goals">' + (typeof goalStripHtml === 'function' ? goalStripHtml() : '') + '</div>'
       + '<div class="rflow-plan rsb-plan">' + screenPlan + '</div>'
-      + '<details class="rsb-more" id="rsb-more">'
-      +   '<summary><span>Podrobnosti</span><small>kam ti odcházejí peníze, co ti tiše protéká a tvoje stavby</small></summary>'
+      + '<details class="rsb-more" id="rsb-more"' + (window.__rsbMoreOpen ? ' open' : '') + '>'
+      +   '<summary><span>Podrobnosti</span><small>kam ti odcházejí peníze a co ti tiše protéká</small></summary>'
       +   '<div class="rsb-more-body">'
       +     '<div id="rsb-money">' + (typeof buildMoneyFlowCardHtml === 'function' ? buildMoneyFlowCardHtml(m) : '') + '</div>'
       +     costCard
-      +     '<div id="rsb-goals">' + (typeof goalStripHtml === 'function' ? goalStripHtml() : '') + '</div>'
       +   '</div>'
       + '</details>'
       + '</div>'
@@ -28611,21 +29009,25 @@ BQ.fakta = FinFakta;
   var CSS_PRAVIDLA = [
     ['.rp-page', 'width:210mm;height:296mm;box-sizing:border-box;position:relative;overflow:hidden;background:#fff;color:#18233a;font-family:Nunito,"Segoe UI",system-ui,sans-serif;font-size:10pt;line-height:1.4;page-break-after:always;break-after:page;margin:0;padding:0'],
     ['.rp-page:last-child', 'page-break-after:auto;break-after:auto'],
-    ['.rp-band', 'background:linear-gradient(135deg,#122243,#1c3463);color:#fff;height:64mm;padding:12mm 14mm 0;position:relative'],
-    ['.rp-brand', 'font-weight:900;font-size:15pt;letter-spacing:.16em;color:#fff'],
-    ['.rp-brand b', 'color:#f1c54b;font-weight:900'],
-    ['.rp-brand small', 'display:block;font-size:7.5pt;letter-spacing:.2em;color:#aebddc;font-weight:700;margin-top:1mm'],
-    ['.rp-title', 'font-size:25pt;font-weight:900;line-height:1.05;margin:9mm 0 2mm;color:#fff'],
+    ['.rp-band', 'background:linear-gradient(155deg,#2b5fc7,#1b3f8f);color:#fff;height:64mm;padding:12mm 14mm 0;position:relative'],
+    ['.rp-mini', 'background:linear-gradient(155deg,#2b5fc7,#1b3f8f);color:#fff;height:17mm;padding:0 14mm;display:flex;align-items:center;justify-content:space-between'],
+    ['.rp-mini .rp-brand', 'font-size:17pt'],
+    ['.rp-mini-r', 'font-size:8.5pt;font-weight:700;color:#dbe6ff;letter-spacing:.04em'],
+    /* LOGO: stejné proporce jako v appce a v okně s kódem (Nunito 1000, mezery .005em, obrys .03em v barvě písmen) */
+    ['.rp-brand', 'font-family:Nunito,"Segoe UI",system-ui,sans-serif;font-weight:1000;font-size:26pt;line-height:1.1;letter-spacing:.005em;color:#fffdf6;-webkit-text-stroke:.03em currentColor;paint-order:stroke fill;text-shadow:.5mm .8mm 0 rgba(0,0,0,.28)'],
+    ['.rp-brand b', 'color:#f4c33d;font-weight:1000;-webkit-text-stroke:.03em currentColor;paint-order:stroke fill'],
+    ['.rp-brand small', 'display:block;font-size:7.5pt;letter-spacing:.2em;color:#dbe6ff;font-weight:700;margin-top:1.2mm;-webkit-text-stroke:0;text-shadow:none'],
+    ['.rp-title', 'font-size:25pt;font-weight:900;line-height:1.05;margin:7mm 0 2mm;color:#fff'],
     ['.rp-sub', 'font-size:10.5pt;color:#d6e0f5;font-weight:600'],
     ['.rp-mascot', 'position:absolute;right:12mm;bottom:-8mm;height:54mm;width:auto'],
     ['.rp-body', 'padding:0 14mm'],
     ['.rp-hero', 'margin-top:-12mm;position:relative;background:#fff;border:1px solid #d7dfee;border-radius:5mm;padding:6mm 7mm;display:flex;gap:7mm;align-items:center;box-shadow:0 2mm 6mm rgba(18,34,67,.12)'],
     ['.rp-age', 'flex:0 0 38mm;text-align:center;border-right:1px solid #e1e7f1;padding-right:6mm'],
     ['.rp-age .lbl', 'font-size:7.5pt;letter-spacing:.14em;font-weight:800;color:#5f6e87;text-transform:uppercase'],
-    ['.rp-age .num', 'font-size:44pt;font-weight:900;line-height:1;color:#122243;margin:1mm 0'],
+    ['.rp-age .num', 'font-size:44pt;font-weight:900;line-height:1;color:#1b3f8f;margin:1mm 0'],
     ['.rp-age .jed', 'font-size:12pt;font-weight:800;color:#8a5a00'],
     ['.rp-hero .txt', 'flex:1'],
-    ['.rp-hero .big', 'font-size:13pt;font-weight:900;color:#122243;line-height:1.25'],
+    ['.rp-hero .big', 'font-size:13pt;font-weight:900;color:#18233a;line-height:1.25'],
     ['.rp-hero .small', 'font-size:9pt;color:#4b5b78;margin-top:1.5mm'],
     ['.rp-chip', 'display:inline-block;border-radius:99px;padding:.6mm 3mm;font-size:8pt;font-weight:800;color:#fff;margin-top:2.5mm'],
     ['.rp-h', 'font-size:7.5pt;letter-spacing:.16em;font-weight:900;color:#8a5a00;text-transform:uppercase;margin:7mm 0 2.5mm;display:flex;align-items:center;gap:2mm'],
@@ -28633,7 +29035,7 @@ BQ.fakta = FinFakta;
     ['.rp-3', 'display:flex;gap:4mm'],
     ['.rp-3 > div', 'flex:1;border:1px solid #d7dfee;border-radius:4mm;padding:4mm;border-top:1.6mm solid #ccc;background:#fff'],
     ['.rp-3 .k', 'font-size:8pt;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#4b5b78'],
-    ['.rp-3 .v', 'font-size:15pt;font-weight:900;color:#122243;margin:1mm 0'],
+    ['.rp-3 .v', 'font-size:15pt;font-weight:900;color:#18233a;margin:1mm 0'],
     ['.rp-3 .t', 'font-size:8.5pt;color:#4b5b78;line-height:1.35'],
     ['.rp-kpi', 'display:flex;gap:3mm'],
     ['.rp-kpi > div', 'flex:1;background:#f4f6fb;border-radius:3.5mm;padding:3.2mm 3.5mm'],
@@ -28649,7 +29051,9 @@ BQ.fakta = FinFakta;
     ['.rp-stack > div', 'display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:8.5pt;min-width:0'],
     ['.rp-leg', 'display:flex;gap:3mm;margin-top:3mm'],
     ['.rp-leg > div', 'flex:1;font-size:8.5pt;color:#4b5b78;line-height:1.3'],
-    ['.rp-leg b', 'display:block;font-size:11pt;color:#122243;font-weight:900'],
+    ['.rp-leg b', 'display:block;font-size:11pt;color:#18233a;font-weight:900'],
+    ['.rp-inc', 'font-size:10pt;font-weight:700;color:#4b5b78;margin:0 0 2.5mm'],
+    ['.rp-inc b', 'font-size:15pt;font-weight:900;color:#18233a;margin-left:1.5mm'],
     ['.rp-dot', 'display:inline-block;width:2.6mm;height:2.6mm;border-radius:50%;margin-right:1.5mm;vertical-align:-.2mm'],
     ['.rp-cat', 'display:flex;align-items:center;gap:3mm;padding:1.1mm 0;font-size:9pt'],
     ['.rp-cat .n', 'flex:0 0 40mm;font-weight:700'],
@@ -28662,7 +29066,7 @@ BQ.fakta = FinFakta;
     ['.rp-ind .top', 'display:flex;justify-content:space-between;align-items:baseline;gap:2mm'],
     ['.rp-ind .l', 'font-weight:800;font-size:9.5pt'],
     ['.rp-ind .s', 'font-size:7pt;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:.4mm 2mm;border-radius:99px;color:#fff'],
-    ['.rp-ind .v', 'font-size:14pt;font-weight:900;color:#122243;line-height:1.15;margin-top:.5mm'],
+    ['.rp-ind .v', 'font-size:14pt;font-weight:900;color:#18233a;line-height:1.15;margin-top:.5mm'],
     ['.rp-ind .n', 'font-size:8pt;color:#4b5b78'],
     ['.rp-ind .g', 'font-size:7.5pt;color:#5f6e87;margin-top:1mm;border-top:1px dashed #d7dfee;padding-top:1mm'],
     ['.rp-leak', 'display:flex;gap:5mm;align-items:center;background:linear-gradient(135deg,#7a1f1f,#b32727);color:#fff;border-radius:4.5mm;padding:5mm 6mm'],
@@ -28675,13 +29079,13 @@ BQ.fakta = FinFakta;
     ['.rp-leak img', 'height:30mm;width:auto'],
     ['.rp-pers', 'display:flex;gap:6mm;align-items:center;border:1px solid #d7dfee;border-radius:4.5mm;padding:5mm 6mm;background:#f9fafd'],
     ['.rp-pers img', 'height:40mm;width:auto;flex:0 0 auto'],
-    ['.rp-pers .nm', 'font-size:18pt;font-weight:900;color:#122243;line-height:1.1'],
+    ['.rp-pers .nm', 'font-size:18pt;font-weight:900;color:#1b3f8f;line-height:1.1'],
     ['.rp-pers .tg', 'font-size:10pt;font-weight:700;color:#4b5b78;margin-bottom:2.5mm'],
     ['.rp-pers .r', 'font-size:9pt;margin-top:1.4mm'],
     ['.rp-pers .r b', 'display:inline-block;min-width:21mm;font-size:7.5pt;letter-spacing:.1em;text-transform:uppercase;color:#8a5a00'],
     ['.rp-step', 'display:flex;gap:3.5mm;padding:3mm 0;border-bottom:1px solid #eef1f7;break-inside:avoid'],
     ['.rp-step .no', 'flex:0 0 8mm;height:8mm;border-radius:2.4mm;background:#f1c54b;color:#122243;font-weight:900;display:flex;align-items:center;justify-content:center'],
-    ['.rp-step .tt', 'font-weight:900;font-size:10.5pt;color:#122243'],
+    ['.rp-step .tt', 'font-weight:900;font-size:10.5pt;color:#18233a'],
     ['.rp-step .im', 'font-size:8.8pt;color:#4b5b78;margin-top:.8mm'],
     ['.rp-step .te', 'font-size:8.5pt;font-weight:800;color:#8a5a00;margin-top:.8mm'],
     ['.rp-2', 'display:flex;gap:5mm'],
@@ -28691,10 +29095,10 @@ BQ.fakta = FinFakta;
     ['.rp-tab', 'width:100%;border-collapse:collapse'],
     ['.rp-tab td', 'padding:1.9mm 0;border-bottom:1px solid #eef1f7;font-size:9.5pt'],
     ['.rp-tab td.r', 'text-align:right;font-weight:800;white-space:nowrap;padding-left:3mm'],
-    ['.rp-tab tr.sum td', 'border-top:2px solid #122243;border-bottom:0;font-weight:900;font-size:11pt;color:#122243;padding-top:2.6mm'],
+    ['.rp-tab tr.sum td', 'border-top:2px solid #1b3f8f;border-bottom:0;font-weight:900;font-size:11pt;color:#18233a;padding-top:2.6mm'],
     ['.rp-note', 'font-size:7.5pt;color:#5f6e87;line-height:1.45;margin-top:5mm'],
-    ['.rp-foot', 'position:absolute;left:14mm;right:14mm;bottom:8mm;display:flex;justify-content:space-between;align-items:center;font-size:7.5pt;color:#5f6e87;border-top:1px solid #e1e7f1;padding-top:2.5mm'],
-    ['.rp-foot b', 'color:#122243;letter-spacing:.14em;font-weight:900'],
+    ['.rp-foot', 'position:absolute;left:14mm;right:14mm;bottom:9mm;display:flex;justify-content:space-between;align-items:center;font-size:7.5pt;color:#5f6e87;border-top:1px solid #e1e7f1;padding-top:2.5mm'],
+    ['.rp-foot b', 'color:#1b3f8f;letter-spacing:.005em;font-weight:1000;font-size:9pt;-webkit-text-stroke:.03em currentColor;paint-order:stroke fill'],
     ['.rp-foot b i', 'font-style:normal;color:#c18a00'],
     ['.rp-warn', 'background:#fff3c4;border:1px solid #f1c54b;border-radius:3mm;padding:2.5mm 4mm;font-size:8.5pt;margin-top:4mm']
   ];
@@ -28728,6 +29132,8 @@ BQ.fakta = FinFakta;
     return '<div class="rp-foot"><span><b>BOBR<i>IQ</i></b> &nbsp;·&nbsp; Finanční report' + (jmeno ? ' &nbsp;·&nbsp; ' + esc(jmeno) : '') + ' &nbsp;·&nbsp; ' + datum(d) + '</span>'
       + '<span>Strana ' + strana + ' z ' + celkem + '</span></div>';
   }
+
+  function mini(d) { return '<div class="rp-mini"><div class="rp-brand">BOBR<b>IQ</b></div><div class="rp-mini-r">Finanční report &nbsp;·&nbsp; ' + datum(d) + '</div></div>'; }
 
   /* ── sestavení HTML ── */
   function vytvorHtml() {
@@ -28779,6 +29185,16 @@ BQ.fakta = FinFakta;
     }).join('') + '</table>'
       + '<div style="font-size:8pt;color:#5f6e87;margin-top:2mm">Zeleně faktory, které věk snižují, červeně ty, které ho zvyšují. Index je orientační, není to přesná diagnóza.</div>' : '';
 
+    var cost = null; try { cost = (typeof faCost === 'function') ? faCost(M) : null; } catch (e) { cost = null; }
+    var leak = '';
+    if (cost && !cost.plain && !cost.healthy && cost.monthly > 0) {
+      leak = '<div class="rp-h">Co ti tiše protéká</div><div class="rp-leak"><div style="flex:1"><div class="l">' + esc(cost.label || 'Nevyužitý potenciál') + '</div>'
+        + '<div class="n">' + pene(cost.monthly) + ' <small>/ měsíc</small></div>'
+        + (cost.tenYear > 0 ? '<div class="z">' + (cost.nominal ? 'Za 10 let ti bude chybět' : 'Za 10 let z tebe uteče') + '<b>' + pene(cost.tenYear) + '</b></div>' : '')
+        + '<div class="t" style="margin-top:2mm">' + (cost.explain || '') + (cost.tenYear > 0 ? (cost.nominal ? ' Bez úroků.' : ' Zhodnocení 5 % ročně.') : '') + '</div></div>'
+        + img(maskot('scene', 'leak'), '') + '</div>';
+    }
+
     var strana1 = '<section class="rp-page">'
       + '<div class="rp-band">'
       +   '<div class="rp-brand">BOBR<b>IQ</b><small>TVŮJ CHYTRÝ PRŮVODCE FINANCEMI</small></div>'
@@ -28794,8 +29210,8 @@ BQ.fakta = FinFakta;
       +   '</div>'
       +   (R.neuplne ? '<div class="rp-warn"><b>Údaje nejsou úplné.</b> Doplň chybějící čísla v appce, ať je report přesnější.</div>' : '')
       +   '<div class="rp-h">Tři pilíře tvých financí</div>' + piliře
-      +   '<div class="rp-h">Měsíčně v číslech</div>' + kpi
       +   (fak ? '<div class="rp-h">Co ti věk financí zvedá a snižuje</div>' + fak : '')
+      +   leak
       + '</div>'
       + paticka(jmeno, d, 1, celkem)
       + '</section>';
@@ -28829,19 +29245,8 @@ BQ.fakta = FinFakta;
         + '<div class="v">' + esc(i.value) + '</div><div class="n">' + esc(i.note) + '</div><div class="g">' + esc(i.goal) + '</div></div>';
     }).join('') + '</div>' : '';
 
-    var cost = null; try { cost = (typeof faCost === 'function') ? faCost(M) : null; } catch (e) { cost = null; }
-    var leak = '';
-    if (cost && !cost.plain && !cost.healthy && cost.monthly > 0) {
-      leak = '<div class="rp-h">Co ti tiše protéká</div><div class="rp-leak"><div style="flex:1"><div class="l">' + esc(cost.label || 'Nevyužitý potenciál') + '</div>'
-        + '<div class="n">' + pene(cost.monthly) + ' <small>/ měsíc</small></div>'
-        + (cost.tenYear > 0 ? '<div class="z">' + (cost.nominal ? 'Za 10 let ti bude chybět' : 'Za 10 let z tebe uteče') + '<b>' + pene(cost.tenYear) + '</b></div>' : '')
-        + '<div class="t" style="margin-top:2mm">' + (cost.explain || '') + (cost.tenYear > 0 ? (cost.nominal ? ' Bez úroků.' : ' Zhodnocení 5 % ročně.') : '') + '</div></div>'
-        + img(maskot('scene', 'leak'), '') + '</div>';
-    }
-
-    var strana2 = '<section class="rp-page"><div class="rp-body" style="padding-top:12mm">'
-      + '<div class="rp-brand" style="color:#122243;font-size:11pt">BOBR<b style="color:#c18a00">IQ</b></div>'
-      + '<div class="rp-h" style="margin-top:4mm">Kam ti odcházejí peníze</div>' + stack
+    var strana2 = '<section class="rp-page">' + mini(d) + '<div class="rp-body">'
+      + '<div class="rp-h" style="margin-top:8mm">Kam ti odcházejí peníze</div><div class="rp-inc">Měsíčně ti přijde<b>' + pene(R.income) + '</b></div>' + stack
       + (katHtml ? '<div style="margin-top:4mm;font-size:8pt;font-weight:800;color:#5f6e87;letter-spacing:.08em;text-transform:uppercase">Rozpis výdajů</div>' + katHtml : '')
       + (indHtml ? '<div class="rp-h">Semafor: zdraví tvých financí</div>' + indHtml : '')
       + '</div>' + paticka(jmeno, d, 2, celkem) + '</section>';
@@ -28874,13 +29279,10 @@ BQ.fakta = FinFakta;
       + radek('Hypotéka', hypo) + radek('Drahé dluhy (kreditky…)', drahe) + radek('Ostatní úvěry', ostatni)
       + ((R.debtBal || 0) <= 0 ? '<tr><td colspan="2" style="color:#1d8a3f;font-weight:800">Bez dluhů</td></tr>' : '')
       + '<tr class="sum"><td>Dluhy celkem</td><td class="r">' + pene(R.debtBal) + '</td></tr></table></div></div>'
-      + '<div style="margin-top:4mm;border-radius:3.5mm;background:#122243;color:#fff;padding:4mm 6mm;display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:8.5pt;color:#f1c54b">Čisté jmění</span><span style="font-size:17pt;font-weight:900">' + (R.netWorth < 0 ? '−' : '') + pene(Math.abs(R.netWorth)) + '</span></div>';
+      + '<div style="margin-top:4mm;border-radius:3.5mm;background:linear-gradient(155deg,#2b5fc7,#1b3f8f);color:#fff;padding:4mm 6mm;display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:8.5pt;color:#ffd45e">Čisté jmění</span><span style="font-size:17pt;font-weight:900">' + (R.netWorth < 0 ? '−' : '') + pene(Math.abs(R.netWorth)) + '</span></div>';
 
-    var strana3 = '<section class="rp-page"><div class="rp-body" style="padding-top:12mm">'
-      + '<div class="rp-brand" style="color:#122243;font-size:11pt">BOBR<b style="color:#c18a00">IQ</b></div>'
-      + leak
-      + '<div class="rp-h" style="margin-top:4mm">Co dělat teď: tvůj plán</div>' + recHtml
-      + silSlab
+    var strana3 = '<section class="rp-page">' + mini(d) + '<div class="rp-body">'
+      + '<div class="rp-h" style="margin-top:8mm">Co dělat teď: tvůj plán</div>' + recHtml
       + majetek
       + '<div class="rp-h" style="margin-top:6mm">Kdo jsi jako bobr</div>' + persHtml
       + '<div class="rp-note">BOBRIQ je orientační diagnostický nástroj. Výsledky vycházejí z čísel, která jsi zadal(a), a slouží pro tvůj přehled. Nenahrazují individuální finanční, investiční, daňové ani právní poradenství. '
@@ -28888,6 +29290,19 @@ BQ.fakta = FinFakta;
       + '</div>' + paticka(jmeno, d, 3, celkem) + '</section>';
 
     return strana1 + strana2 + strana3;
+  }
+
+  /* Obsah každé strany musí skončit nad zápatím. Kdyby byl delší (hodně výdajů, dlouhý plán), úměrně se zmenší. */
+  function vejdiNaStranu(box) {
+    var mm = 96 / 25.4;
+    box.querySelectorAll('.rp-page').forEach(function (strana) {
+      var telo = strana.querySelector('.rp-body'); if (!telo || !telo.lastElementChild) return;
+      telo.style.zoom = '';
+      var sr = strana.getBoundingClientRect(), tr = telo.getBoundingClientRect();
+      var limit = sr.top + (296 - 22) * mm;                      // dole 22 mm rezerva pro zápatí
+      var konec = telo.lastElementChild.getBoundingClientRect().bottom;
+      if (konec > limit) telo.style.zoom = String(Math.max(0.78, (limit - tr.top) / (konec - tr.top)));
+    });
   }
 
   /* ── tisk ── */
@@ -28899,6 +29314,7 @@ BQ.fakta = FinFakta;
     var box = document.getElementById('bq-report');
     if (!box) { box = document.createElement('div'); box.id = 'bq-report'; box.setAttribute('aria-hidden', 'true'); document.body.appendChild(box); }
     box.innerHTML = html;
+    try { vejdiNaStranu(box); } catch (e) {}
     var puvodniNazev = document.title;
     var jm = (typeof userName === 'function') ? userName() : '';
     document.title = 'BOBRIQ finanční report' + (jm ? ' ' + jm : '') + ' ' + new Date().toISOString().slice(0, 10);
@@ -30209,7 +30625,7 @@ BQ.fakta = FinFakta;
         akt.textContent = 'Zkontrolovat aktualizace';
         window.bobriqExe.info().then(function(i){
           /* Číslo obalu (instalátoru) se mění zřídka. Aktualizace mění jen obsah, proto vedle něj ukážeme i datum a čas jeho sestavení. */
-          var sest = '18. 11. 2026 13:29';
+          var sest = '18. 11. 2026 18:19';
           verzeEl.textContent = 'Verze aplikace: ' + i.verze + (sest.indexOf('__') === 0 ? '' : ' · obsah z ' + sest);
         }).catch(function(){ verzeEl.textContent = ''; });
         akt.addEventListener('click', function(){
@@ -32325,7 +32741,9 @@ BQ.ready();
       var st = JSON.parse(s);
       document.querySelectorAll('.numfield').forEach(function(i){ i.value = ''; });
       clearCustom();
+      var _zJ = Array.isArray(itemsState.jars) ? itemsState.jars : null;   // starší snímek bez hrníčků je nesmaže
       itemsState = st.items || { modes:{}, items:[], domains:{} };
+      if (_zJ && !Array.isArray(itemsState.jars)) itemsState.jars = _zJ;
       itemsSaveState();
       pickerOpen = {}; pickerAll = {}; domPickerOpen = {};
       window.__fiRenderWipe = true;
