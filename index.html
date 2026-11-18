@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <!-- @@CSP_BEGIN@@ -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-tvCzdd7g3lemCokK1DkkBLFYiTnFvfl7WFlmHSZ8N2M=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-5D9FhfcdN0nBzhiPvXN4ddbpYbM5LvtdCQykAs5wK6w=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <!-- @@CSP_END@@ -->
 <!-- @@VZHLED_BEGIN@@ -->
 <script>(function(){try{var t=localStorage.getItem('bq_tema');var d=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
@@ -30207,7 +30207,11 @@ BQ.fakta = FinFakta;
         var pozn = akt.parentNode.querySelector('.zn-pozn');
         if (pozn) pozn.textContent = 'Appka sama hlídá, jestli je k dispozici novější verze, a stáhne si ji. Tady to můžeš zkusit hned. Tvoje data zůstanou.';
         akt.textContent = 'Zkontrolovat aktualizace';
-        window.bobriqExe.info().then(function(i){ verzeEl.textContent = 'Verze aplikace: ' + i.verze; }).catch(function(){ verzeEl.textContent = ''; });
+        window.bobriqExe.info().then(function(i){
+          /* Číslo obalu (instalátoru) se mění zřídka. Aktualizace mění jen obsah, proto vedle něj ukážeme i datum a čas jeho sestavení. */
+          var sest = '18. 11. 2026 13:29';
+          verzeEl.textContent = 'Verze aplikace: ' + i.verze + (sest.indexOf('__') === 0 ? '' : ' · obsah z ' + sest);
+        }).catch(function(){ verzeEl.textContent = ''; });
         akt.addEventListener('click', function(){
           akt.disabled = true;
           stav.textContent = 'Kontroluji, jestli je k dispozici novinka…';
