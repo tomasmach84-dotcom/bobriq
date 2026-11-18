@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <!-- @@CSP_BEGIN@@ -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-HoB8+5RuB0QYHyk7WrYZ3xRA9AiaRkFkfcPiLN4zi9M=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-+xioPy28n3+Wnhuk1ReknH7IzjHfMpkc/aW6tv6jfXc=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <!-- @@CSP_END@@ -->
 <!-- @@VZHLED_BEGIN@@ -->
 <script>(function(){try{var t=localStorage.getItem('bq_tema');var d=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
@@ -6623,6 +6623,39 @@ html:root body:not(#bqt) .ft-goal-done, html:root body:not(#bqt) .ft-exp-d.good{
 /* větší graf v kartách strategií, ať je vidět rozdíl: klidná čára / vlnka / ostré výkyvy */
 html:root body:not(#bqt) .pj-tile{ padding-bottom:124px !important; }
 html:root body:not(#bqt) .pj-spark{ height:112px; }
+
+/* ═══ 18. 11. 2026 Recenze: bez zamlžení při zadávání, kompaktní hrníčky, odlišené stavby, kratší karta kroku ═══ */
+html:root body:not(#bqt) .rs-sub-cap{ margin:2px 0 8px; font-size:.84rem; color:var(--t-mut); }
+/* hrníčky kompaktnější */
+html:root body:not(#bqt) .rs-jars{ padding:16px 20px; }
+html:root body:not(#bqt) .rjar-row{ padding:8px 0; gap:12px; }
+html:root body:not(#bqt) .rjar-svgwrap .jar-svg{ width:30px; height:36px; }
+html:root body:not(#bqt) .rjar-bar{ height:8px; margin:6px 0 4px; }
+html:root body:not(#bqt) .rjar-stav{ font-size:.8rem; gap:2px 12px; }
+html:root body:not(#bqt) .rjar-sum{ margin-top:6px; padding:7px 12px; font-size:.82rem; }
+/* stavby (přání) jsou modré, hrníčky (povinnosti) mají semafor, ať je na první pohled vidět rozdíl */
+html:root body:not(#bqt) .rscard.rsb-goals{ border-left:5px solid #2d62c8; }
+html:root body:not(#bqt) .rscard.rs-jars{ border-left:5px solid #f0b400; }
+html:root body:not(#bqt) .rsbg-bar i{ background:linear-gradient(90deg,#4f86e8,#2d62c8) !important; }
+html:root body:not(#bqt) .rsbg-row.done .rsbg-bar i{ background:var(--t-good) !important; }
+/* karta „Další kláda“: sbalené doplňující řádky */
+html:root body:not(#bqt) .rs-mt-more{ margin:10px 0 4px; }
+html:root body:not(#bqt) .rs-mt-more > summary{ cursor:pointer; font-weight:800; font-size:.86rem; color:#ffd45e; list-style:none; }
+html:root body:not(#bqt) .rs-mt-more > summary::before{ content:"▸ "; }
+html:root body:not(#bqt) .rs-mt-more[open] > summary::before{ content:"▾ "; }
+html:root body:not(#bqt) .rs-mt-more > summary::-webkit-details-marker{ display:none; }
+html:root body:not(#bqt) .rs-mt-more .rs-mt-rows{ margin-top:8px; }
+html:root body:not(#bqt) .rs-mt-more > summary{ background:transparent !important; padding:2px 0; }
+html:root body:not(#bqt):not(#bqt) .rscard.rsb-goals{ border-left:5px solid #2d62c8 !important; }
+html:root body:not(#bqt):not(#bqt) .rscard.rs-jars{ border-left:5px solid #f0b400 !important; }
+
+/* 18. 11. 2026 oprava: „Jak poznáš, že je hotovo“ v tmavé kartě (průhledné, žlutý text) a stavby na mobilu (procento vpravo u názvu) */
+html:root body:not(#bqt):not(#bqt) .rs-mt-more > summary{ background:transparent !important; color:#ffd45e !important; box-shadow:none !important; border:0 !important; padding:2px 0 !important; }
+@media (max-width:640px){
+  html:root body:not(#bqt) .rsbg-row{ flex-wrap:nowrap; gap:10px; }
+  html:root body:not(#bqt) .rsbg-tx{ flex:1 1 auto; order:0; }
+  html:root body:not(#bqt) .rsbg-pct{ order:0; margin-left:0; font-size:.95rem; }
+}
 
 </style>
 <!-- @@BRAND_END@@ --></head>
@@ -25179,6 +25212,7 @@ BQ.fakta = FinFakta;
       + (goals.length > 3 ? '<a class="rsp-more" onclick="goalsGoPlan()">Všechny cíle ('+goals.length+') ›</a>' : '') + '</div>';
     return '<div class="rscard rsb-goals">'
       + '<div class="rs-tag"><svg class="ic"><use href="#i-target"></use></svg>Tvoje stavby <span class="cap-tr">(cíle)</span></div>'
+      + '<p class="rs-sub-cap">Tvoje přání. Spoříš na ně, kdy chceš a kolik chceš.</p>'
       + rows + more + '</div>';
   }
 
@@ -27573,9 +27607,12 @@ BQ.fakta = FinFakta;
       + '<div class="rs-mt-title">'+mainStep.title+'</div>'
       + '<div class="rs-mt-rows">'
       +   '<div class="rs-mt-row"><span class="rs-mt-lbl">Proč právě teď</span><span class="rs-mt-val">'+md.why+'</span></div>'
-      +   '<div class="rs-mt-row"><span class="rs-mt-lbl">Jak poznáš, že hotovo</span><span class="rs-mt-val">'+md.done+'</span></div>'
-      +   '<div class="rs-mt-row"><span class="rs-mt-lbl">Jak se projeví příště</span><span class="rs-mt-val">'+md.next+'</span></div>'
       + '</div>'
+      // 18. 11. 2026: ostatní dva bloky jsou sbalené, na kartě zůstává jen důvod a tlačítko
+      + '<details class="rs-mt-more"><summary>Jak poznáš, že je hotovo</summary><div class="rs-mt-rows">'
+      +   '<div class="rs-mt-row"><span class="rs-mt-lbl">Hotovo, když</span><span class="rs-mt-val">'+md.done+'</span></div>'
+      +   '<div class="rs-mt-row"><span class="rs-mt-lbl">Příště uvidíš</span><span class="rs-mt-val">'+md.next+'</span></div>'
+      + '</div></details>'
       + recGoalBlockHtml(mainStep.key)   // Přijmout tento cíl / stav aktivního cíle
       + '</div>';
     // Další kroky sbalené, na obrazovce zůstává jen JEDEN hlavní úkol (2026-07-19)
@@ -27751,6 +27788,7 @@ BQ.fakta = FinFakta;
     const total = Math.round(fiJarsMonthlyTotal());
     return '<div class="rscard rs-jars">'
       + '<div class="rs-tag"><svg class="ic"><use href="#i-banknote"></use></svg>Povinné platby, které se opakují <span class="cap-tr">(hrníčky)</span></div>'
+      + '<p class="rs-sub-cap">Platby, které přijdou, ať chceš nebo ne. Odkládáš na ně po troškách.</p>'
       + rows
       + '<div class="rjar-sum">Bobr nosí do hrníčků <b>' + kc(total) + '</b> měsíčně. Je to součást tvých výdajů, ne jednorázový šok.</div>'
       + '</div>';
@@ -30625,7 +30663,7 @@ BQ.fakta = FinFakta;
         akt.textContent = 'Zkontrolovat aktualizace';
         window.bobriqExe.info().then(function(i){
           /* Číslo obalu (instalátoru) se mění zřídka. Aktualizace mění jen obsah, proto vedle něj ukážeme i datum a čas jeho sestavení. */
-          var sest = '18. 11. 2026 18:19';
+          var sest = '18. 11. 2026 20:40';
           verzeEl.textContent = 'Verze aplikace: ' + i.verze + (sest.indexOf('__') === 0 ? '' : ' · obsah z ' + sest);
         }).catch(function(){ verzeEl.textContent = ''; });
         akt.addEventListener('click', function(){
@@ -31387,6 +31425,11 @@ BQ.fakta = FinFakta;
       }
     } catch (e) { /* kosmetika: bez userActivation se pozdraví hned */ }
     try { if (sessionStorage.getItem('bq_uvitano') === '1') return false; sessionStorage.setItem('bq_uvitano', '1'); } catch (e) { /* kosmetika: bez sessionStorage se BOBRIQ pozdraví při každém spuštění */ }
+    // 18. 11. 2026: nezdravit přes jinou bublinu ani uprostřed vyplňování (dva bobři po sobě jsou otravní)
+    try {
+      var _wz = document.getElementById('wiz-chrome');
+      if (document.getElementById('bobrik-quip') || (_wz && _wz.style.display !== 'none' && _wz.offsetParent !== null)) return false;
+    } catch (e) { /* kosmetika */ }
     var kat, minulaNavsteva = parseInt(cti(K_NAVSTEVA, '0'), 10) || 0, ted = Date.now();
     if (cti(K_VIDEL, '') !== '1') { kat = 'prvniSpusteni'; pis(K_VIDEL, '1'); }
     else if (minulaNavsteva && ted - minulaNavsteva > 14 * 86400000) kat = 'navrat';
@@ -31693,6 +31736,9 @@ BQ.fakta = FinFakta;
   function bobrikKrokQuip(stepId){
     const sada = KROK_QUIPS[stepId]; if (!sada || !sada.length) return;
     if (document.getElementById('bobrik-takeover')) return;          // mlčet při vpádu
+    // 18. 11. 2026: méně otravný: každý krok promluví jen JEDNOU za sezení a nikdy přes jinou bublinu
+    if (krokQuipIdx[stepId]) return;
+    if (document.getElementById('bobrik-quip')) return;
     // 30. 7. 2026: dřív tu byla pauza 9 s a pokyny k novému kroku se prostě ZAHODILY.
     // Kdo se rychle proklikal dál, zůstal bez rady. Pokyny k místu, kam člověk právě
     // přišel, mají přednost; zůstává jen krátká pojistka proti dvojkliku.
@@ -31729,6 +31775,9 @@ BQ.fakta = FinFakta;
     if (document.getElementById('bobrik-takeover')) return;                          // mlčet při vpádu
     if (Date.now() - quipState.lastAt < 800) return;                                 // pojistka proti dvojkliku
     const klic = 'scr-' + id;
+    // 18. 11. 2026: každá obrazovka promluví jen jednou za sezení a nikdy přes jinou bublinu
+    if (krokQuipIdx[klic]) return;
+    if (document.getElementById('bobrik-quip')) return;
     const i = (krokQuipIdx[klic] || 0) % o.sada.length;
     krokQuipIdx[klic] = i + 1;
     quipState.lastAt = Date.now();
@@ -31829,6 +31878,13 @@ BQ.fakta = FinFakta;
     el.setAttribute('role','complementary');
     el.setAttribute('aria-label','Poznámka od BOBRIQa');
     el.dataset.od = String(Date.now());
+    // 18. 11. 2026: při zadávání čísel se pozadí nezamlžuje (formulář musí zůstat ostrý), zamlžení zůstává u výsledku
+    try {
+      const _formular = ['wiz-chrome','quickflow','ft-checkin','ft-expenses'].some(function(id){
+        const e = document.getElementById(id); return e && e.style.display !== 'none' && e.offsetParent !== null;
+      });
+      if (_formular) el.dataset.bez = '1';
+    } catch(e){}
     el.innerHTML='<img class="bq-bobr" src="'+src+'" alt=""><div class="bq-bubble">'+text+'</div>';
     el.addEventListener('click', function(){
       el.remove();
