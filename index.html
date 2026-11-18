@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <!-- @@CSP_BEGIN@@ -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-ugp4jTeqLWqzEnD/ng5DW5L+IBuSLO+K3NbQMQAhXRE=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-tvCzdd7g3lemCokK1DkkBLFYiTnFvfl7WFlmHSZ8N2M=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <!-- @@CSP_END@@ -->
 <!-- @@VZHLED_BEGIN@@ -->
 <script>(function(){try{var t=localStorage.getItem('bq_tema');var d=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
@@ -6472,6 +6472,65 @@ html:root body:not(#bqt):not(#bqt) .pj-tile.high{ border-top-width:7px !importan
 .pd-sazby .pl-note{ margin:0; }
 @media (max-width:640px){ .pd-sz-g{ grid-template-columns:1fr; } .pd-sz{ flex-direction:row; flex-wrap:wrap; align-items:baseline; gap:4px 10px; } .pd-sz em{ margin:0 0 0 auto; } }
 
+/* ═══ 18. 11. 2026 MENU SJEDNOCENÉ S APPKOU + SPRÁVNÉ LOGO ═══
+   Dřív měla boční lišta starý komiksový vzhled (tmavá, zlatý pruh, černý obrys a tvrdý stín)
+   a vedle ní stál nový světlý vzhled, takže appka vypadala jako dvě v jedné. Teď lišta bere
+   stejnou modrou jako úvodní karta (--t-hero1/--t-hero2), stejné měkké zlaté tlačítko a stejné písmo.
+   Logo má proporce loga z okna s kódem: Nunito 1000, mezery .005em, obrys .03em v barvě písmen. */
+html:root body:not(#bqt) .appnav{
+  background:linear-gradient(180deg,var(--t-hero1),var(--t-hero2)) !important;
+  border-color:var(--t-hero-line) !important;
+}
+html:root body:not(#bqt) .appnav-btn{ font-family:var(--ff-body); font-weight:800; color:rgba(255,255,255,.8); }
+html:root body:not(#bqt) .appnav-btn:hover{ color:#fff; background:rgba(255,255,255,.09); }
+html:root body:not(#bqt) .appnav-btn.active{ color:var(--t-gold); background:rgba(255,255,255,.14); }
+@media (max-width:899px){
+  html:root body:not(#bqt) .appnav{ border-top:1px solid var(--t-hero-line) !important; box-shadow:0 -4px 16px rgba(24,35,58,.18) !important; }
+}
+@media (min-width:900px){
+  html:root body:not(#bqt) .appnav{ border-right:0 !important; box-shadow:2px 0 18px rgba(24,35,58,.14) !important; }
+  html:root body:not(#bqt) .appnav-btn{ font-weight:800; border-radius:var(--t-rs); }
+  html:root body:not(#bqt) .appnav-btn.active{ background:rgba(255,255,255,.16); }
+}
+/* tlačítko Zapsat měsíc / Začít analýzu = stejné zlaté měkké tlačítko jako na úvodní kartě */
+html:root body:not(#bqt) .appnav-zapsat{
+  background:var(--t-gold) !important; color:var(--t-gold-ink) !important; border:0 !important;
+  box-shadow:0 4px 12px rgba(0,0,0,.18) !important; font-family:var(--ff-head); font-weight:900;
+  border-radius:var(--t-pill) !important;
+}
+html:root body:not(#bqt) .appnav-zapsat:hover{ filter:brightness(1.05); color:var(--t-gold-ink) !important; }
+html:root body:not(#bqt) .appnav-zapsat.active{ background:#fff !important; color:var(--t-hero2) !important; }
+@media (max-width:719px){
+  html:root body:not(#bqt) .appnav-zapsat .appnav-plus{ background:var(--t-gold) !important; border:0 !important; box-shadow:0 4px 12px rgba(0,0,0,.25) !important; color:var(--t-gold-ink) !important; }
+  html:root body:not(#bqt) .appnav-zapsat .appnav-lbl{ color:var(--t-gold) !important; }
+}
+/* logo BOBRIQ v liště: proporce z okna s kódem (tučné Nunito 1000 s obrysem v barvě písmen) */
+@media (min-width:900px){
+  html:root body:not(#bqt) .appnav-brand{
+    font-family:var(--ff-head); font-weight:1000; font-size:2rem; line-height:1.1;
+    letter-spacing:.005em; margin:2px 6px 20px; text-shadow:2px 3px 0 rgba(0,0,0,.28);
+  }
+  html:root body:not(#bqt) .appnav-brand .ab-1{ color:#fffdf6; -webkit-text-stroke:.03em #fffdf6; paint-order:stroke fill; }
+  html:root body:not(#bqt) .appnav-brand .ab-2{ color:#f4c33d; -webkit-text-stroke:.03em #f4c33d; paint-order:stroke fill; }
+}
+/* rada „Klepni sem a poradím ti" v úvodní bublině patří na vlastní řádek, ne na konec věty */
+html:root body:not(#bqt) #landing .hero-bub .hero-bub-rada{ display:block !important; margin-top:6px; font-size:.82rem; font-weight:800; color:var(--t-goldtx); text-decoration:underline; }
+
+/* ═══ 18. 11. 2026 DVĚ ÚROVNĚ VÝSLEDKU: nahoře hlavní věci, ostatní pod „Podrobnosti" ═══ */
+html:root body:not(#bqt) .rsb-more{ margin:0; }
+html:root body:not(#bqt) .rsb-more > summary{
+  list-style:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px; text-align:center;
+  background:var(--t-card); color:var(--t-accent); border:1px solid var(--t-line); border-radius:var(--t-r);
+  box-shadow:var(--t-sh-sm); padding:14px 20px; font-family:var(--ff-head); font-weight:800; font-size:1.02rem;
+}
+html:root body:not(#bqt) .rsb-more > summary::-webkit-details-marker{ display:none; }
+html:root body:not(#bqt) .rsb-more > summary::after{ content:"▾"; font-size:.9rem; margin-top:1px; }
+html:root body:not(#bqt) .rsb-more[open] > summary::after{ content:"▴"; }
+html:root body:not(#bqt) .rsb-more > summary small{ font-weight:600; font-size:.8rem; color:var(--t-mut); }
+html:root body:not(#bqt) .rsb-more > summary:hover{ border-color:var(--t-accent); }
+html:root body:not(#bqt) .rsb-more-body{ display:flex; flex-direction:column; gap:18px; margin-top:18px; }
+html:root body:not(#bqt) .rsb-more-body > *{ margin:0; }
+
 </style>
 <!-- @@BRAND_END@@ --></head>
 <body class="rukopis">
@@ -6685,7 +6744,7 @@ try{
       <!-- 21. 7. 2026 úvod v3: tlačítka přesunuta pod bobříka (.hero-actions), štítky proměněny v bubliny -->
     </div>
     <div class="hero-right">
-      <div class="hero-bub no-print" id="hero-bub-hlavni" role="button" tabindex="0" title="Klepni a zeptej se mě na radu">Ahoj, já jsem BOBRIQ! Ukaž mi svoje čísla a já ti řeknu, kolik let je tvým financím.<span class="hero-bub-rada">Klepni sem a poradím ti →</span></div>
+      <div class="hero-bub no-print" id="hero-bub-hlavni" role="button" tabindex="0" title="Klepni a zeptej se mě na radu">Ahoj, já jsem BOBRIQ! Ukaž mi svoje čísla a já ti řeknu, kolik let je tvým financím. <span class="hero-bub-rada">Klepni sem a poradím ti →</span></div>
       <div class="hero-bub-mini hb-left no-print">Zabere ti to jen 2&nbsp;minuty.</div>
       <div class="hero-bub-mini hb-right no-print">Tvoje čísla zůstanou jen u&nbsp;tebe.</div>
       <!-- Bubliny naskakují jedna po druhé, až když načítací obrazovka zmizí (volá to
@@ -10669,7 +10728,7 @@ function faCost(m){
   // Strop = volný cashflow: nepočítáme jako „ztrátu" peníze, které člověk reálně nemá.
   const savGap=(m.cashflow>=0 && !(m.age>=65)) ? Math.max(0, Math.min(Math.round(m.income*0.15 - m.saving), Math.round(m.cashflow))) : 0;
   if(savGap>0) c.push({ v:savGap, label:'Nevyužitý potenciál spoření',
-    explain:'Peníze, které ti po výdajích zbývají a mohly by za tebe pracovat (až do zdravých 15 % příjmu), ale zatím leží ladem. Spočítáno jen z toho, co reálně máš.' });
+    explain:'Peníze, které ti po výdajích zbývají a mohly by za tebe pracovat (až do zdravých 15 % příjmu), ale zatím leží ladem.' });
   if(m.subsTotal>m.income*0.05) c.push({ v:Math.round(m.subsTotal), label:'Předplatná nad míru',
     explain:'Měsíční předplatná nad zdravou hranicí 5 % příjmu. Projdi, kolik z nich opravdu využíváš, zbytek tiše ukrajuje z účtu.' });
   c.sort((a,b)=>b.v-a.v);
@@ -10967,7 +11026,7 @@ function openDetail(){
 // 27. 7. 2026: řádek Řeka (peníze) na Přehledu vede na kartu „Kam ti odcházejí peníze" tamtéž
 // (sekce Peníze v rozboru zrušena). Ostatní řádky (Hráz/Doupě) dál otevírají svou sekci rozboru.
 function rsbRowGo(sec){
-  if (sec === 0){ var el = document.getElementById('rsb-money'); if (el){ try{ el.scrollIntoView({ behavior:'smooth', block:'start' }); }catch(e){} return; } }
+  if (sec === 0){ var el = document.getElementById('rsb-money'); if (el){ var mr = document.getElementById('rsb-more'); if (mr) mr.open = true; try{ el.scrollIntoView({ behavior:'smooth', block:'start' }); }catch(e){} return; } }
   if (typeof openDetailSec === 'function') openDetailSec(sec);
 }
 function openDetailSec(i){
@@ -27172,10 +27231,6 @@ BQ.fakta = FinFakta;
       : '';
     return '<div class="rscard">'
       + '<div class="rs-tag"><svg class="ic"><use href="#i-target"></use></svg>Další klády na hráz <span class="cap-tr">(tvůj plán)</span></div>'
-      + '<div class="rs-plan-head">'
-      +   sceneBobr(scenaPlan, 'rs-bobr plan-bobr')
-      +   '<div class="rs-plan-intro">'+withName('Hráz se staví klacek po klacku. Tady je ten JEDEN, který teď podepře všechno ostatní.')+'</div>'
-      + '</div>'
       + mainTaskHtml
       + restHtml
       + '</div>';
@@ -27201,8 +27256,8 @@ BQ.fakta = FinFakta;
     const widths = seg.map(s => { const w = Math.min(inc > 0 ? s.val / inc * 100 : 0, left); left = Math.max(0, left - w); return w; });
     const freeW = cf > 0 ? Math.min(inc > 0 ? cf / inc * 100 : 0, left) : 0;
     const bar = '<div class="rsm-bar">'
-      + seg.map((s, i) => widths[i] > 0.5 ? '<div class="rsm-seg" style="width:' + widths[i] + '%;background:' + s.col + '">' + (widths[i] > 9 ? Math.round(widths[i]) + ' %' : '') + '</div>' : '').join('')
-      + (freeW > 0.5 ? '<div class="rsm-seg" style="width:' + freeW + '%;background:#1b3a6b">' + (freeW > 9 ? Math.round(freeW) + ' %' : '') + '</div>' : '')
+      + seg.map((s, i) => widths[i] > 0.5 ? '<div class="rsm-seg" style="width:' + widths[i] + '%;background:' + s.col + '"></div>' : '').join('')
+      + (freeW > 0.5 ? '<div class="rsm-seg" style="width:' + freeW + '%;background:#1b3a6b"></div>' : '')
       + '</div>';
     // jednotlivé položky skupin (rozklik řádku): čtou se přímo z vyplněných polí
     const itfmt = list => list.filter(x => (x.v || 0) > 0).sort((a, b) => b.v - a.v)
@@ -27243,7 +27298,7 @@ BQ.fakta = FinFakta;
         '<span class="rsm-ic" style="background:' + col + '"><svg class="ic"><use href="#' + icon + '"></use></svg></span>'
         + '<span class="rsm-name">' + name + (sub ? '<small>' + sub + '</small>' : '') + '</span>'
         + '<span class="rsm-amt" data-cnt="' + val + '" data-pre="' + pre + '">' + pre + kc(val) + '</span>'
-        + '<span class="rsm-pct">' + (pct != null ? pct + ' %' : '–') + '</span>';
+        + (pct === false ? '<span class="rsm-pct" style="visibility:hidden">0 %</span>' : '<span class="rsm-pct">' + (pct != null ? pct + ' %' : '–') + '</span>');
       const delay = ' style="animation-delay:' + (0.3 + (_ri++) * 0.13) + 's"';
       if (!items || !items.length)
         return '<div class="rsm-row' + (cls ? ' ' + cls : '') + '"' + delay + '>' + inner + editBtn + '</div>';
@@ -27278,6 +27333,10 @@ BQ.fakta = FinFakta;
     // bývalá samostatná karta „Výdaje podle kategorií" tím zanikla (stejná data 2×)
     let expCatRows = null;
     try{ expCatRows = catOverviewRowsHtml(m.expenses || 0); }catch(e){}
+    // žebřík spoření a červená karta „Co ti tiše protéká“ říkají totéž (spoříš pod 15 %), proto ukaž jen jednu z nich:
+    // když karta mluví o nevyužitém spoření, žebřík se schová; jinak žebřík zůstane a procenta u řádku Spoření odpadnou
+    let _ladder = savingsLadderHtml(m);
+    try { const _fc = faCost(m); if (_fc && _fc.label === 'Nevyužitý potenciál spoření') _ladder = ''; } catch(e){}
     const subExp  = (m.subsTotal   || 0) > 0 ? 'z toho předplatná ' + kc(m.subsTotal)
                   : (expCatRows ? 'klikni pro rozdělení podle kategorií' : (expItems.length ? 'klikni pro položky' : ''));
     const subDebt = (m.mortgagePay || 0) > 0 ? 'z toho hypotéka ' + kc(m.mortgagePay) : (debtItems.length ? 'klikni pro položky' : '');
@@ -27291,8 +27350,8 @@ BQ.fakta = FinFakta;
       + bar
       + row('#ff4d6a', 'i-cart', 'Výdaje', subExp, m.expenses || 0, '', pctOf(m.expenses || 0), 'r-exp', expCatRows || expItems, 'vydaje')
       + row('#f5a623', 'i-card', 'Splátky dluhů', subDebt, m.debtPay || 0, '', pctOf(m.debtPay || 0), 'r-debt', debtItems, 'dluhy')
-      + row('#3ecf8e', 'i-banknote', 'Spoření a investice', subSav, m.saving || 0, '', pctOf(m.saving || 0), 'r-sav', savItems, 'sporeni')
-      + savingsLadderHtml(m)
+      + row('#3ecf8e', 'i-banknote', 'Spoření a investice', subSav, m.saving || 0, '', _ladder ? false : pctOf(m.saving || 0), 'r-sav', savItems, 'sporeni')
+      + _ladder
       + (cf >= 0
           ? row('#1b3a6b', 'i-wallet', 'Zbývá volných', 'tvůj měsíční polštář', cf, '+', pctOf(cf), 'r-free')
           : row('#c92a2a', 'i-alert', 'Chybí, jsi v mínusu', 'utrácíš víc, než ti přijde', Math.abs(cf), '−', pctOf(Math.abs(cf)), 'r-neg'))
@@ -27774,13 +27833,13 @@ BQ.fakta = FinFakta;
     let _moneyCls, _moneyTxt;
     if(_cfB > 0){
       _moneyCls = (m.saving||0) > 0 ? 'ok' : 'warn';
-      _moneyTxt = 'Přitéká víc, než odtéká. Zbývá ti <b>+'+kc(_cfB)+'</b> měsíčně'+((m.saving||0) > 0 ? ' a část už jde na hráz.' : ', jen zatím nikam netečou.');
+      _moneyTxt = 'Přitéká víc, než odtéká.'+((m.saving||0) > 0 ? ' Část už jde na hráz.' : ' Jen zatím nikam netečou.');
     } else if(_cfB === 0){
       _moneyCls = 'warn';
       _moneyTxt = 'Přítoky a odtoky jsou v rovnováze, na hráz teď <b>nezbývá nic</b>.';
     } else {
       _moneyCls = 'bad';
-      _moneyTxt = 'Odtéká víc, než přitéká. Měsíčně ti chybí <b>−'+kc(Math.abs(_cfB))+'</b>.';
+      _moneyTxt = 'Odtéká víc, než přitéká. Každý měsíc ti chybí peníze.';
     }
     // řádek Ochrana: 3 štíty (rezerva / spoření / dluhy), stejné prahy jako dřív v panelu 3
     const _shRes  = m.resMon>=3 ? 'ok' : m.resMon>=1 ? 'warn' : 'bad';
@@ -27825,10 +27884,18 @@ BQ.fakta = FinFakta;
       + rowsB
       // 27. 7. 2026: „Kam ti odcházejí peníze" i „Co ti tiše protéká" rovnou na Přehledu
       // (dřív byly v rozboru na proklik; sekce Peníze v rozboru tím zanikla, měla jen tyto karty)
-      + '<div id="rsb-money">' + (typeof buildMoneyFlowCardHtml === 'function' ? buildMoneyFlowCardHtml(m) : '') + '</div>'
-      + costCard
-      + '<div id="rsb-goals">' + (typeof goalStripHtml === 'function' ? goalStripHtml() : '') + '</div>'
+      // 18. 11. 2026: ZJEDNODUŠENÍ. Nahoře zůstává jen to hlavní: věk financí, tři řádky a jeden krok plánu.
+      // Tok peněz, „Co ti tiše protéká“ a stavby (cíle) jsou pod rozbalovacími Podrobnostmi, aby výsledek
+      // nebyl na první pohled dlouhý. Stavby tak nesoutěží s plánem o pozornost.
       + '<div class="rflow-plan rsb-plan">' + screenPlan + '</div>'
+      + '<details class="rsb-more" id="rsb-more">'
+      +   '<summary><span>Podrobnosti</span><small>kam ti odcházejí peníze, co ti tiše protéká a tvoje stavby</small></summary>'
+      +   '<div class="rsb-more-body">'
+      +     '<div id="rsb-money">' + (typeof buildMoneyFlowCardHtml === 'function' ? buildMoneyFlowCardHtml(m) : '') + '</div>'
+      +     costCard
+      +     '<div id="rsb-goals">' + (typeof goalStripHtml === 'function' ? goalStripHtml() : '') + '</div>'
+      +   '</div>'
+      + '</details>'
       + '</div>'
       // 22. 7. 2026: „Můj finanční vývoj" byl schovaný v rozboru (Cíle a pokrok) a na úvodu
       // se ukazoval jen vracejícím se uživatelům, špatně se hledal → tlačítko rovnou k výsledku
