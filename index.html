@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
 <!-- @@CSP_BEGIN@@ -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-+xioPy28n3+Wnhuk1ReknH7IzjHfMpkc/aW6tv6jfXc=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-XAqmhKqEzOymjCDoKIEqscDkNHssAYhfr/dZBKcQh0c=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://licence.bobriq.cz; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <!-- @@CSP_END@@ -->
 <!-- @@VZHLED_BEGIN@@ -->
 <script>(function(){try{var t=localStorage.getItem('bq_tema');var d=t==='dark'||(t==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();</script>
@@ -6657,6 +6657,10 @@ html:root body:not(#bqt):not(#bqt) .rs-mt-more > summary{ background:transparent
   html:root body:not(#bqt) .rsbg-pct{ order:0; margin-left:0; font-size:.95rem; }
 }
 
+/* 18. 11. 2026 Rychlý start: pruh „rychlý odhad“ na výsledku */
+html:root body:not(#bqt) .rsb-odhad{ margin:6px 0 10px; padding:8px 12px; border-radius:var(--t-rs); background:rgba(255,212,94,.16); border:1px solid rgba(255,212,94,.5); font-size:.88rem; font-weight:700; color:inherit; }
+html:root body:not(#bqt) .rsb-odhad-btn{ margin-left:6px; font:inherit; font-weight:900; color:#ffd45e; background:transparent; border:0; cursor:pointer; text-decoration:underline; padding:0; }
+
 </style>
 <!-- @@BRAND_END@@ --></head>
 <body class="rukopis">
@@ -6945,8 +6949,8 @@ try{
       <div class="hero-gauge-label">Tvé skóre čeká…</div>
     </div>
     <div class="hero-actions">
-      <button class="landing-cta hero-cta" onclick="startDiagnostika()">Zjistit svůj výsledek <svg class="ic" style="width:19px;height:19px"><use href="#i-trending"></use></svg></button>
-      <div class="hero-demo no-print"><a onclick="startDemo()">Nejdřív mrknout na ukázku</a></div>
+      <button class="landing-cta hero-cta" onclick="startQuick()">Zjistit věk financí za 2 minuty <svg class="ic" style="width:19px;height:19px"><use href="#i-trending"></use></svg></button>
+      <div class="hero-demo no-print"><a onclick="startDemo()">Nejdřív mrknout na ukázku</a> &nbsp;·&nbsp; <a class="hero-podrobny" onclick="startDiagnostika()">Chci rovnou podrobný rozbor (10 minut)</a></div>
     </div>
     <div class="hero-extras">
       <!-- 21. 7. 2026 úklid v2: trio dlaždic + 3 tlačítka měny nahrazeny jednou větou a jedním tlačítkem -->
@@ -25696,7 +25700,15 @@ BQ.fakta = FinFakta;
       reassure:'Poslední otázka, pak rovnou výsledek.',
       feedback:d=>{ const nw=(d.reserve||0)+(d.assets||0)-d.debtBal;
         return {text:'Čisté jmění ≈ '+kc(nw), cls:nw>=0?'good':'warn'}; } },
-  ];
+  ].filter(function(q){
+    // 18. 11. 2026: RYCHLÝ START = sedm otázek (do dvou minut). Měsíční splátky dluhů se doplní až ve zpřesnění.
+    return ['age','income','expenses','saving','reserve','assets','debtBal'].indexOf(q.key) >= 0;
+  });
+  // je poslední výsledek jen rychlý odhad? (nastaví rychlý start, smaže ho dokončený podrobný průvodce)
+  function bqRychlyOdhad(){ try { return !window.IS_DEMO && localStorage.getItem('bq_rychly_odhad') === '1'; } catch(e){ return false; } }
+  window.bqRychlyOdhad = bqRychlyOdhad;
+  // „Zpřesnit rozborem": pole podrobného formuláře jsou už předvyplněná z rychlého startu, člověk jen doplní zbytek
+  window.zpresnitOdhad = function(){ startWizard(); };
 
   /* ══ ŽIVÝ ÚVOD: BOBRIQ NEMLČÍ ══════════════════════════════════════════════
      Bubliny na úvodu nejdřív naskočí postupně (to řeší CSS) a pak se hlavní
@@ -25771,6 +25783,19 @@ BQ.fakta = FinFakta;
     if (!b) return;
     b.style.opacity = '0'; b.style.pointerEvents = 'none'; b.setAttribute('aria-hidden', 'true');
   });
+
+  /* 18. 11. 2026: odkazy pod hlavním tlačítkem (ukázka, podrobný rozbor) jsou <a> bez href, takže je klávesnice
+     přeskakovala. Dostanou roli tlačítka, tabulátor a Enter / mezerník. */
+  (function(){
+    function napoj(){
+      document.querySelectorAll('#landing .hero-demo a').forEach(function(a){
+        if (a.getAttribute('tabindex') !== null) return;
+        a.setAttribute('tabindex','0'); a.setAttribute('role','button');
+        a.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); a.click(); } });
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', napoj); else napoj();
+  })();
 
   function startDiagnostika(){
     if (window.BQ && BQ.brana && !BQ.brana.vyzaduj(function(){ startDiagnostika(); })) return;   // licenční kód (ukázka je zdarma)
@@ -26255,6 +26280,7 @@ BQ.fakta = FinFakta;
     if(d._expDetailed && d.exp){ fiForceAllSimple(); EXP_AREAS.forEach(a=> quickSetField(a.key, d.exp[a.id]||0)); window.EXPENSES_ESTIMATED = false; try{ localStorage.removeItem('fin_exp_est'); }catch(err){} }
     else { window.EXPENSES_ESTIMATED = true; try{ localStorage.setItem('fin_exp_est','1'); }catch(e){} distributeQuickExpenses(d.expenses||0); }   // rozpad je jen odhad, nesmí se tvářit jako fakt
     $('quickflow').style.display = 'none';
+    try { localStorage.setItem('bq_rychly_odhad','1'); } catch(e){}   // výsledek je rychlý odhad, dokud člověk nedokončí podrobný rozbor
     if(typeof saveInputs==='function') saveInputs();
     // Hodnoty se do polí zapsaly kódem, takže neproběhla žádná událost `input`
     // a průběžné součty ve formuláři by zůstaly na nule (typicky „Celkové výdaje
@@ -26504,6 +26530,7 @@ BQ.fakta = FinFakta;
     $('steps-wrap').style.display = 'none';
     $('wiz-nav').style.display = 'none';
     window.CHECKIN_RETURN = false;
+    try { localStorage.removeItem('bq_rychly_odhad'); } catch(e){}   // podrobný rozbor dokončen, už to není jen odhad
     if (typeof window.updateCheckinBar === 'function') window.updateCheckinBar();
     evaluate();
     // 30. 7. 2026: měsíc se do vývoje zapíše sám (dřív to chtělo trefit tlačítko
@@ -28257,6 +28284,8 @@ BQ.fakta = FinFakta;
       +     '<div class="rsp-cap">Věk tvých financí <span class="cap-tr">(orientační index finanční kondice)</span></div>'
       +     '<div class="rsb-num">'+fin.financialAge+'<small> '+yearWord(fin.financialAge)+'</small></div>'
       +     '<div class="rsb-orient">Orientační index finanční kondice, ne přesná diagnóza. Níže v „Proč právě '+fin.financialAge+' '+yearWord(fin.financialAge)+'?" vidíš, co ho zvýšilo a co snížilo.</div>'
+      +     (typeof bqRychlyOdhad === 'function' && bqRychlyOdhad()
+              ? '<div class="rsb-odhad no-print">Rychlý odhad ze sedmi čísel. <button type="button" class="rsb-odhad-btn" onclick="zpresnitOdhad()">Zpřesnit podrobným rozborem ›</button></div>' : '')
       +     '<div class="rsb-sent">'+(_voc ? _voc+', tvým financím je ' : 'Tvým financím je ')+_cmpB+'</div>'
       +     '<div class="rsp-state"><span class="rs-semafor mini">'+_lights+'</span><span class="rs-state-label">'+vd.label+'</span></div>'
       +   '</div>'
@@ -30663,7 +30692,7 @@ BQ.fakta = FinFakta;
         akt.textContent = 'Zkontrolovat aktualizace';
         window.bobriqExe.info().then(function(i){
           /* Číslo obalu (instalátoru) se mění zřídka. Aktualizace mění jen obsah, proto vedle něj ukážeme i datum a čas jeho sestavení. */
-          var sest = '18. 11. 2026 20:40';
+          var sest = '18. 11. 2026 21:57';
           verzeEl.textContent = 'Verze aplikace: ' + i.verze + (sest.indexOf('__') === 0 ? '' : ' · obsah z ' + sest);
         }).catch(function(){ verzeEl.textContent = ''; });
         akt.addEventListener('click', function(){
