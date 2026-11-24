@@ -3,7 +3,7 @@
 <html lang="cs">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-BxaGLhbAXxmExVjsfTMrft7zBadoNlMj/dwF/n/KmJA=' 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-FBsqnWW7b5wYqWl+8TT/TxroBO2enOxCPplYZgeOkbk=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM=' 'sha256-NVb9QkGpTlQm8XTH1bGUY5AqIQOgnXmNHbD7ANNsjRA='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://bobriq-licence.bobriq.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-NCcPa3GojouJJBlsWG1lWHwg8rm2exapDrAYhM5neqE=' 'sha256-aJ6a2t036sEzrOBXeB9t/T5winZaj80qjrgHG2+gW+8=' 'sha256-LJMKSidUjJ5fO12ASqcNv2RVtuSM23vNRxiNQJSt3mI=' 'sha256-19sOFDE4iNHWf2ZU0WyorWFjlVYgVhA1Xd4IJ1H3SWg=' 'sha256-9zBkw9RQDyKQxGfLByEdN7U5Dzb4BnCaRy8/2R6/nv8=' 'sha256-qiGRJKG6J8IvTZrxlPN/IErtocDNWVHdrC2kaSj4KqM=' 'sha256-/T4ll2pNCWG5ZuxCwnlOAOXcS2/WND8fQHvNiY7Hr3Q='; style-src 'unsafe-inline'; img-src data: blob: 'self'; font-src data: 'self'; media-src data: blob:; connect-src 'self' https://bobriq-licence.bobriq.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>BOBRIQ</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -69,10 +69,9 @@
   <div class="err" id="err">Tenhle kód neznám. Zkontroluj, jestli jsi nepřehlédl/a písmeno.</div>
   <div class="prenos" id="prenos"><p id="prenos-t"></p><button type="button" id="prenos-b">Přenést licenci na tohle zařízení</button></div>
   <div class="busy" id="busy">Odemykám&hellip;</div>
-  <a class="ukazka" href="ukazka/">Nejdřív si prohlédnout ukázku zdarma</a>
 </div>
 <script>
-var IV = 'g3xVe565BujPx+HV';
+var IV = 'cD7hdxJYVPwipdUF';
 var SERVER = 'https://bobriq-licence.bobriq.workers.dev';
 var GRACE_DNI = 14;   // tak dlouho smí appka běžet bez kontroly u serveru (např. na cestách bez internetu)
 function b64(s){ var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
