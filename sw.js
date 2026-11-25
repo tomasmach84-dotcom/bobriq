@@ -10,7 +10,7 @@
      AKTUALIZACE     odkud a z jakého kanálu se stahují nové verze
      VEREJNE_KLICE   veřejné klíče (s kid) na ověření podpisů
    ════════════════════════════════════════════════════════════════════ */
-const CACHE = 'bobriq-a6e0fb798d98';
+const CACHE = 'bobriq-c3f9f9994db5';
 const ASSETS = ["./","./index.html","./manifest.webmanifest","./app.enc.bin","./icons/icon-192.png","./icons/icon-512.png","./icons/icon-512-maskable.png","./icons/apple-touch-icon.png"];
 const CRITICAL = ["./","./index.html"];
 const AKTUALIZACE = {"puvod":"https://bobriq-licence.bobriq.workers.dev","kanal":"stabilni"};
